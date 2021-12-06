@@ -1,4 +1,6 @@
 package CICERO.Model;
 
-public interface Piattaforma {
+public interface Piattaforma<T> {
+
+    boolean insertPropose(T propose);
 }

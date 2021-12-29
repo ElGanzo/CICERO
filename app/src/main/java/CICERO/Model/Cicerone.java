@@ -7,10 +7,9 @@ public interface Cicerone {
 
     /**
      * Inoltra un evento all'Amministrazione della Piattaforma per essere poi confermato o meno
-     * @param itinerario
-     * @return l'Itinerario &egrave; stato approvato o meno dall'Amministrazione della Piattaforma
+     *
+     * @param propose    tag, toponimo o itinerario da inserire nella Piattaforma dopo l'approvazione dell'Amministrazione
+     * @return l'Itinerario &egrave; stato approvato o meno dall'Amministrazione
      */
-    boolean addPropose(Itinerario itinerario);
-
-
+    <T> boolean sendPropose(T propose);
 }

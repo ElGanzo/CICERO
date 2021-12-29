@@ -3,7 +3,7 @@ package CICERO.Model;
 /**
  * Classe che rappresenta l'Amministrazione della Piattaforma
  */
-public interface AmministrazionePiattaforma {
+public interface Amministrazione {
 
     /**
      * Stabilisce se un itinerario proposto da un profilo Cicerone &egrave; ammissibile nella Piattaforma
@@ -11,6 +11,6 @@ public interface AmministrazionePiattaforma {
      * @param itinerario da inserire
      * @return
      */
-    boolean judgePropose(Cicerone cicerone, Itinerario itinerario);
+    <T> boolean approvePropose(Cicerone cicerone, T propose);
 
 }

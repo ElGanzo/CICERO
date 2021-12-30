@@ -10,5 +10,5 @@ public interface Utente {
      * @param itinerario
      * @return in/successo prenotazione all'evento
      */
-    boolean booking(Itinerario itinerario);
+    boolean prenotazione(Itinerario itinerario); //????? perché boolean
 }

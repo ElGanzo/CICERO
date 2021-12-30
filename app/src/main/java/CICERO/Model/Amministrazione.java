@@ -11,6 +11,6 @@ public interface Amministrazione {
      * @param itinerario da inserire
      * @return
      */
-    <T> boolean approvePropose(Cicerone cicerone, T propose);
+    <T> boolean approvaProposta(Cicerone cicerone, T proposta);
 
 }

@@ -2,9 +2,8 @@ package CICERO.Model;
 
 /**
  * Generica classe per spostare dati da form del sito ad un DB
- * @param <T>
  */
-public interface Piattaforma<T> {
+public interface Piattaforma {
 
     /**
      * Inserimento di una proposta alla Piattaforma
@@ -12,7 +11,7 @@ public interface Piattaforma<T> {
      * @param cicerone Azienda che la propone
      * @return in/successo dell'inserimento della proposta alla Piattaforma
      */
-    boolean aggiungiProposta(T proposta, Cicerone cicerone);
+    <T> boolean aggiungiProposta(T proposta, Cicerone cicerone);
 
     /**
      * Aggiunge un nuovo profilo aziendale alla Piattaforma
@@ -34,4 +33,5 @@ public interface Piattaforma<T> {
      * @return possibilit&agrave; di prenotare o meno un Itinerario
      */
     boolean prenotablita(Itinerario itinerario);
+
 }

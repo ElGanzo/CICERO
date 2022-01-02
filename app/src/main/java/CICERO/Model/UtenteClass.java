@@ -2,7 +2,7 @@ package CICERO.Model;
 
 import java.util.Date;
 
-public class UtenteClass {
+public class UtenteClass implements Utente {
 
     private long id;
     private String nome;
@@ -27,13 +27,24 @@ public class UtenteClass {
         this.servizioAutenticazione = servizioAutenticazione;
     }
 
+    @Override
     public void richiestaAccesso() {
         //TODO implementare/cambiare
+
+//        PiattaformaClass.accessoUtente(this, servizioAutenticazione);
     }
 
-    public boolean prenotazione() {
+    @Override
+    public boolean prenotazione(Itinerario itinerario) {
         //TODO implementare
         return false;
     }
 
+    public String getNome() {
+        return this.nome;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
 }

@@ -10,8 +10,8 @@ public interface Cicerone {
      * TODO: da rivedere
      *
      * @param proposta Tag, Toponimo o Itinerario da inserire nella Piattaforma dopo l'approvazione dell'Amministrazione
-     * @return true se Tag, Toponimo o Itinerario &egrave; stato approvato dall'Amministrazione, false altrimenti
-     * @throws NullPointerException se proposta &egrave; null
+     * @return <code>true</code> se Tag, Toponimo o Itinerario &egrave; stato approvato dall'Amministrazione, <code>false</code> altrimenti
+     * @throws NullPointerException se proposta &egrave; <code>null</code>
      */
     <T> boolean inviaProposta(T proposta);
 

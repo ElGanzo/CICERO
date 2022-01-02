@@ -67,7 +67,7 @@ public interface Itinerario {
      * Associa tag all'itinerario
      *
      * @param tag il tag da associare
-     * @throws NullPointerException     se tag &egrave; null
+     * @throws NullPointerException     se tag &egrave; <code>null</code>
      * @throws IllegalArgumentException se tag &egrave; gi&agrave; associato all'itinerario
      */
     void inserisciTag(Tag tag);

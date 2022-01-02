@@ -10,7 +10,7 @@ public interface Utente {
      *
      * @param itinerario evento turistico a cui partecipare
      * @return in/successo prenotazione all'evento
-     * @throws NullPointerException se Itinerario &egrave; null
+     * @throws NullPointerException se Itinerario &egrave; <code>null</code>
      */
     boolean prenotazione(Itinerario itinerario);
 

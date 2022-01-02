@@ -10,8 +10,8 @@ public interface Piattaforma {
      *
      * @param proposta proposta
      * @param cicerone Azienda che la propone
-     * @return true se la proposta &egrave; aggiunta alla Piattaforma, false altrimenti
-     * @throws NullPointerException se proposta e/o Cicerone sono null
+     * @return <code>true</code> se la proposta &egrave; aggiunta alla Piattaforma, <code>false</code> altrimenti
+     * @throws NullPointerException se almeno uno tra proposta e cicerone &egrave; <code>null</code>
      */
     <T> boolean aggiungiProposta(T proposta, Cicerone cicerone);
 
@@ -19,8 +19,8 @@ public interface Piattaforma {
      * Aggiunge un nuovo profilo aziendale alla Piattaforma
      *
      * @param cicerone nome aziendale di cui fa parte un Cicerone
-     * @return true se il nuovo profilo &egrave; stato creato, false altrimenti
-     * @throws NullPointerException se Cicerone &egrave; null
+     * @return <code>true</code> se il nuovo profilo &egrave; stato creato, <code>false</code> altrimenti
+     * @throws NullPointerException se Cicerone &egrave; <code>null</code>
      */
     boolean aggiungiProfiloCicerone(Cicerone cicerone);
 
@@ -28,8 +28,8 @@ public interface Piattaforma {
      * Aggiunge un nuovo profilo Utente alla Piattaforma
      *
      * @param utente utente che vuole registrarsi alla Piattaforma
-     * @return in/successo della creazione di un nuovo profilo
-     * @throws NullPointerException se Utente &egrave; null
+     * @return <code>true</code> se il profilo &egrave; stato creato con successo, <code>false</code> altrimenti
+     * @throws NullPointerException se Utente &egrave; <code>null</code>
      */
     boolean aggiungiProfiloUtente(Utente utente);
 
@@ -37,17 +37,17 @@ public interface Piattaforma {
      * Mostra la disponibilit&agrave; per la prenotazione di un Itinerario
      *
      * @param itinerario Itinerario selezionato
-     * @return possibilit&agrave; di prenotare o meno un Itinerario
-     * @throws NullPointerException se Itinerario &egrave; null
+     * @return <code>true</code> se l'itinerario &egrave; prenotabile, <code>false</code> altrimenti
+     * @throws NullPointerException se Itinerario &egrave; <code>null</code>
      */
-    boolean prenotablita(Itinerario itinerario);
+    boolean prenotabilita(Itinerario itinerario);   //TODO egsblain?!?!?
 
     /**
      * Processa la richiesta di accesso da parte di un Utente
      *
      * @param utente l'Utente che vuole effettuare l'accesso
-     * @return true se l'accesso &egrave; approvato, false altrimenti
-     * @throws NullPointerException se Utente &egrave; null
+     * @return <code>true</code> se l'accesso &egrave; approvato, <code>false</code> altrimenti
+     * @throws NullPointerException se Utente &egrave; <code>null</code>
      */
     boolean accessoUtente(Utente utente, ServizioEsterno servizio);
 
@@ -55,8 +55,8 @@ public interface Piattaforma {
      * Processa la richiesta di accesso da parte di un Cicerone
      *
      * @param cicerone il Cicerone che vuole effettuare l'accesso
-     * @return true se l'accesso &egrave; approvato, false altrimenti
-     * @throws NullPointerException se Cicerone &egrave; null
+     * @return <code>true</code> se l'accesso &egrave; approvato, <code>false</code> altrimenti
+     * @throws NullPointerException se Cicerone &egrave; <code>null</code>
      */
     boolean accessoCicerone(Cicerone cicerone);
 }

@@ -26,7 +26,7 @@ public interface Itinerario {
      *
      * @return Toponimo associato a questo itinerario
      */
-    AreaGeografica getToponimo();
+    String getToponimo();
 
     /**
      * Resituisce il numero massimo di utenti che possono partecipare a questo itinerario

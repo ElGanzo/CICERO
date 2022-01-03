@@ -12,6 +12,7 @@ public interface Piattaforma {
      * @param cicerone Azienda che la propone
      * @return <code>true</code> se la proposta &egrave; aggiunta alla Piattaforma, <code>false</code> altrimenti
      * @throws NullPointerException se almeno uno tra proposta e cicerone &egrave; <code>null</code>
+     * @throws IllegalArgumentException se la proposta da inserire &egrave; presente nella Piattaforma
      */
     <T> boolean aggiungiProposta(T proposta, Cicerone cicerone);
 
@@ -21,6 +22,7 @@ public interface Piattaforma {
      * @param cicerone nome aziendale di cui fa parte un Cicerone
      * @return <code>true</code> se il nuovo profilo &egrave; stato creato, <code>false</code> altrimenti
      * @throws NullPointerException se Cicerone &egrave; <code>null</code>
+     * @throws IllegalArgumentException se profilo Cicerone &egrave; gi&agrave; presente nella Piattaforma
      */
     boolean aggiungiProfiloCicerone(Cicerone cicerone);
 

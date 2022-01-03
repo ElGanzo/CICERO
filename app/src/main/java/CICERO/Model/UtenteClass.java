@@ -18,8 +18,8 @@ public class UtenteClass implements Utente {
     private int cap;
     private String stato;
 
-    public void Utente(String nome, String cognome, String email, int servizioAutenticazione) {
-        if (nome == null || email == null || servizioAutenticazione == 0)
+    public UtenteClass(String nome, String cognome, String email, int servizioAutenticazione) {
+        if (nome == null || cognome == null || email == null || servizioAutenticazione == 0)
             throw new NullPointerException();
         this.nome = nome;
         this.cognome = cognome;

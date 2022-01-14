@@ -33,7 +33,7 @@ public interface Piattaforma {
      * @return <code>true</code> se il profilo &egrave; stato creato con successo, <code>false</code> altrimenti
      * @throws NullPointerException se Utente &egrave; <code>null</code>
      */
-    boolean aggiungiProfiloUtente(Utente utente);
+    boolean aggiungiProfiloUtente(Persona utente);
 
     /**
      * Mostra la disponibilit&agrave; per la prenotazione di un Itinerario
@@ -51,7 +51,7 @@ public interface Piattaforma {
      * @return <code>true</code> se l'accesso &egrave; approvato, <code>false</code> altrimenti
      * @throws NullPointerException se Utente &egrave; <code>null</code>
      */
-    boolean accessoUtente(Utente utente, ServizioEsterno servizio);
+    boolean accessoUtente(Persona utente, ServizioEsterno servizio);
 
     /**
      * Processa la richiesta di accesso da parte di un Cicerone

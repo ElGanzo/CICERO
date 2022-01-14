@@ -2,7 +2,7 @@ package CICERO.Model;
 
 import java.util.Date;
 
-public class UtenteClass implements Utente {
+public class UtenteClass extends CICERO.Model.PersonaClass {
 
     private long id;
     private String nome;
@@ -18,23 +18,30 @@ public class UtenteClass implements Utente {
     private int cap;
     private String stato;
 
-    public UtenteClass(String nome, String cognome, String email, int servizioAutenticazione) {
-        if (nome == null || cognome == null || email == null || servizioAutenticazione == 0)
+    public UtenteClass(String nome, String cognome, String email, int servizioAutenticazione, Date dataNascita) {
+        super(nome, cognome, email, dataNascita);
+        if (servizioAutenticazione == 0)
             throw new NullPointerException();
-        this.nome = nome;
-        this.cognome = cognome;
-        this.email = email;
         this.servizioAutenticazione = servizioAutenticazione;
     }
 
-    @Override
+    /**
+     * Invia una richiesta di accesso alla Piattaforma
+     * TODO: se i metodi dupicati sono parecchi meglio unire cicerone e utente
+     */
     public void richiestaAccesso() {
         //TODO implementare/cambiare
 
 //        PiattaformaClass.accessoUtente(this, servizioAutenticazione);
     }
 
-    @Override
+    /**
+     * effettua una prenotazione ad un itinerario
+     *
+     * @param itinerario evento turistico a cui partecipare
+     * @return in/successo prenotazione all'evento
+     * @throws NullPointerException se Itinerario &egrave; <code>null</code>
+     */
     public boolean prenotazione(Itinerario itinerario) {
         //TODO implementare
         return false;
@@ -42,6 +49,11 @@ public class UtenteClass implements Utente {
 
     public String getNome() {
         return this.nome;
+    }
+
+    @Override
+    public String getCognome() {
+        return cognome;
     }
 
     public String getEmail() {

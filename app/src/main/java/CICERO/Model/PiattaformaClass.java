@@ -8,7 +8,7 @@ public class PiattaformaClass implements Piattaforma {
     public ArrayList<Itinerario> itinerari;
     public ArrayList<Tag> tags;
     public ArrayList<AreaGeografica> areeGeografiche;
-    private ArrayList<Utente> utenti;
+    private ArrayList<Persona> utenti;
     private ArrayList<Cicerone> ciceroni;
 
     public PiattaformaClass() {
@@ -59,7 +59,7 @@ public class PiattaformaClass implements Piattaforma {
     }
 
     @Override
-    public boolean aggiungiProfiloUtente(Utente utente) {
+    public boolean aggiungiProfiloUtente(Persona utente) {
         controlloNull(utente, "utente da inserire non valido");
         if (this.utenti.contains(utente))
             return false;
@@ -76,7 +76,7 @@ public class PiattaformaClass implements Piattaforma {
     }
 
     @Override
-    public boolean accessoUtente(Utente utente, ServizioEsterno servizio) {
+    public boolean accessoUtente(Persona utente, ServizioEsterno servizio) {
         return false;
     }
 
@@ -97,7 +97,7 @@ public class PiattaformaClass implements Piattaforma {
         return areeGeografiche;
     }
 
-    public ArrayList<Utente> getUtenti() {
+    public ArrayList<Persona> getUtenti() {
         return utenti;
     }
 

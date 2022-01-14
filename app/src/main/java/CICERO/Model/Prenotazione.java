@@ -9,12 +9,12 @@ public class Prenotazione {
 
     public Itinerario itinerario;
     public Cicerone cicerone;
-    public Utente utente;
+    public Persona utente;
 //    public Invitato invitato;
     public String emailInvitato; //(in alternativa a fare InvitatoClass)
     public Date data;
 
-    public void Prenotazione(Itinerario itinerario, Cicerone cicerone, Utente utente) {
+    public void Prenotazione(Itinerario itinerario, Cicerone cicerone, Persona utente) {
         if (itinerario == null || utente == null || cicerone == null)
             throw new NullPointerException();
         this.itinerario = itinerario;
@@ -30,7 +30,7 @@ public class Prenotazione {
         return this.cicerone;
     }
 
-    public Utente getUtente() {
+    public Persona getUtente() {
         return this.utente;
     }
 

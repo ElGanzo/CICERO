@@ -6,13 +6,20 @@ public class CiceroneClass implements Cicerone {
 
     private String ragioneSociale;
     private String partitaIVA;
-//    private ArrayList<String> email;
+    private String emailAzienda;
     private ArrayList<Persona> Cicerone;
+    private long idCicerone;
 
-    public CiceroneClass(String ragioneSociale, String partitaIVA) {
-
+    public CiceroneClass(String ragioneSociale, String partitaIVA, String emailAzienda) {
+        this.idCicerone = PiattaformaClass.IDCiceroni++;
+        this.partitaIVA = partitaIVA;
+        this.ragioneSociale = ragioneSociale;
+        this.emailAzienda = emailAzienda;
     }
 
+    public long getIdCicerone() {
+        return this.idCicerone;
+    }
 
     @Override
     public <T> boolean inviaProposta(T proposta) {
@@ -23,6 +30,4 @@ public class CiceroneClass implements Cicerone {
     public void richiestaAccesso() {
 
     }
-
-
 }

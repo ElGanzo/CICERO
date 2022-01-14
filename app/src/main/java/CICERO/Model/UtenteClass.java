@@ -5,13 +5,8 @@ import java.util.Date;
 public class UtenteClass extends CICERO.Model.PersonaClass {
 
     private long id;
-    private String nome;
-    private String cognome;
-    private Date dataNascita;
-    private String email;
     private int servizioAutenticazione;
     private String numTel;
-
     private String via;
     private String citta;
     private String provincia;
@@ -27,7 +22,6 @@ public class UtenteClass extends CICERO.Model.PersonaClass {
 
     /**
      * Invia una richiesta di accesso alla Piattaforma
-     * TODO: se i metodi dupicati sono parecchi meglio unire cicerone e utente
      */
     public void richiestaAccesso() {
         //TODO implementare/cambiare

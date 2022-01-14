@@ -10,11 +10,11 @@ public class Prenotazione {
     public Itinerario itinerario;
     public Cicerone cicerone;
     public Persona utente;
-//    public Invitato invitato;
+    public InvitatoClass[] invitato;
     public String emailInvitato; //(in alternativa a fare InvitatoClass)
     public Date data;
 
-    public void Prenotazione(Itinerario itinerario, Cicerone cicerone, Persona utente) {
+    public Prenotazione(Itinerario itinerario, Cicerone cicerone, Persona utente) {
         if (itinerario == null || utente == null || cicerone == null)
             throw new NullPointerException();
         this.itinerario = itinerario;

@@ -10,6 +10,7 @@ public class ItinerarioClass implements Itinerario{
     private String info;
     private List<Tag> tags;
     private AreaGeografica toponimo;
+    private long idItinerario;
 
     // attributoTemporalePerPrenotabilità; ATTRIBUTO DI QUANDO E' PRENOTABILE QUESTO ITINERARIO
     // attributoTemporalePerScadenzaPagamento

@@ -10,6 +10,8 @@ public class PiattaformaClass implements Piattaforma {
     public ArrayList<AreaGeografica> areeGeografiche;
     private ArrayList<Persona> utenti;
     private ArrayList<Cicerone> ciceroni;
+    public static long IDInvitato = 0;
+    public static long IDCiceroni = 0;
 
     public PiattaformaClass() {
         this.itinerari = new ArrayList<>();

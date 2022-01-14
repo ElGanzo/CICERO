@@ -7,6 +7,7 @@ public class CiceroneClass implements Cicerone {
     private String ragioneSociale;
     private String partitaIVA;
 //    private ArrayList<String> email;
+    private ArrayList<Persona> Cicerone;
 
     public CiceroneClass(String ragioneSociale, String partitaIVA) {
 

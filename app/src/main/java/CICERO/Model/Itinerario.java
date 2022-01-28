@@ -20,7 +20,7 @@ public interface Itinerario {
      *
      * @return lista dei tag associato a questo itinerario
      */
-    List<Tag> getTags();
+    List<String> getTags();
 
     /**
      * Restituisce i toponimi delle aree geografiche assegnate a questo itinerario
@@ -57,11 +57,19 @@ public interface Itinerario {
      */
     void setMinPartecipanti(int numMinPartecipanti);
 
+
+    /**
+     * Inserisce le informazioni dell'itinerario
+     * @param info stringa contenente info dell'itinerario
+     * @throws NullPointerException se info passate sono <code>null</code>
+     */
+    void setInfo(String info);
+
     /**
      * Associa un nuovo toponimo all'Itinerario
      *
      * @param toponimo il toponimo da associare all'itinerario
-     * @throws NullPointerException se parametro null
+     * @throws NullPointerException se toponimo &egrave; <code>null</code>
      */
     void inserisciToponimo(AreaGeografica toponimo);
 
@@ -72,11 +80,17 @@ public interface Itinerario {
      * @throws NullPointerException     se tag &egrave; <code>null</code>
      * @throws IllegalArgumentException se tag &egrave; gi&agrave; associato all'itinerario
      */
-    void inserisciTag(Tag tag);
+    void inserisciTag(String tag);
 
     /**
      * Restituisce il cicerone che fara&agrave; da guida per l'itinerario
      * @return {@code Cicerone} associato all'itinerario
      */
     Cicerone getCicerone();
+
+    /**
+     * Restituisce l'id assegnato all'itinerario
+     * @return idItinerario
+     */
+    long getIdItinerario();
 }

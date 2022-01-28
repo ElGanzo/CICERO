@@ -4,15 +4,17 @@ import java.util.ArrayList;
 
 public class PiattaformaClass implements Piattaforma {
 
-    private Amministrazione amministrazione;
+    private final Amministrazione amministrazione;
     public ArrayList<Itinerario> itinerari;
-    public ArrayList<Tag> tags;
+    public ArrayList<String> tags;
     public ArrayList<AreaGeografica> areeGeografiche;
     private ArrayList<Persona> utenti;
     private ArrayList<Cicerone> ciceroni;
     private ArrayList<Prenotazione> prenotazioni;
     public static long IDInvitato = 0;
     public static long IDCiceroni = 0;
+    public static int IDItinerario = 0;
+
 
     public PiattaformaClass() {
         this.itinerari = new ArrayList<>();
@@ -30,10 +32,9 @@ public class PiattaformaClass implements Piattaforma {
         controlloNull(cicerone, "cicerone da inserire non valido");
         if(!contiene(proposta))
             throw new IllegalArgumentException("proposta da inserire presente nella Piattaforma");
-        if(amministrazione.approvaProposta(cicerone, proposta))
-        {
-            if(proposta instanceof Tag)
-                tags.add((Tag) proposta);
+        if(amministrazione.approvaProposta(proposta, cicerone)){
+            if(proposta instanceof String)
+                tags.add((String) proposta);
             if(proposta instanceof AreaGeografica)
                 areeGeografiche.add((AreaGeografica) proposta);
             if(proposta instanceof Itinerario)
@@ -44,13 +45,13 @@ public class PiattaformaClass implements Piattaforma {
     }
 
     private <T> boolean contiene(T proposta) {
-        if(proposta instanceof Tag)
-            return tags.contains((TagClass) proposta);
+        if(proposta instanceof String)
+            return tags.contains(proposta);
         if(proposta instanceof AreaGeografica)
-            return areeGeografiche.contains((AreaGeograficaClass) proposta);
+            return areeGeografiche.contains(proposta);
         if(proposta instanceof Itinerario)
-            return itinerari.contains((ItinerarioClass) proposta);
-        return true;
+            return itinerari.contains(proposta);
+        return false;
     }
 
     @Override
@@ -71,9 +72,9 @@ public class PiattaformaClass implements Piattaforma {
         return true;
     }
 
-    @Override
+    @Override //todo implementare
     public boolean prenotabilita(Itinerario itinerario) {
-        controlloNull(itinerario, "itinerario da inserire non valido");
+        controlloNull(itinerario, "itinerario nullo non valido per cercare la disponibilita'");
         //TODO: controllare nel catalogo degli itinerari disponibili
         // oppure fornisco l'orario e l'utente sceglierà quello
         return false;
@@ -93,7 +94,7 @@ public class PiattaformaClass implements Piattaforma {
         return itinerari;
     }
 
-    public ArrayList<Tag> getTags() {
+    public ArrayList<String> getTags() {
         return tags;
     }
 
@@ -108,6 +109,8 @@ public class PiattaformaClass implements Piattaforma {
     public ArrayList<Cicerone> getCiceroni() {
         return ciceroni;
     }
+
+    public Amministrazione getAmministrazione(){return amministrazione;}
 
     public static void controlloNull(Object o, String errorMessage) {
         if (o == null)

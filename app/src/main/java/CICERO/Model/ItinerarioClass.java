@@ -9,12 +9,13 @@ public class ItinerarioClass implements Itinerario{
     private int numMaxPartecipanti;
     private int numMinPartecipanti;
     private String info;
-    private List<Tag> tags;
-    private List<AreaGeografica> toponimi;  // todo da rivedere
-    private long idItinerario;          // todo da rivedere, potrebbe essere estratto da DB
+    private List<String> tags;
+    private List<AreaGeografica> toponimi;
+    private final long idItinerario;          // todo da rivedere, potrebbe essere estratto da DB
 
     public ItinerarioClass(CiceroneClass cicerone){
         PiattaformaClass.controlloNull(cicerone, "Cicerone inserito per l'itinerario non valido");
+        idItinerario = PiattaformaClass.IDItinerario++;
         this.cicerone = cicerone;
         this.tags = new ArrayList<>();
         this.toponimi = new ArrayList<>();
@@ -27,13 +28,14 @@ public class ItinerarioClass implements Itinerario{
         return this.info;
     }
 
+    @Override
     public void setInfo(String info){
         PiattaformaClass.controlloNull(info, "le info da inserire non valide");
         this.info=info;
     }
 
     @Override
-    public List<Tag> getTags() {
+    public List<String> getTags() {
         return this.tags;
     }
 
@@ -62,12 +64,6 @@ public class ItinerarioClass implements Itinerario{
         this.numMinPartecipanti = numMinPartecipanti;
     }
 
-    /**
-     * Associa un nuovo toponimo all'Itinerario
-     *
-     * @param toponimo il toponimo da associare all'itinerario
-     * @throws NullPointerException se parametro null
-     */
     @Override
     public void inserisciToponimo(AreaGeografica toponimo) {
         PiattaformaClass.controlloNull(toponimo, "Toponimo inserito non valido");
@@ -75,12 +71,18 @@ public class ItinerarioClass implements Itinerario{
     }
 
     @Override
-    public void inserisciTag(Tag tag) {
+    public void inserisciTag(String tag) {
         PiattaformaClass.controlloNull(tag, "tag da inserire non valido");
         tags.add(tag);
     }
 
+    @Override
     public Cicerone getCicerone() {
         return cicerone;
+    }
+
+    @Override
+    public long getIdItinerario() {
+        return idItinerario;
     }
 }

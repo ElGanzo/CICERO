@@ -1,16 +1,29 @@
 package CICERO.Model;
 
+/**
+ * rappresenta un Area geografica: il toponimo che ne deriva &egrave; composto dal luogo,
+ */
 public class AreaGeograficaClass implements AreaGeografica{
 
-    private Object area;// come rappresentare un'area geografica? OPPURE ARRAYLIST DI STRINGHE PER PIU' TERRITORI
-    private String toponimo;
+    private final String luogo;
+    private final String citta;
+    private final String provincia;
+    private final String regione;
 
-    public AreaGeograficaClass(Object obj){
-        this.area = obj;
+    // todo da separare quando estraggo dal DB; PROBABILMENTE CONTROLLO NULL INUTILE PERCHE' VIENE APPROVATO DALL'AMMINISTRAZIONE
+    public AreaGeograficaClass(String l, String c, String p, String r){
+        PiattaformaClass.controlloNull(l, "Il luogo deve essere specificato");
+        PiattaformaClass.controlloNull(c, "La citta' deve essere specificata");
+        PiattaformaClass.controlloNull(p, "La provincia deve essere specificata");
+        PiattaformaClass.controlloNull(r, "La regione deve essere specificata");
+        luogo = l;
+        citta = c;
+        provincia = p;
+        regione = r;
     }
 
     @Override
     public String getToponimo() {
-        return this.toponimo;
+        return luogo+" - "+citta+" - ("+provincia+") - "+regione;
     }
 }

@@ -42,7 +42,7 @@ public interface Piattaforma {
      * @return <code>true</code> se l'itinerario &egrave; prenotabile, <code>false</code> altrimenti
      * @throws NullPointerException se Itinerario &egrave; <code>null</code>
      */
-    boolean prenotabilita(Itinerario itinerario);   //TODO egsblain?!?!?
+    boolean prenotabilita(Itinerario itinerario);
 
     /**
      * Processa la richiesta di accesso da parte di un Utente

@@ -9,7 +9,7 @@ public class ItinerarioClass implements Itinerario{
     private int numMinPartecipanti;
     private String info;
     private List<Tag> tags;
-    private AreaGeografica toponimo;
+    private ArrayList<String> toponimi;
     private long idItinerario;
 
     // attributoTemporalePerPrenotabilità; ATTRIBUTO DI QUANDO E' PRENOTABILE QUESTO ITINERARIO
@@ -35,8 +35,8 @@ public class ItinerarioClass implements Itinerario{
     }
 
     @Override
-    public String getToponimo() {
-        return this.toponimo.getToponimo();
+    public ArrayList<String> getToponimi() {
+        return toponimi;
     }
 
     @Override
@@ -59,10 +59,9 @@ public class ItinerarioClass implements Itinerario{
         this.numMinPartecipanti = numMinPartecipanti;
     }
 
-    @Override
-    public void inserisciToponimo(AreaGeografica toponimo) {
-        PiattaformaClass.controlloNull(toponimo, "toponimo da inserire non valido");
-        this.toponimo = toponimo;
+    public void inserisciToponimo(String s) {
+
+        toponimi.add(s);
     }
 
     @Override

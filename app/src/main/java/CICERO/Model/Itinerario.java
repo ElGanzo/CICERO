@@ -1,5 +1,6 @@
 package CICERO.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,11 +23,11 @@ public interface Itinerario {
     List<Tag> getTags();
 
     /**
-     * Restituisce il toponimo assegnato a questo itinerario
+     * Restituisce i toponimi delle aree geografiche assegnate a questo itinerario
      *
-     * @return Toponimo associato a questo itinerario
+     * @return Toponimi associati a questo itinerario
      */
-    String getToponimo();
+    ArrayList<String> getToponimi();
 
     /**
      * Resituisce il numero massimo di utenti che possono partecipare a questo itinerario

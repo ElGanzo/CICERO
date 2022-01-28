@@ -3,12 +3,14 @@
  */
 package CICERO;
 
-public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
+import CICERO.Controller.Controller;
 
-    public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+import java.sql.SQLException;
+
+public class App {
+
+    public static void main(String[] args) throws SQLException {
+        Controller controller= new Controller();
+        controller.executeProgram();
     }
 }

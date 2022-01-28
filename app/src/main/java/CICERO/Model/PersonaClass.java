@@ -1,22 +1,22 @@
 package CICERO.Model;
 
-import CICERO.Model.Persona;
-
 import java.util.Date;
 
 public class PersonaClass implements Persona {
-    private String nome;
-    private String cognome;
+    private final String nome;
+    private final String cognome;
     private String email;
-    private Date dataNascita;
+    private final Date dataNascita;
 
     public PersonaClass(String nome, String cognome, String email, Date dataNascita) {
         this.nome = nome;
         this.cognome = cognome;
         this.email = email;
         this.dataNascita = dataNascita;
-        if (nome == null || cognome == null || email == null || dataNascita == null)
-            throw new NullPointerException();
+        PiattaformaClass.controlloNull(nome, "Nome utente non valido");
+        PiattaformaClass.controlloNull(cognome, "Cognome utente non valido");
+        PiattaformaClass.controlloNull(email, "Email utente non valida");
+        PiattaformaClass.controlloNull(dataNascita, "Data di nascita dell'Utente non valida");
     }
 
     @Override

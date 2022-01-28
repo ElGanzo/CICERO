@@ -27,7 +27,7 @@ public interface Itinerario {
      *
      * @return Toponimi associati a questo itinerario
      */
-    ArrayList<String> getToponimi();
+    List<AreaGeografica> getToponimi();
 
     /**
      * Resituisce il numero massimo di utenti che possono partecipare a questo itinerario
@@ -58,9 +58,10 @@ public interface Itinerario {
     void setMinPartecipanti(int numMinPartecipanti);
 
     /**
-     * Associa toponimo all'Itinerario
+     * Associa un nuovo toponimo all'Itinerario
      *
-     * @param toponimo il toponimo da associare
+     * @param toponimo il toponimo da associare all'itinerario
+     * @throws NullPointerException se parametro null
      */
     void inserisciToponimo(AreaGeografica toponimo);
 
@@ -72,4 +73,10 @@ public interface Itinerario {
      * @throws IllegalArgumentException se tag &egrave; gi&agrave; associato all'itinerario
      */
     void inserisciTag(Tag tag);
+
+    /**
+     * Restituisce il cicerone che fara&agrave; da guida per l'itinerario
+     * @return {@code Cicerone} associato all'itinerario
+     */
+    Cicerone getCicerone();
 }

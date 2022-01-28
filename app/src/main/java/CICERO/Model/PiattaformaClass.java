@@ -10,6 +10,7 @@ public class PiattaformaClass implements Piattaforma {
     public ArrayList<AreaGeografica> areeGeografiche;
     private ArrayList<Persona> utenti;
     private ArrayList<Cicerone> ciceroni;
+    private ArrayList<Prenotazione> prenotazioni;
     public static long IDInvitato = 0;
     public static long IDCiceroni = 0;
 
@@ -20,6 +21,7 @@ public class PiattaformaClass implements Piattaforma {
         this.utenti = new ArrayList<>();
         this.ciceroni = new ArrayList<>();
         this.amministrazione = new AmministrazioneClass();
+        this.prenotazioni = new ArrayList<>();
     }
 
     @Override
@@ -110,5 +112,11 @@ public class PiattaformaClass implements Piattaforma {
     public static void controlloNull(Object o, String errorMessage) {
         if (o == null)
             throw new NullPointerException(errorMessage);
+    }
+
+    public void prenota(UtenteClass utente, int j) {
+        controlloNull(utente, "utente mancante");
+        prenotazioni.add(new Prenotazione(itinerari.get(j), itinerari.get(j).getCicerone(),  utente));
+
     }
 }

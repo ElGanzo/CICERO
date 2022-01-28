@@ -5,19 +5,22 @@ import java.util.List;
 
 public class ItinerarioClass implements Itinerario{
 
+    private Cicerone cicerone;
     private int numMaxPartecipanti;
     private int numMinPartecipanti;
     private String info;
     private List<Tag> tags;
-    private ArrayList<String> toponimi;
-    private long idItinerario;
+    private List<AreaGeografica> toponimi;  // todo da rivedere
+    private long idItinerario;          // todo da rivedere, potrebbe essere estratto da DB
 
-    // attributoTemporalePerPrenotabilità; ATTRIBUTO DI QUANDO E' PRENOTABILE QUESTO ITINERARIO
-    // attributoTemporalePerScadenzaPagamento
-
-    public ItinerarioClass(){
+    public ItinerarioClass(CiceroneClass cicerone){
+        PiattaformaClass.controlloNull(cicerone, "Cicerone inserito per l'itinerario non valido");
+        this.cicerone = cicerone;
         this.tags = new ArrayList<>();
+        this.toponimi = new ArrayList<>();
     }
+
+
 
     @Override
     public String getInfo() {
@@ -35,7 +38,7 @@ public class ItinerarioClass implements Itinerario{
     }
 
     @Override
-    public ArrayList<String> getToponimi() {
+    public List<AreaGeografica> getToponimi() {
         return toponimi;
     }
 
@@ -59,14 +62,25 @@ public class ItinerarioClass implements Itinerario{
         this.numMinPartecipanti = numMinPartecipanti;
     }
 
-    public void inserisciToponimo(String s) {
-
-        toponimi.add(s);
+    /**
+     * Associa un nuovo toponimo all'Itinerario
+     *
+     * @param toponimo il toponimo da associare all'itinerario
+     * @throws NullPointerException se parametro null
+     */
+    @Override
+    public void inserisciToponimo(AreaGeografica toponimo) {
+        PiattaformaClass.controlloNull(toponimo, "Toponimo inserito non valido");
+        toponimi.add(toponimo);
     }
 
     @Override
     public void inserisciTag(Tag tag) {
         PiattaformaClass.controlloNull(tag, "tag da inserire non valido");
-        this.tags.add(tag);
+        tags.add(tag);
+    }
+
+    public Cicerone getCicerone() {
+        return cicerone;
     }
 }

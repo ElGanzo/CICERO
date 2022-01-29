@@ -9,9 +9,11 @@ public class AreaGeograficaClass implements AreaGeografica{
     private final String citta;
     private final String provincia;
     private final String regione;
+    private final long IDAreaGeografica;
 
-    // todo da separare quando estraggo dal DB; PROBABILMENTE CONTROLLO NULL INUTILE PERCHE' VIENE APPROVATO DALL'AMMINISTRAZIONE
+    // todo da separare quando estraggo dal DB;
     public AreaGeograficaClass(String l, String c, String p, String r){
+        //  PROBABILMENTE CONTROLLO NULL INUTILE PERCHE' VIENE APPROVATO DALL'AMMINISTRAZIONE
         PiattaformaClass.controlloNull(l, "Il luogo deve essere specificato");
         PiattaformaClass.controlloNull(c, "La citta' deve essere specificata");
         PiattaformaClass.controlloNull(p, "La provincia deve essere specificata");
@@ -20,6 +22,7 @@ public class AreaGeograficaClass implements AreaGeografica{
         citta = c;
         provincia = p;
         regione = r;
+        IDAreaGeografica = PiattaformaClass.IDAreaGeografica++;
     }
 
     @Override

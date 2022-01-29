@@ -14,7 +14,7 @@ public class PiattaformaClass implements Piattaforma {
     public static long IDInvitato = 0;
     public static long IDCiceroni = 0;
     public static int IDItinerario = 0;
-
+    public static int IDAreaGeografica = 0;
 
     public PiattaformaClass() {
         this.itinerari = new ArrayList<>();
@@ -44,6 +44,12 @@ public class PiattaformaClass implements Piattaforma {
         return false;
     }
 
+    /**
+     * Controlla che la proposta non sia gi&agrave; presente nella piattaforma
+     * @param proposta proposta che s'intende inserire
+     * @param <T> tipo della proposta che si vuole aggiungere
+     * @return <code>true</code> se proposta gi&agrave; presente, <code>false</code> altrimenti
+     */
     private <T> boolean contiene(T proposta) {
         if(proposta instanceof String)
             return tags.contains(proposta);
@@ -72,12 +78,14 @@ public class PiattaformaClass implements Piattaforma {
         return true;
     }
 
-    @Override //todo implementare
+    @Override //todo finire di implementare
     public boolean prenotabilita(Itinerario itinerario) {
         controlloNull(itinerario, "itinerario nullo non valido per cercare la disponibilita'");
+        if(!itinerari.contains(itinerario))
+            return false;
         //TODO: controllare nel catalogo degli itinerari disponibili
         // oppure fornisco l'orario e l'utente sceglierà quello
-        return false;
+        return true;
     }
 
     @Override
@@ -119,6 +127,7 @@ public class PiattaformaClass implements Piattaforma {
 
     public void prenota(UtenteClass utente, int j) {
         controlloNull(utente, "utente mancante");
+        // prenotabilita(itinerari.get(j)); todo forse troppo low risk
         prenotazioni.add(new Prenotazione(itinerari.get(j), itinerari.get(j).getCicerone(),  utente));
 
     }

@@ -17,6 +17,16 @@ public class ConsoleView {
 //    }
 
     /**
+     * Elimina le precedenti scritte sulla console, cos&igrave; da renderla pi&ugrave; leggibile
+     */
+    private void pulisciConsole() {
+    System.out.print("\033[H\033[2J");
+    System.out.flush();
+
+}
+
+
+    /**
      * Stampa la Home iniziale di benvenuto, con la possibilit&agrave; di effettuare
      * [1] -> Log in Utente
      *
@@ -29,8 +39,8 @@ public class ConsoleView {
      * @return scelta effettuata dall'Utente
      */
     public int stampaHome() {
-        System.out.flush();
-        System.out.println("Benvenuto in Cicero!\n");
+        pulisciConsole();
+        System.out.println("\nBenvenuto in Cicero!\n");
         System.out.println("Per effettuare le operazioni:");
         System.out.println("[1] -> Log in Utente");
         System.out.println("[2] -> Log in Aziendale");
@@ -44,6 +54,7 @@ public class ConsoleView {
         return Integer.parseInt(s);
     }
 
+
     /**
      * Controlla che il carattere inserito dall'Utente sia uno tra i caratteri specificati dalla precedente stampa
      * @param s stringa contenente il carattere
@@ -51,26 +62,28 @@ public class ConsoleView {
      */
     private String checkSingleCharacter(String s, String ... values) {
         Scanner scanner = new Scanner(System.in);
-        while(s.length()>1 || isValidCharacter(s, values)) {
+        while(isNotValidCharacter(s, values)) {
             s = null;
-            System.out.println("Carattere inserito non valido, ritenta");
+            System.out.println("Carattere inserito non valido, ritenta oppure premi '0' per uscire ");
             s = scanner.nextLine();
         }
         return s;
     }
 
     /**
-     * Controlla che la stringa inserita dall'Utente contenga uno dei caratteri richiesti per effettuare le operazioni
+     * Controlla se la stringa inserita dall'Utente non contiene uno dei caratteri ammissibili
      *
      * @param s stringa su cui effettuare il controllo
-     * @return false se la stringa non contiene il carattere, true se il carattere &egrave; presente
+     * @return <code>false</code> se il carattere inserito &egrave; corretto, <code>true</code> se il carattere &egrave; presente
      */
-    private boolean isValidCharacter(String s, String ... values) {
+    private boolean isNotValidCharacter(String s, String ... values) {
+        if(s.length()<1)
+            return true;
         for (String x: values){
             if(s.contains(x))
-                return true;
+                return false;
         }
-        return false;
+        return true;
     }
 
     /**
@@ -78,7 +91,7 @@ public class ConsoleView {
      * @return Lista di stringhe inserite dall'Utente (0 -> username, 1 -> password)
      */
     public List<String> getCredenziali() {
-        System.out.flush();
+        pulisciConsole();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Username: ");
         String username = scanner.nextLine();
@@ -96,6 +109,7 @@ public class ConsoleView {
      * @return idItinerario (numero) dell'Itinerario da prenotare
      */
     public int stampaItinerari(ArrayList<Itinerario> itinerari) {
+        pulisciConsole();
         System.out.println("Itinerari: \n");
         int i = 1;
         for (Itinerario itinerario: itinerari){
@@ -112,7 +126,7 @@ public class ConsoleView {
 
         System.out.println("Prenotare l'itinerario? [Y]es / [N]o");
         s= scanner.nextLine();
-        s = checkSingleCharacter(s, "Y", "N");
+        s = checkSingleCharacter(s, "Y", "N", "0");
         if(s.equals("Y"))
             return j;
         return -1;
@@ -146,7 +160,7 @@ public class ConsoleView {
         Scanner scanner = new Scanner(System.in);
         String s = scanner.nextLine();
 
-        s = checkSingleCharacter(s, "1");
+        s = checkSingleCharacter(s, "1", "0");
 
         return null;
     }

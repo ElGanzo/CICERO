@@ -23,27 +23,31 @@ public class Controller{
 //    }
 
     public void executeProgram() throws SQLException {
-        inizializzaConnessioneDatabase();
+        //inizializzaConnessioneDatabase();   // todo qui 3° errore
         int i = consoleView.stampaHome();
         // if i==-1 -> errore da gestire
         switch (i) {
+
             // login Utente
             case 1 -> {
-                String username = consoleView.getCredenziali().get(0);
-                String password = consoleView.getCredenziali().get(1);
-                UtenteClass utente = logInUtente(username, password);
+                // acquisisco le credenziali
+                List<String> credenziali = consoleView.getCredenziali();
+                // autentico l'Utente
+                UtenteClass utente = logInUtente(credenziali.get(0), credenziali.get(1));
+                // ... dovrei stampare la SUA home (storico itinerari ecc...) todo <-- forse troppo avanzato, discuterne cancellare
                 int j = consoleView.stampaItinerari(piattaforma.getItinerari());
-                // se -1 -> Utente non prenota ed termina Cicero
-                if(j!=-1)
+                if(j!=-1)   // j == -1 --> Utente non vuole prenotare ma semplicemente visualizza l'itinerario
                     piattaforma.prenota(utente, j); // j -> numero itinerario
             }
 
             // login aziendale
             case 2 -> {
+                // acquisisco le credenziali
                 String username = consoleView.getCredenziali().get(0);
                 String password = consoleView.getCredenziali().get(1);
+                // autentico il Cicerone (profilo aziendale)
                 CiceroneClass cicerone = logInCicerone(username, password);
-                piattaforma.logInAziendale();
+                //piattaforma.logInAziendale();   // idem, dovrei stampare la SUA home ma ...
                 effettuaProposta(cicerone);
             }
 
@@ -74,7 +78,7 @@ public class Controller{
         String url = infoConnessione.get(0);
         String username = infoConnessione.get(1);
         String password = infoConnessione.get(2);
-        dbManager = new DBManager(url, username, password);
+        dbManager = new DBManager(url, username, password); // todo qui 2° errore
     }
 
 
@@ -90,7 +94,7 @@ public class Controller{
 //        dbManager.
         // poi confrontali con i dati inseriti
 
-        // todo mostra prenotazione (high risk UC)
+        // return errore se non esiste  todo orientarsi con vpp
         return null;
     }
 

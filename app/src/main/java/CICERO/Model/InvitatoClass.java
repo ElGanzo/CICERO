@@ -18,9 +18,9 @@ public class InvitatoClass extends PersonaClass {
 
     public boolean isHaAccettato() {
         haAccettato = false;
-        if (rispostaEmail() == true) {
-            haAccettato = true;
-        }
+//        if (rispostaEmail() == true) {
+//            haAccettato = true;
+//        }
         return haAccettato;
     }
 

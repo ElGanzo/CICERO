@@ -1,7 +1,7 @@
 package CICERO.Model;
 
 /**
- * Generica classe per spostare dati da form del sito ad un DB
+ * Entit&agrave; per gestire i dati estratti da un DB
  */
 public interface Piattaforma {
 

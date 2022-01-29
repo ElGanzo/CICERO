@@ -20,8 +20,8 @@ public class ConsoleView {
      * Elimina le precedenti scritte sulla console, cos&igrave; da renderla pi&ugrave; leggibile
      */
     private void pulisciConsole() {
-    System.out.print("\033[H\033[2J");
-    System.out.flush();
+        for(int i = 0; i < 20; i++)
+            System.out.print("\n");
 
 }
 
@@ -58,6 +58,7 @@ public class ConsoleView {
     /**
      * Controlla che il carattere inserito dall'Utente sia uno tra i caratteri specificati dalla precedente stampa
      * @param s stringa contenente il carattere
+     * @param values valori da controllare all'interno di s
      * @return stringa corretta se inserimento iniziale non andato a buon fine
      */
     private String checkSingleCharacter(String s, String ... values) {
@@ -126,8 +127,8 @@ public class ConsoleView {
 
         System.out.println("Prenotare l'itinerario? [Y]es / [N]o");
         s= scanner.nextLine();
-        s = checkSingleCharacter(s, "Y", "N", "0");
-        if(s.equals("Y"))
+        s = checkSingleCharacter(s, "Y", "N", "0", "y", "n");
+        if(s.equals("Y") || s.equals("y"))
             return j;
         return -1;
     }
@@ -145,6 +146,7 @@ public class ConsoleView {
         System.out.println("Url della connessione al DB: ");
         app.add(0, scanner.nextLine());
         PiattaformaClass.controlloNull(app.get(0), "Url nullo non valido");
+        pulisciConsole();
         System.out.println("username: ");
         app.add(1, scanner.nextLine());
         PiattaformaClass.controlloNull(app.get(1), "Username nullo non valido");
@@ -155,7 +157,7 @@ public class ConsoleView {
     }
 
     public <T> T richiediProposta(CiceroneClass cicerone) {
-        System.out.flush();
+        pulisciConsole();
         System.out.println("[1] -> aggiungi una proposta di itinerario");
         Scanner scanner = new Scanner(System.in);
         String s = scanner.nextLine();

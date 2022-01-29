@@ -10,6 +10,7 @@ public class PiattaformaClass implements Piattaforma {
     public ArrayList<AreaGeografica> areeGeografiche;
     private ArrayList<Persona> utenti;
     private ArrayList<Cicerone> ciceroni;
+
     private ArrayList<Prenotazione> prenotazioni;
     public static long IDInvitato = 0;
     public static long IDCiceroni = 0;
@@ -83,7 +84,7 @@ public class PiattaformaClass implements Piattaforma {
         controlloNull(itinerario, "itinerario nullo non valido per cercare la disponibilita'");
         if(!itinerari.contains(itinerario))
             return false;
-        //TODO: fornisco l'orario e l'utente sceglierà quello --> forse troppo low risk UC
+        //TODO: fornisco l'orario e l'utente scegliera' quello --> forse troppo low risk UC
         return true;
     }
 
@@ -115,6 +116,10 @@ public class PiattaformaClass implements Piattaforma {
 
     public ArrayList<Cicerone> getCiceroni() {
         return ciceroni;
+    }
+
+    public ArrayList<Prenotazione> getPrenotazioni() {
+        return prenotazioni;
     }
 
     public Amministrazione getAmministrazione(){return amministrazione;}

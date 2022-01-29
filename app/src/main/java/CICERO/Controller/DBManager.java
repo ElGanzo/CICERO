@@ -14,8 +14,13 @@ public class DBManager {
     Statement connectionStatement;
 
     public DBManager(String url, String user, String password) throws SQLException {
-        connection = DriverManager.getConnection(url, user, password);  // todo qui 1° errore
-        connectionStatement = connection.createStatement();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            connection = DriverManager.getConnection(url, user, password);  // todo qui 1° errore
+            connectionStatement = connection.createStatement();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     // todo ragionare

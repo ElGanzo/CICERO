@@ -84,6 +84,9 @@ public class Controller{
         String url = infoConnessione.get(0);
         String username = infoConnessione.get(1);
         String password = infoConnessione.get(2);
+        System.out.println(infoConnessione.toString());
+        System.out.println("Press Any Key To Continue...");
+        new java.util.Scanner(System.in).nextLine();
         dbManager = new DBManager(url, username, password); // todo qui 2° errore, come controllare/gestire eccezioni?
     }
 

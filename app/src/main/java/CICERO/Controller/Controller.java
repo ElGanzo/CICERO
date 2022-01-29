@@ -1,10 +1,10 @@
 package CICERO.Controller;
 
-import CICERO.Model.Cicerone;
 import CICERO.Model.CiceroneClass;
 import CICERO.Model.PiattaformaClass;
 import CICERO.Model.UtenteClass;
 import CICERO.View.ConsoleView;
+
 import java.sql.SQLException;
 import java.util.List;
 
@@ -14,16 +14,16 @@ public class Controller{
     DBManager dbManager;
     ConsoleView consoleView = new ConsoleView();
 
-    public Controller() throws SQLException {
+    public Controller() {
         this.piattaforma = new PiattaformaClass();
     }
 
-//    amministrazione.inserisciProposta(odsajfnoadsf){
-//        piattaforma.aggiungiProposta(odsajfnoadsf, master)
+//    if amministrazione.approvaProposta(odsajfnoadsf, cicerone){
+//        piattaforma.aggiungiProposta(odsajfnoadsf, cicerone)
 //    }
 
     public void executeProgram() throws SQLException {
-        //inizializzaConnessioneDatabase();   // todo qui 3° errore
+        inizializzaConnessioneDatabase();   // todo qui 3° errore
         int i = consoleView.stampaHome();
         // if i==-1 -> errore da gestire
         switch (i) {
@@ -59,6 +59,13 @@ public class Controller{
         }
     }
 
+    /**
+     * Richiesta di approvazione proposta ad <code>AmministrazioneClass</code>,
+     * se viene approvata, verr&agrave; inserita nella lista delle proposte su <code>PiattaformaClass</code>
+     *
+     * @param cicerone cicerone che effettua la proposta
+     * @param <T> tipo della proposta da proporre e, in caso, inserire
+     */
     private <T> void effettuaProposta(CiceroneClass cicerone) {
         T proposta = consoleView.richiediProposta(cicerone);
         if(piattaforma.getAmministrazione().approvaProposta(proposta, cicerone))
@@ -72,13 +79,12 @@ public class Controller{
 
     private void inizializzaConnessioneDatabase() throws SQLException {
         List<String> infoConnessione;
-
         infoConnessione = consoleView.getInfoConnessione();
 
         String url = infoConnessione.get(0);
         String username = infoConnessione.get(1);
         String password = infoConnessione.get(2);
-        dbManager = new DBManager(url, username, password); // todo qui 2° errore
+        dbManager = new DBManager(url, username, password); // todo qui 2° errore, come controllare/gestire eccezioni?
     }
 
 

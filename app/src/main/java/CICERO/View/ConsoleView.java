@@ -142,15 +142,15 @@ public class ConsoleView {
     public List<String> getInfoConnessione() {
         Scanner scanner = new Scanner(System.in);
         List<String> app = new ArrayList<>();
-        System.out.println("Indirizzo IP della connessione al DB: ");
+        System.out.println("Url della connessione al DB: ");
         app.add(0, scanner.nextLine());
-        PiattaformaClass.controlloNull(app.get(0), "indirizzo ip nullo non valido");
+        PiattaformaClass.controlloNull(app.get(0), "Url nullo non valido");
         System.out.println("username: ");
         app.add(1, scanner.nextLine());
-        PiattaformaClass.controlloNull(app.get(1), "username nullo non valido");
+        PiattaformaClass.controlloNull(app.get(1), "Username nullo non valido");
         System.out.println("password: ");
         app.add(2, scanner.nextLine());
-        PiattaformaClass.controlloNull(app.get(2), "password nulla non valido");
+        PiattaformaClass.controlloNull(app.get(2), "Password nulla non valido");
         return app;
     }
 

@@ -13,10 +13,4 @@ public interface Cicerone {
      * @throws NullPointerException se proposta &egrave; <code>null</code>
      */
     <T> boolean inviaProposta(T proposta);
-
-    /**
-     * Invia una richiesta di accesso alla Piattaforma
-     * TODO: se i metodi dupicati sono parecchi meglio unire cicerone e utente
-     */
-    void richiestaAccesso();
 }

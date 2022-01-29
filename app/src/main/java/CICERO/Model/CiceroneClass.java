@@ -25,9 +25,4 @@ public class CiceroneClass implements Cicerone {
     public <T> boolean inviaProposta(T proposta) {
         return false;
     }
-
-    @Override
-    public void richiestaAccesso() {
-
-    }
 }

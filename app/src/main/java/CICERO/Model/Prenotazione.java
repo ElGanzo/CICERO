@@ -5,7 +5,7 @@ import org.checkerframework.checker.units.qual.C;
 import java.util.Date;
 
 public class Prenotazione {
-    //TODO rivedere, decidere funzionamento
+    //TODO rivedere, decidere funzionamento perche' potremmo comunque
 
     public Itinerario itinerario;
     public Cicerone cicerone;

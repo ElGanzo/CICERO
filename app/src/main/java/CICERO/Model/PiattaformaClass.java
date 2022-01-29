@@ -28,8 +28,8 @@ public class PiattaformaClass implements Piattaforma {
 
     @Override
     public <T> boolean aggiungiProposta(T proposta, Cicerone cicerone) {
-        controlloNull(proposta, "proposta da inserire non valido");
-        controlloNull(cicerone, "cicerone da inserire non valido");
+        controlloNull(proposta, "proposta da inserire non valida");
+        controlloNull(cicerone, "cicerone che inserisce proposta non valido");
         if(!contiene(proposta))
             throw new IllegalArgumentException("proposta da inserire presente nella Piattaforma");
         if(amministrazione.approvaProposta(proposta, cicerone)){
@@ -78,13 +78,12 @@ public class PiattaformaClass implements Piattaforma {
         return true;
     }
 
-    @Override //todo finire di implementare
+    @Override //todo forse troppo low risk, facciamo che lo prenota e basta?
     public boolean prenotabilita(Itinerario itinerario) {
         controlloNull(itinerario, "itinerario nullo non valido per cercare la disponibilita'");
         if(!itinerari.contains(itinerario))
             return false;
-        //TODO: controllare nel catalogo degli itinerari disponibili
-        // oppure fornisco l'orario e l'utente sceglierà quello
+        //TODO: fornisco l'orario e l'utente sceglierà quello --> forse troppo low risk UC
         return true;
     }
 

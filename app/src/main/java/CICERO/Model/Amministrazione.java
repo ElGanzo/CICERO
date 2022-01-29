@@ -2,8 +2,6 @@ package CICERO.Model;
 
 /**
  * Classe che rappresenta l'Amministrazione della Piattaforma
- * TODO: la concretizzazione può essere totalmente statica?
- *  così per esempio anche Cicerone può chiamare Amministrazione.approvaProposta nel suo metodo inviaProposta();
  */
 public interface Amministrazione {
 

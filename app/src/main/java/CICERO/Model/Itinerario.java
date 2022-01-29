@@ -1,6 +1,5 @@
 package CICERO.Model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

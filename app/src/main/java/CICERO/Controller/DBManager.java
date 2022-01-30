@@ -1,6 +1,7 @@
 package CICERO.Controller;
 
 import CICERO.Model.Cicerone;
+import CICERO.Model.UtenteClass;
 
 import java.sql.*;
 import java.util.List;
@@ -57,4 +58,17 @@ public class DBManager {
         return null;
     }
 
+    /**
+     *
+     * @param username username dell'Utente
+     * @param password password dell'Utente
+     * @return utente nel DB, <code>null</code> se Utente non &egrave; presente nel DB o i dati Utente non sono giusti
+     */
+    public UtenteClass estraiUtente(String username, String password) throws SQLException {
+        // esegui query che estrae l utente
+        String query = "SELECT * FROM username, password WHERE username = " +username + " and password = " +password;
+        ResultSet resultSet = connectionStatement.executeQuery(query);
+        // se utente non esiste o password sbagliata oggetti di ritorno e' null
+        return resultSet.getObject(0, UtenteClass.class);
+    }
 }

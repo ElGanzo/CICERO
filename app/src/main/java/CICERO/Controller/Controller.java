@@ -23,7 +23,7 @@ public class Controller{
 //    }
 
     public void executeProgram() throws SQLException {
-        inizializzaConnessioneDatabase();   // todo qui 3° errore
+        inizializzaConnessioneDatabase();
         int i = consoleView.stampaHome();
         // if i==-1 -> errore da gestire
         switch (i) {
@@ -34,7 +34,7 @@ public class Controller{
                 List<String> credenziali = consoleView.getCredenziali();
                 // autentico l'Utente
                 UtenteClass utente = logInUtente(credenziali.get(0), credenziali.get(1));
-                // ... dovrei stampare la SUA home (storico itinerari ecc...) todo <-- forse troppo avanzato, discuterne cancellare
+
                 int j = consoleView.stampaItinerari(piattaforma.getItinerari());
                 if(j!=-1)   // j == -1 --> Utente non vuole prenotare ma semplicemente visualizza l'itinerario
                     piattaforma.prenota(utente, j); // j -> numero itinerario
@@ -87,24 +87,32 @@ public class Controller{
         System.out.println(infoConnessione.toString());
         System.out.println("Press Any Key To Continue...");
         new java.util.Scanner(System.in).nextLine();
-        dbManager = new DBManager(url, username, password); // todo qui 2° errore, come controllare/gestire eccezioni?
+        dbManager = new DBManager(url, username, password);
     }
 
 
     /**
      * Se l'Utente esiste, ovvero &egrave; presente nel DB, esegui l'accesso
-     * e restituisce l'oggetto (?)
+     * e restituisce l'oggetto UtenteClass
      * @param username nome utente di Utente
      * @param password password di Utente
-     * @return
+     * @throws IllegalArgumentException se username e password non esistono nel DB
+     * @return profilo Utente
      */
-    private UtenteClass logInUtente(String username, String password) {
-        // Estrai dal db username e password utente
-//        dbManager.
-        // poi confrontali con i dati inseriti
+    private UtenteClass logInUtente(String username, String password) throws SQLException {
 
-        // return errore se non esiste  todo orientarsi con vpp
-        return null;
+        // Chiedi al db se username e password utente esistono
+        UtenteClass utente = dbManager.estraiUtente(username, password);
+
+        // se presenti nel DB allora l'autentico todo da migliorare se Utente sbaglia
+        while(utente == null){
+            System.out.println("Username o password sbagliati");    // todo soprattutto questo :(
+            List<String> app = consoleView.getCredenziali();
+            utente = logInUtente(app.get(0), app.get(1));
+        }
+
+        // return UtenteClass se esiste, errore se non esiste  todo orientarsi con vpp
+        return utente;
     }
 
 

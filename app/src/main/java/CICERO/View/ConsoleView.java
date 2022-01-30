@@ -88,8 +88,8 @@ public class ConsoleView {
     }
 
     /**
-     * Estrae le credenziali (nome, password) dalle stringhe inserite dall'Utente
-     * @return Lista di stringhe inserite dall'Utente (0 -> username, 1 -> password)
+     * Estrae le credenziali (nome, password) dalle stringhe inserite dall'Utente o dal Cicerone
+     * @return Lista di stringhe inserite dall'Utente o dal Cicerone (0 -> username, 1 -> password)
      */
     public List<String> getCredenziali() {
         pulisciConsole();

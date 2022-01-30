@@ -4,6 +4,7 @@ import CICERO.Model.Cicerone;
 import CICERO.Model.UtenteClass;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ public class DBManager {
     Connection connection;
     Statement connectionStatement;
 
-    public DBManager(String url, String user, String password) throws SQLException {
+    public DBManager(String url, String user, String password) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(url, user, password);  // todo qui 1° errore
@@ -70,5 +71,21 @@ public class DBManager {
         ResultSet resultSet = connectionStatement.executeQuery(query);
         // se utente non esiste o password sbagliata oggetti di ritorno e' null
         return resultSet.getObject(0, UtenteClass.class);
+    }
+
+    public boolean utenteEsiste(String username) throws SQLException {
+        String query = "SELECT COUNT(u_id) FROM Utenti WHERE nome = '" + username + "' GROUP BY u_id;";
+        ResultSet resultSet = connectionStatement.executeQuery(query);
+        return resultSet.getObject(0, int.class) > 0;
+    }
+
+    public void inserisciNuovoUtente(ArrayList<String> datiUtente) throws SQLException {
+        String query = "INSERT INTO Utenti (nome, cognome, d_nascita, email, password) " +
+                "VALUES ('" + datiUtente.get(0) + "', '" +
+                datiUtente.get(1) + "', '" +
+                datiUtente.get(2) + "', '" +
+                datiUtente.get(3) + "', '" +
+                datiUtente.get(4) + "');";
+        connectionStatement.executeQuery(query);
     }
 }

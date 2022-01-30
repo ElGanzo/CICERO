@@ -22,24 +22,17 @@ public class ConsoleView {
     private void pulisciConsole() {
         for(int i = 0; i < 20; i++)
             System.out.print("\n");
-
-}
-
+    }
 
     /**
      * Stampa la Home iniziale di benvenuto, con la possibilit&agrave; di effettuare
      * [1] -> Log in Utente
-     *
      * [2] -> Log in Aziendale
-     *
      * [3] -> Crea profilo Utente
-     *
      * [0] -> Termina programma Cicero
-     *
      * @return scelta effettuata dall'Utente
      */
     public int stampaHome() {
-        pulisciConsole();
         System.out.println("\nBenvenuto in Cicero!\n");
         System.out.println("Per effettuare le operazioni:");
         System.out.println("[1] -> Log in Utente");
@@ -53,7 +46,6 @@ public class ConsoleView {
             
         return Integer.parseInt(s);
     }
-
 
     /**
      * Controlla che il carattere inserito dall'Utente sia uno tra i caratteri specificati dalla precedente stampa
@@ -104,6 +96,31 @@ public class ConsoleView {
         return credenziali;
     }
 
+    public ArrayList<String> creazioneProfiloUtente() {
+        ArrayList<String> datiUtente = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Creazione nuovo profilo utente");
+        System.out.println("Nome: ");
+        datiUtente.add(0, scanner.nextLine());
+        System.out.println("Cognome: ");
+        datiUtente.add(1, scanner.nextLine());
+        System.out.println("Data di nascita (AAAA/MM/GG): ");
+        datiUtente.add(2, scanner.nextLine());
+        System.out.println("Email: ");
+        datiUtente.add(3, scanner.nextLine());
+        System.out.println("Password: ");
+        datiUtente.add(4, scanner.nextLine());
+
+
+        System.out.println(datiUtente.toString());
+        System.out.println("Confermare questi dati? [Y] per confermare, qualsiasi altro tasto per annullare...");
+        String s = scanner.nextLine();
+        s = checkSingleCharacter(s, "Y", "N", "0", "y", "n");
+        if(s.equals("Y") || s.equals("y"))
+            return datiUtente;
+        return null;
+    }
+
     /**
      * Visualizza gli itinerari presenti sulla Piattaforma offrendo la possibilit&agrave; di prenotarne uno
      * @param itinerari itinerari presenti sulla Piattaforma
@@ -143,10 +160,10 @@ public class ConsoleView {
     public List<String> getInfoConnessione() {
         Scanner scanner = new Scanner(System.in);
         List<String> app = new ArrayList<>();
-        System.out.println("Url della connessione al DB: ");
-        app.add(0, scanner.nextLine());
+//        System.out.println("Url della connessione al DB: ");
+//        app.add(0, scanner.nextLine());
+        app.add(0, "jdbc:mysql://104.248.18.55:3306/TogepiDB");
         PiattaformaClass.controlloNull(app.get(0), "Url nullo non valido");
-        pulisciConsole();
         System.out.println("username: ");
         app.add(1, scanner.nextLine());
         PiattaformaClass.controlloNull(app.get(1), "Username nullo non valido");

@@ -6,9 +6,10 @@ import CICERO.Model.UtenteClass;
 import CICERO.View.ConsoleView;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class Controller{
+public class Controller {
 
     PiattaformaClass piattaforma;
     DBManager dbManager;
@@ -24,7 +25,9 @@ public class Controller{
 
     public void executeProgram() throws SQLException {
         inizializzaConnessioneDatabase();
-        int i = consoleView.stampaHome();
+
+        int i;
+        i = consoleView.stampaHome();
         // if i==-1 -> errore da gestire
         switch (i) {
 
@@ -36,7 +39,7 @@ public class Controller{
                 UtenteClass utente = logInUtente(credenziali.get(0), credenziali.get(1));
 
                 int j = consoleView.stampaItinerari(piattaforma.getItinerari());
-                if(j!=-1)   // j == -1 --> Utente non vuole prenotare ma semplicemente visualizza l'itinerario
+                if (j != -1)   // j == -1 --> Utente non vuole prenotare ma semplicemente visualizza l'itinerario
                     piattaforma.prenota(utente, j); // j -> numero itinerario
             }
 
@@ -51,12 +54,27 @@ public class Controller{
                 effettuaProposta(cicerone);
             }
 
-            // termina programma Cicero
-            case 0 -> {
+            //creazione profilo utente
+            case 3 -> {
+                ArrayList<String> datiUtente;
+                do {
+                    datiUtente = consoleView.creazioneProfiloUtente();
+                }
+                while (datiUtente == null || dbManager.utenteEsiste(datiUtente.get(0)));
+                dbManager.inserisciNuovoUtente(datiUtente);
+                System.exit(0);
+                //utente appena creato dovra' fare il login
             }
 
-            default -> throw new IllegalStateException("Carattere inserito non valido: " + i +"\n\n");
+            // termina programma Cicero
+            case 0 -> {
+                System.exit(0);
+            }
+
+            default -> throw new IllegalStateException("Carattere inserito non valido: " + i + "\n\n");
         }
+
+        System.exit(0);
     }
 
     /**
@@ -64,11 +82,11 @@ public class Controller{
      * se viene approvata, verr&agrave; inserita nella lista delle proposte su <code>PiattaformaClass</code>
      *
      * @param cicerone cicerone che effettua la proposta
-     * @param <T> tipo della proposta da proporre e, in caso, inserire
+     * @param <T>      tipo della proposta da proporre e, in caso, inserire
      */
     private <T> void effettuaProposta(CiceroneClass cicerone) {
         T proposta = consoleView.richiediProposta(cicerone);
-        if(piattaforma.getAmministrazione().approvaProposta(proposta, cicerone))
+        if (piattaforma.getAmministrazione().approvaProposta(proposta, cicerone))
             piattaforma.aggiungiProposta(proposta, cicerone);
     }
 
@@ -94,10 +112,11 @@ public class Controller{
     /**
      * Se l'Utente esiste, ovvero &egrave; presente nel DB, esegui l'accesso
      * e restituisce l'oggetto UtenteClass
+     *
      * @param username nome utente di Utente
      * @param password password di Utente
-     * @throws IllegalArgumentException se username e password non esistono nel DB
      * @return profilo Utente
+     * @throws IllegalArgumentException se username e password non esistono nel DB
      */
     private UtenteClass logInUtente(String username, String password) throws SQLException {
 
@@ -105,7 +124,7 @@ public class Controller{
         UtenteClass utente = dbManager.estraiUtente(username, password);
 
         // se presenti nel DB allora l'autentico todo da migliorare se Utente sbaglia
-        while(utente == null){
+        while (utente == null) {
             System.out.println("Username o password sbagliati");    // todo soprattutto questo :(
             List<String> app = consoleView.getCredenziali();
             utente = logInUtente(app.get(0), app.get(1));

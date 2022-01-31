@@ -1,11 +1,9 @@
 package CICERO.Controller;
 
-import CICERO.Model.Cicerone;
 import CICERO.Model.UtenteClass;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Classe per interfacciarsi con il DB
@@ -18,7 +16,7 @@ public class DBManager {
     public DBManager(String url, String user, String password) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(url, user, password);  // todo qui 1° errore
+            connection = DriverManager.getConnection(url, user, password);
             connectionStatement = connection.createStatement();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -51,13 +49,13 @@ public class DBManager {
 //        }
 //    }
 
-    public List<Cicerone> estraiCiceroni() throws SQLException {
-        String query = "SELECT * FROM Ciceroni;";
-        ResultSet resultSet = connectionStatement.executeQuery(query);
-        //todo separare e analizzare i dati
-        // infine restituirli come List<Ciceroni>
-        return null;
-    }
+//    public List<Cicerone> estraiCiceroni() throws SQLException {
+//        String query = "SELECT * FROM Ciceroni;";
+//        ResultSet resultSet = connectionStatement.executeQuery(query);
+//        //todo separare e analizzare i dati
+//        // infine restituirli come List<Ciceroni>
+//        return null;
+//    }
 
     /**
      *

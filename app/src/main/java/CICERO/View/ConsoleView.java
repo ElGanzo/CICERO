@@ -2,19 +2,12 @@ package CICERO.View;
 
 import CICERO.Model.CiceroneClass;
 import CICERO.Model.Itinerario;
-import CICERO.Model.PiattaformaClass;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleView {
-
-//    public String richiediToponimo(){
-//        System.out.println("dammi il toponimo");
-//        Scanner scanner = new Scanner(System.in);
-//        return scanner.nextLine();
-//    }
 
     /**
      * Elimina le precedenti scritte sulla console, cos&igrave; da renderla pi&ugrave; leggibile
@@ -81,14 +74,14 @@ public class ConsoleView {
 
     /**
      * Estrae le credenziali (nome, password) dalle stringhe inserite dall'Utente o dal Cicerone
-     * @return Lista di stringhe inserite dall'Utente o dal Cicerone (0 -> username, 1 -> password)
+     * @return Lista di stringhe inserite dall'Utente o dal Cicerone (0 -> email, 1 -> password)
      */
     public List<String> getCredenziali() {
         pulisciConsole();
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Username: ");
-        String username = scanner.nextLine();
         List<String> credenziali = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Email Utente: ");
+        String username = scanner.nextLine();
         credenziali.add(0, username);
         System.out.print("\nPassword: ");
         String password = scanner.nextLine();
@@ -148,29 +141,6 @@ public class ConsoleView {
         if(s.equals("Y") || s.equals("y"))
             return j;
         return -1;
-    }
-
-    /**
-     * Richiede le info della connessione al DB all'Utente, in ordine:
-     * -url connessione DB
-     * -username Utente
-     * -password Utente
-     * @return Lista di info per effettuare la connessione al DB
-     */
-    public List<String> getInfoConnessione() {
-        Scanner scanner = new Scanner(System.in);
-        List<String> app = new ArrayList<>();
-//        System.out.println("Url della connessione al DB: ");
-//        app.add(0, scanner.nextLine());
-        app.add(0, "jdbc:mysql://104.248.18.55:3306/TogepiDB");
-        PiattaformaClass.controlloNull(app.get(0), "Url nullo non valido");
-        System.out.println("username: ");
-        app.add(1, scanner.nextLine());
-        PiattaformaClass.controlloNull(app.get(1), "Username nullo non valido");
-        System.out.println("password: ");
-        app.add(2, scanner.nextLine());
-        PiattaformaClass.controlloNull(app.get(2), "Password nulla non valido");
-        return app;
     }
 
     public <T> T richiediProposta(CiceroneClass cicerone) {

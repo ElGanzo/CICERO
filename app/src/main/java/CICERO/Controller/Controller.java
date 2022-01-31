@@ -24,7 +24,8 @@ public class Controller {
 //    }
 
     public void executeProgram() throws SQLException {
-        inizializzaConnessioneDatabase();
+        // effettua la connessione al DB
+        dbManager = new DBManager("jdbc:mysql://104.248.18.55:3306/TogepiDB", "Mikez", "TogepiMikez");
 
         int i;
         i = consoleView.stampaHome();
@@ -95,33 +96,20 @@ public class Controller {
         return null;
     }
 
-    private void inizializzaConnessioneDatabase() throws SQLException {
-        List<String> infoConnessione;
-        infoConnessione = consoleView.getInfoConnessione();
-
-        String url = infoConnessione.get(0);
-        String username = infoConnessione.get(1);
-        String password = infoConnessione.get(2);
-        System.out.println(infoConnessione.toString());
-        System.out.println("Press Any Key To Continue...");
-        new java.util.Scanner(System.in).nextLine();
-        dbManager = new DBManager(url, username, password);
-    }
-
 
     /**
      * Se l'Utente esiste, ovvero &egrave; presente nel DB, esegui l'accesso
      * e restituisce l'oggetto UtenteClass
      *
-     * @param username nome utente di Utente
+     * @param email nome utente di Utente
      * @param password password di Utente
      * @return profilo Utente
-     * @throws IllegalArgumentException se username e password non esistono nel DB
+     * @throws IllegalArgumentException se email e password non esistono nel DB
      */
-    private UtenteClass logInUtente(String username, String password) throws SQLException {
+    private UtenteClass logInUtente(String email, String password) throws SQLException {
 
-        // Chiedi al db se username e password utente esistono
-        UtenteClass utente = dbManager.estraiUtente(username, password);
+        // Chiedi al db se email e password utente esistono
+        UtenteClass utente = dbManager.estraiUtente(email, password);
 
         // se presenti nel DB allora l'autentico todo da migliorare se Utente sbaglia
         while (utente == null) {

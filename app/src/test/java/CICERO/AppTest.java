@@ -3,12 +3,12 @@
  */
 package CICERO;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
-class AppTest {
-    @Test void appHasAGreeting() {
-//        App classUnderTest = new App();
-//        assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+public class AppTest {
+    @Test public void appHasAGreeting() {
+        // App classUnderTest = new App();
+        // assertNotNull("app should have a greeting", classUnderTest.getGreeting());
     }
 }

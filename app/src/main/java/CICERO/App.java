@@ -5,8 +5,6 @@ package CICERO;
 
 import CICERO.Controller.Controller;
 
-import java.sql.SQLException;
-
 public class App {
 
     public static void main(String[] args) throws Exception {

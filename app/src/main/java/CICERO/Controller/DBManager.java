@@ -14,9 +14,9 @@ public class DBManager {
     Statement connectionStatement;
 
     public DBManager(String url, String user, String password) throws Exception {
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(url, user, password);
-            connectionStatement = connection.createStatement();
+
+        connection = DriverManager.getConnection(url, user, password);
+        connectionStatement = connection.createStatement();
 
     }
 

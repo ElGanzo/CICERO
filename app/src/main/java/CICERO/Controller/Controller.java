@@ -33,7 +33,7 @@ public class Controller {
         switch (i) {
 
             // login Utente
-            case 1 -> {
+            case 1 : {
                 // acquisisco le credenziali
                 List<String> credenziali = consoleView.getCredenziali();
                 // autentico l'Utente
@@ -45,7 +45,7 @@ public class Controller {
             }
 
             // login aziendale
-            case 2 -> {
+            case 2 : {
                 // acquisisco le credenziali
                 String username = consoleView.getCredenziali().get(0);
                 String password = consoleView.getCredenziali().get(1);
@@ -56,7 +56,7 @@ public class Controller {
             }
 
             //creazione profilo utente
-            case 3 -> {
+            case 3 : {
                 ArrayList<String> datiUtente;
                 do {
                     datiUtente = consoleView.creazioneProfiloUtente();
@@ -68,14 +68,13 @@ public class Controller {
             }
 
             // termina programma Cicero
-            case 0 -> {
+            case 0 : {
                 System.exit(0);
             }
 
-            default -> throw new IllegalStateException("Carattere inserito non valido: " + i + "\n\n");
+            default : throw new IllegalStateException("Carattere inserito non valido: " + i + "\n\n");
         }
 
-        System.exit(0);
     }
 
     /**

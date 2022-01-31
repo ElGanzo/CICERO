@@ -61,7 +61,7 @@ public class Controller {
                 do {
                     datiUtente = consoleView.creazioneProfiloUtente();
                 }
-                while (datiUtente == null || dbManager.utenteEsiste(datiUtente.get(0)));
+                while (datiUtente == null || dbManager.utenteEsiste(datiUtente.get(0))) ;
                 dbManager.inserisciNuovoUtente(datiUtente);
                 System.exit(0);
                 //utente appena creato dovra' fare il login

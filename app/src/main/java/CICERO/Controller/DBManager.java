@@ -65,7 +65,7 @@ public class DBManager {
      */
     public UtenteClass estraiUtente(String username, String password) throws SQLException {
         // esegui query che estrae l utente
-        String query = "SELECT * FROM username, password WHERE username = " +username + " and password = " +password;
+        String query = "SELECT * FROM username, password WHERE username = " + username + " and password = " + password;
         ResultSet resultSet = connectionStatement.executeQuery(query);
         // se utente non esiste o password sbagliata oggetti di ritorno e' null
         return resultSet.getObject(0, UtenteClass.class);
@@ -78,12 +78,15 @@ public class DBManager {
     }
 
     public void inserisciNuovoUtente(ArrayList<String> datiUtente) throws SQLException {
-        String query = "INSERT INTO Utenti (nome, cognome, d_nascita, email, password) " +
-                "VALUES ('" + datiUtente.get(0) + "', '" +
-                datiUtente.get(1) + "', '" +
-                datiUtente.get(2) + "', '" +
-                datiUtente.get(3) + "', '" +
-                datiUtente.get(4) + "');";
+        String query = "INSERT INTO Utenti u (nome, cognome, d_nascita, email, password) " +
+                "VALUES ('" + datiUtente.get(0) + "', '" +      //nome
+                datiUtente.get(1) + "', '" +                    //cognome
+                datiUtente.get(2) + "', '" +                    //d_nascita
+                datiUtente.get(3) + "', '" +                    //email
+                datiUtente.get(4) + "');";                      //password
+        System.out.println(query.toString() + "\nEseguendo Query...");
+
         connectionStatement.executeQuery(query);
+        System.out.println("Query eseguita con successo.");
     }
 }

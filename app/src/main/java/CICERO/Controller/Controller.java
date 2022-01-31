@@ -23,7 +23,7 @@ public class Controller {
 //        piattaforma.aggiungiProposta(odsajfnoadsf, cicerone)
 //    }
 
-    public void executeProgram() throws SQLException {
+    public void executeProgram() throws Exception {
         // effettua la connessione al DB
         dbManager = new DBManager("jdbc:mysql://104.248.18.55:3306/TogepiDB", "Mikez", "TogepiMikez");
 

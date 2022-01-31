@@ -13,15 +13,13 @@ public class DBManager {
     Connection connection;
     Statement connectionStatement;
 
-    public DBManager(String url, String user, String password) {
-        try {
+    public DBManager(String url, String user, String password) throws Exception {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(url, user, password);
             connectionStatement = connection.createStatement();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+
     }
+
 
     // todo ragionare
 //    public <T> T estraiDa(T tabella, String query){return null;}

@@ -1,9 +1,8 @@
 package CICERO.Controller;
 
-import CICERO.Model.Itinerario;
-import CICERO.Model.Prenotazione;
-import CICERO.Model.UtenteClass;
+import CICERO.Model.*;
 
+import javax.swing.text.html.HTML;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -68,13 +67,60 @@ public class DBManager {
      * @return utente nel DB, <code>null</code> se Utente non &egrave; presente nel DB o i dati Utente non sono giusti
      */
     public UtenteClass estraiUtente(String username, String password) throws SQLException {
-        // esegui query che estrae l utente
         String query = "SELECT email, password FROM Utenti WHERE email = '" + username + "' and password = '" + password + "');";
         ResultSet resultSet = connectionStatement.executeQuery(query);
-        // se utente non esiste o password sbagliata oggetti di ritorno e' null
-        return resultSet.getObject(0, UtenteClass.class);
+
+        if (resultSet.next())
+            return resultSet.getObject(0, UtenteClass.class);
+        else return null;
     }
 
+    public CiceroneClass estraiCicerone(String username, String password) throws SQLException {
+        String query = "SELECT email, password FROM Aziende a WHERE email = '" + username + "' and password = '" + password + "');";
+        ResultSet resultSet = connectionStatement.executeQuery(query);
+
+        if (resultSet.next())
+            return resultSet.getObject(0, CiceroneClass.class);
+        else return null;
+    }
+
+    public ArrayList<Itinerario> estraiItinerari() throws SQLException {
+        String query = "SELECT * FROM Itinerari i;";
+        ResultSet resultSet = connectionStatement.executeQuery(query);
+        ArrayList<Itinerario> result = new ArrayList<>();
+        int i = 0;
+        while (resultSet.next()) {
+            result.add(resultSet.getObject(i, Itinerario.class));
+            i++;
+        }
+        return result;
+    }
+
+    public ArrayList<TagClass> estraiTag() throws SQLException {
+        String query = "SELECT * FROM Tag t;";
+        ResultSet resultSet = connectionStatement.executeQuery(query);
+        ArrayList<TagClass> result = new ArrayList<>();
+        int i = 0;
+        while (resultSet.next()) {
+            result.add(resultSet.getObject(i, TagClass.class));
+            i++;
+        }
+        return result;
+    }
+
+    public ArrayList<Luogo> estraiLuoghi() throws SQLException {
+        String query = "SELECT * FROM Luoghi l;";
+        ResultSet resultSet = connectionStatement.executeQuery(query);
+        ArrayList<Luogo> result = new ArrayList<>();
+        int i = 0;
+        while (resultSet.next()) {
+            result.add(resultSet.getObject(i, Luogo.class));
+            i++;
+        }
+        return result;
+    }
+
+    //TODO eliminare
     public boolean utenteEsiste(UtenteClass utente) throws SQLException {
         String query = "SELECT COUNT(u_id) FROM Utenti WHERE nome = '" + utente.getEmail() + "' GROUP BY u_id;";
         ResultSet resultSet = connectionStatement.executeQuery(query);
@@ -95,9 +141,7 @@ public class DBManager {
         connectionStatement.executeQuery(query);
     }
 
-    public void inserisciPropostaItinerario(Itinerario itinerario) throws SQLException {
-        //TODO inserire flag verificato/accettato
-
+    public void inserisciItinerario(Itinerario itinerario) throws SQLException {
         String query = "INSERT INTO Itinerari_proposti ip (nome, id_cicerone, num_min_utenti, num_max_utenti, info) " +
                 "VALUES ('" + itinerario.getNome() + "', " +    //titolo itinerario
                 itinerario.getCicerone() + ", " +               //id cicerone (autore itinerario)
@@ -107,12 +151,17 @@ public class DBManager {
         connectionStatement.executeQuery(query);
     }
 
-    public void inserisciPrenotazione(Prenotazione prenotazione) throws SQLException {
-        //TODO implementare
-
-        String query = "";
-
+    public void inserisciTag(TagClass tag) throws SQLException {
+        String query = "INSERT INTO Tag t (nome) VALUES ('" + tag.toString() + "');";
         connectionStatement.executeQuery(query);
+    }
+
+    public void inserisciPrenotazione(Prenotazione prenotazione) throws SQLException {
+
+        String query = "INSERT INTO Prenotazioni VALUES (id_itinerario, id_utente, n_partecipanti," +
+                "data_inizio, orario_inizio, data_scadenza_prenotazione, data_scadenza_pagamento";
+
+//        connectionStatement.executeQuery(query);
     }
 
 }

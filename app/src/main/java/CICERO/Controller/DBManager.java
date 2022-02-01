@@ -53,10 +53,9 @@ public class DBManager {
         String query = "SELECT * FROM Itinerari i WHERE accettato = 1;";
         ResultSet resultSet = connectionStatement.executeQuery(query);
         ArrayList<ItinerarioClass> result = new ArrayList<>();
-        int i = 0;
         while (resultSet.next()) {
-            result.add(resultSet.getObject(i, ItinerarioClass.class));
-            i++;
+            ItinerarioClass itinerario = new ItinerarioClass(resultSet.getObject(3, CiceroneClass.class));
+            result.add(itinerario);
         }
         return result;
     }
@@ -65,10 +64,9 @@ public class DBManager {
         String query = "SELECT * FROM Tag t WHERE accettato = 1;";
         ResultSet resultSet = connectionStatement.executeQuery(query);
         ArrayList<TagClass> result = new ArrayList<>();
-        int i = 0;
         while (resultSet.next()) {
-            result.add(resultSet.getObject(i, TagClass.class));
-            i++;
+            TagClass tag = new TagClass(resultSet.getObject(1, String.class));
+            result.add(tag);
         }
         return result;
     }
@@ -77,10 +75,13 @@ public class DBManager {
         String query = "SELECT * FROM Luoghi l WHERE accettato = 1;";
         ResultSet resultSet = connectionStatement.executeQuery(query);
         ArrayList<LuogoClass> result = new ArrayList<>();
-        int i = 0;
+
         while (resultSet.next()) {
-            result.add(resultSet.getObject(i, LuogoClass.class));
-            i++;
+            LuogoClass luogo = new LuogoClass(resultSet.getObject(2, String.class),
+                    resultSet.getObject(3, String.class),
+                    resultSet.getObject(4, String.class),
+                    resultSet.getObject(5, String.class));
+            result.add(luogo);
         }
         return result;
     }

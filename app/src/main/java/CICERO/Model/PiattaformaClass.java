@@ -6,11 +6,10 @@ public class PiattaformaClass implements Piattaforma {
 
     private final Amministrazione amministrazione;
     public ArrayList<Itinerario> itinerari;
-    public ArrayList<TagClass> tags;
+    public ArrayList<TagClass> tag;
     public ArrayList<Luogo> luoghi;
     private ArrayList<Persona> utenti;
     private ArrayList<Cicerone> ciceroni;
-
     private ArrayList<Prenotazione> prenotazioni;
     public static long IDInvitato = 0;
     public static long IDCiceroni = 0;
@@ -19,7 +18,7 @@ public class PiattaformaClass implements Piattaforma {
 
     public PiattaformaClass() {
         this.itinerari = new ArrayList<>();
-        this.tags = new ArrayList<>();
+        this.tag = new ArrayList<>();
         this.luoghi = new ArrayList<>();
         this.utenti = new ArrayList<>();
         this.ciceroni = new ArrayList<>();
@@ -35,7 +34,7 @@ public class PiattaformaClass implements Piattaforma {
             throw new IllegalArgumentException("proposta da inserire presente nella Piattaforma");
         if(amministrazione.approvaProposta(proposta, cicerone)){
             if(proposta instanceof TagClass)
-                tags.add((TagClass) proposta);
+                tag.add((TagClass) proposta);
             if(proposta instanceof Luogo)
                 luoghi.add((Luogo) proposta);
             if(proposta instanceof Itinerario)
@@ -53,7 +52,7 @@ public class PiattaformaClass implements Piattaforma {
      */
     private <T> boolean contiene(T proposta) {
         if(proposta instanceof TagClass)
-            return tags.contains(proposta);
+            return tag.contains(proposta);
         if(proposta instanceof Luogo)
             return luoghi.contains(proposta);
         if(proposta instanceof Itinerario)
@@ -102,8 +101,8 @@ public class PiattaformaClass implements Piattaforma {
         return itinerari;
     }
 
-    public ArrayList<TagClass> getTags() {
-        return tags;
+    public ArrayList<TagClass> getTag() {
+        return tag;
     }
 
     public ArrayList<Luogo> getLuoghi() {
@@ -134,5 +133,18 @@ public class PiattaformaClass implements Piattaforma {
         // prenotabilita(itinerari.get(j)); todo forse troppo low risk
         prenotazioni.add(new Prenotazione(itinerari.get(j), itinerari.get(j).getCicerone(),  utente));
 
+    }
+
+    public void inserisciItinerario(Itinerario itinerario) {
+        controlloNull(itinerario, "Itinerario da inserire nullo non valido");
+        itinerari.add(itinerario);
+    }
+    public void inserisciTag(TagClass tag) {
+        controlloNull(tag, "Itinerario da inserire nullo non valido");
+        this.tag.add(tag);
+    }
+    public void inserisciLuogo(Luogo luogo) {
+        controlloNull(luogo, "Itinerario da inserire nullo non valido");
+        luoghi.add(luogo);
     }
 }

@@ -1,13 +1,9 @@
 package CICERO.Controller;
 
-import CICERO.Model.CiceroneClass;
-import CICERO.Model.Itinerario;
-import CICERO.Model.PiattaformaClass;
-import CICERO.Model.UtenteClass;
+import CICERO.Model.*;
 import CICERO.View.ConsoleView;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Controller {
@@ -27,6 +23,7 @@ public class Controller {
     public void executeProgram() throws Exception {
         // effettua la connessione al DB
         dbManager = new DBManager("jdbc:mysql://104.248.18.55:3306/TogepiDB", "Mikez", "TogepiMikez");
+        inizializzaPiattaforma();
 
         int i;
         i = consoleView.stampaHome();
@@ -49,25 +46,28 @@ public class Controller {
             // login aziendale
             case 2 : {
                 // acquisisco le credenziali
-                String username = consoleView.getCredenziali().get(0);
-                String password = consoleView.getCredenziali().get(1);
+                List<String> credenziali = consoleView.getCredenziali();
+                String username = credenziali.get(0);
+                String password = credenziali.get(1);
 
                 // autentico il Cicerone (profilo aziendale)
                 CiceroneClass cicerone = logInCicerone(username, password);
                 
                 // UC2 - Aggiungi proposta di itinerario todo da testare
-                Itinerario itinerario = consoleView.getItinerario(cicerone, piattaforma.getTags(), piattaforma.getLuoghi());
+                Itinerario itinerario = consoleView.getItinerario(cicerone, piattaforma.getTag(), piattaforma.getLuoghi());
                 piattaforma.aggiungiProposta(itinerario, cicerone);
             }
 
             // UC1 - Creazione profilo utente todo da testare
             case 3 : {
                 UtenteClass utente;
-                do {
-                    utente = consoleView.creazioneProfiloUtente();
-                }
                 //TODO aggiustare
-                while (utente == null || dbManager.estraiUtente(username, password) == null) ;
+                utente = consoleView.creazioneProfiloUtente();
+                if(utente == null || dbManager.estraiUtente(utente.getEmail(), utente.getPassword()) == null){
+
+                }else if(){
+
+                }
                 dbManager.inserisciNuovoUtente(utente);
                 System.exit(0);
                 // utente appena creato dovra' fare il login
@@ -83,17 +83,33 @@ public class Controller {
 
     }
 
-    private CiceroneClass logInCicerone(String email, String password) {
+    /**
+     * Estrae dal DB tutti gli itinerari, tutti i tags e tutti i luoghi per inserirli in Piattaforma
+     */
+    private void inizializzaPiattaforma() throws SQLException {
+        for (ItinerarioClass itinerario: dbManager.estraiItinerari()){
+            piattaforma.inserisciItinerario(itinerario);
+        }
+        for (TagClass tag: dbManager.estraiTag()){
+            piattaforma.inserisciTag(tag);
+        }
+        for (Luogo luogo: dbManager.estraiLuoghi()){
+            piattaforma.inserisciLuogo(luogo);
+        }
+    }
+
+    private CiceroneClass logInCicerone(String email, String password) throws SQLException {
         // Chiedi al db se email e password utente esistono
         CiceroneClass cicerone = dbManager.estraiCicerone(email, password);
 
-        // se presenti nel DB allora l'autentico todo da migliorare se Utente sbaglia
+        // se presenti nel DB allora l'autentico
         while (cicerone == null) {
-            System.out.println("Username o password sbagliati");    // todo soprattutto questo :(
+            System.out.println("Username o password sbagliati");
             List<String> app = consoleView.getCredenziali();
             cicerone = logInCicerone(app.get(0), app.get(1));
         }
-        return null;
+        // ... e restituisco il cicerone, che e' stato quindi autenticato
+        return cicerone;
     }
 
 
@@ -113,12 +129,12 @@ public class Controller {
 
         // se presenti nel DB allora l'autentico todo da migliorare se Utente sbaglia
         while (utente == null) {
-            System.out.println("Username o password sbagliati");    // todo soprattutto questo :(
+            System.out.println("Username o password sbagliati");
             List<String> app = consoleView.getCredenziali();
             utente = logInUtente(app.get(0), app.get(1));
         }
 
-        // return UtenteClass se esiste, errore se non esiste  todo orientarsi con vpp
+        // return UtenteClass se esiste, errore se non esiste
         return utente;
     }
 

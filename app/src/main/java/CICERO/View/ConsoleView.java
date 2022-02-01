@@ -171,11 +171,10 @@ public class ConsoleView {
         System.out.println("    ---     Aggiunta di proposta di un nuovo itinerario     ---");
         Scanner scanner = new Scanner(System.in);
 
-        Itinerario itinerario = new ItinerarioClass(cicerone);
-
+        ArrayList<String> datiItinerario = new ArrayList<>();
         // nome
         System.out.print("\nNome itinerario: ");
-        itinerario.setNome(scanner.nextLine());
+        datiItinerario.add(0, scanner.nextLine());
 
         // nmax & nmin
         System.out.print("\nNumero massimo di partecipanti: ");
@@ -223,6 +222,6 @@ public class ConsoleView {
         System.out.println("Itinerario aggiunto alle proposte di itinerario, riepilogo: ");
         System.out.println(itinerario.toString());
         scanner.close();
-        return itinerario;
+        return new ItinerarioClass(cicerone, );
     }
 }

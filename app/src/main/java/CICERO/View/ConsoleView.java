@@ -36,7 +36,7 @@ public class ConsoleView {
         Scanner scanner = new Scanner(System.in);
         String s = scanner.nextLine();
         s = checkSingleCharacter(s, "0", "1", "2", "3");
-            
+        scanner.close();
         return Integer.parseInt(s);
     }
 
@@ -53,6 +53,7 @@ public class ConsoleView {
             System.out.println("Carattere inserito non valido, ritenta oppure premi '0' per uscire ");
             s = scanner.nextLine();
         }
+        scanner.close();
         return s;
     }
 
@@ -86,6 +87,7 @@ public class ConsoleView {
         System.out.print("\nPassword: ");
         String password = scanner.nextLine();
         credenziali.add(1, password);
+        scanner.close();
         return credenziali;
     }
 
@@ -110,8 +112,10 @@ public class ConsoleView {
         String s = scanner.nextLine();
         s = checkSingleCharacter(s, "Y", "N", "0", "y", "n");
         if(s.equals("Y") || s.equals("y")){
+            scanner.close();
             return new UtenteClass(datiUtente.get(0),datiUtente.get(1), datiUtente.get(2), datiUtente.get(3), datiUtente.get(4));
         }
+        scanner.close();
         return null;
     }
 
@@ -139,8 +143,11 @@ public class ConsoleView {
         System.out.println("Prenotare l'itinerario? [Y]es / [N]o");
         s= scanner.nextLine();
         s = checkSingleCharacter(s, "Y", "N", "0", "y", "n");
-        if(s.equals("Y") || s.equals("y"))
+        if(s.equals("Y") || s.equals("y")){
+            scanner.close();
             return j;
+        }
+        scanner.close();
         return -1;
     }
 
@@ -151,7 +158,7 @@ public class ConsoleView {
         String s = scanner.nextLine();
 
         s = checkSingleCharacter(s, "1", "0");
-
+        scanner.close();
         return null;
     }
 
@@ -207,13 +214,15 @@ public class ConsoleView {
                 "Aggiungi proposta di area geografica da menu' iniziale)"); // consiglia a Cicerone la proposta di Luogo
             // se non trova il luogo interessato
         String luogoSelezionato = scanner.nextLine();
-        if(luogoSelezionato.equals("*"))
+        if(luogoSelezionato.equals("*")){
+            scanner.close();
             return null;
+        }
         itinerario.inserisciToponimo(luoghi.get(Integer.parseInt(luogoSelezionato)));
 
         System.out.println("Itinerario aggiunto alle proposte di itinerario, riepilogo: ");
         System.out.println(itinerario.toString());
-
+        scanner.close();
         return itinerario;
     }
 }

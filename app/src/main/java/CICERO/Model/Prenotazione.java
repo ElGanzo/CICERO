@@ -1,7 +1,5 @@
 package CICERO.Model;
 
-import org.checkerframework.checker.units.qual.C;
-
 import java.util.Date;
 
 public class Prenotazione {

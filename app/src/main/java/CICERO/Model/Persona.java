@@ -30,5 +30,5 @@ public interface Persona {
      *
      * @return la data di nascita della persona
      */
-    Date getDataNascita();
+    String getDataNascita();
 }

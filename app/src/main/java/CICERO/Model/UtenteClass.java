@@ -1,13 +1,13 @@
 package CICERO.Model;
 
-import java.util.Date;
-
 public class UtenteClass extends CICERO.Model.PersonaClass {
 
     String password;
 
-    public UtenteClass(String nome, String cognome, String email, Date dataNascita) {
+    public UtenteClass(String nome, String cognome, String dataNascita, String email, String password) {
         super(nome, cognome, dataNascita, email);
+        PiattaformaClass.controlloNull(password, "Password non valida");
+        this.password = password;
     }
 
     /**
@@ -15,21 +15,10 @@ public class UtenteClass extends CICERO.Model.PersonaClass {
      */
     public void richiestaAccesso() {
         //TODO implementare/cambiare
-
 //        PiattaformaClass.accessoUtente(this, servizioAutenticazione);
     }
 
-    /**
-     * effettua una prenotazione ad un itinerario
-     *
-     * @param itinerario evento turistico a cui partecipare
-     * @return in/successo prenotazione all'evento
-     * @throws NullPointerException se Itinerario &egrave; <code>null</code>
-     */
-    public boolean prenotazione(Itinerario itinerario) {
-        //TODO intuile perche' lo fa il controller (Piattaforma...)
-        return false;
-    }
+    public String getPassword(){return this.password;}
 
     public String getNome() {
         return super.getNome();
@@ -43,7 +32,7 @@ public class UtenteClass extends CICERO.Model.PersonaClass {
         return super.getEmail();
     }
 
-     public Date getDataNascita(){
+     public String getDataNascita(){
         return super.getDataNascita();
      }
 }

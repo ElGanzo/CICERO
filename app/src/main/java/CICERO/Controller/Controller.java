@@ -54,7 +54,7 @@ public class Controller {
                 // autentico il Cicerone (profilo aziendale)
                 CiceroneClass cicerone = logInCicerone(username, password);
                 // UC2 - Aggiungi proposta di itinerario
-                Itinerario itinerario = consoleView.getItinerario(cicerone);
+                Itinerario itinerario = consoleView.getItinerario(cicerone, piattaforma.getTags(), piattaforma.getLuoghi());
                 piattaforma.aggiungiProposta(itinerario, cicerone);
             }
 

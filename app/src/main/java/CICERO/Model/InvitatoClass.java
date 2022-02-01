@@ -7,8 +7,8 @@ public class InvitatoClass extends PersonaClass {
     private boolean haAccettato;
     private long idItinerario;
 
-    public InvitatoClass(String nome, String cognome, String email, Date dataNascita, String password) {
-        super(nome, cognome, dataNascita, email, password);
+    public InvitatoClass(String nome, String cognome, String email, String dataNascita) {
+        super(nome, cognome, dataNascita, email);
         idInvitato = PiattaformaClass.IDInvitato++;
     }
 

@@ -105,4 +105,10 @@ public interface Itinerario {
      * @return idItinerario
      */
     long getIdItinerario();
+
+    /**
+     * Indica se l'itinerario &egrave; una proposta, oppure &egrave; stato approvato
+     * @return <code>true</code> se &egrave; una proposta, <code>false</code> se &egrave; stato approvato
+     */
+    boolean proposta();
 }

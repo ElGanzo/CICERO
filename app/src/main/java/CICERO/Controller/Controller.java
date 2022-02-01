@@ -66,7 +66,8 @@ public class Controller {
                 do {
                     utente = consoleView.creazioneProfiloUtente();
                 }
-                while (utente == null || dbManager.utenteEsiste(utente)) ;
+                //TODO aggiustare
+                while (utente == null || dbManager.estraiUtente(username, password) == null) ;
                 dbManager.inserisciNuovoUtente(utente);
                 System.exit(0);
                 // utente appena creato dovra' fare il login
@@ -84,13 +85,13 @@ public class Controller {
 
     private CiceroneClass logInCicerone(String email, String password) {
         // Chiedi al db se email e password utente esistono
-        CiceroneClass utente = dbManager.estraiCicerone(email, password);
+        CiceroneClass cicerone = dbManager.estraiCicerone(email, password);
 
         // se presenti nel DB allora l'autentico todo da migliorare se Utente sbaglia
-        while (utente == null) {
+        while (cicerone == null) {
             System.out.println("Username o password sbagliati");    // todo soprattutto questo :(
             List<String> app = consoleView.getCredenziali();
-            utente = logInUtente(app.get(0), app.get(1));
+            cicerone = logInCicerone(app.get(0), app.get(1));
         }
         return null;
     }

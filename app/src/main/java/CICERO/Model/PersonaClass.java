@@ -1,6 +1,6 @@
 package CICERO.Model;
 
-import java.util.Date;
+// import java.util.Date;
 
 public class PersonaClass implements Persona {
     private final String nome;

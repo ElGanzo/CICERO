@@ -1,6 +1,6 @@
 package CICERO.Model;
 
-import java.util.Date;
+// import java.util.Date;
 
 public class InvitatoClass extends PersonaClass {
     private long idInvitato;

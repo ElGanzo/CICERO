@@ -1,6 +1,6 @@
 package CICERO.Model;
 
-import java.util.Date;
+// import java.util.Date;
 
 public interface Persona {
 

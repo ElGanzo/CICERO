@@ -51,9 +51,11 @@ public class Controller {
                 // acquisisco le credenziali
                 String username = consoleView.getCredenziali().get(0);
                 String password = consoleView.getCredenziali().get(1);
+
                 // autentico il Cicerone (profilo aziendale)
                 CiceroneClass cicerone = logInCicerone(username, password);
-                // UC2 - Aggiungi proposta di itinerario
+                
+                // UC2 - Aggiungi proposta di itinerario todo da testare
                 Itinerario itinerario = consoleView.getItinerario(cicerone, piattaforma.getTags(), piattaforma.getLuoghi());
                 piattaforma.aggiungiProposta(itinerario, cicerone);
             }
@@ -80,8 +82,16 @@ public class Controller {
 
     }
 
-    private CiceroneClass logInCicerone(String username, String password) {
-        //todo implementare
+    private CiceroneClass logInCicerone(String email, String password) {
+        // Chiedi al db se email e password utente esistono
+        CiceroneClass utente = dbManager.estraiCicerone(email, password);
+
+        // se presenti nel DB allora l'autentico todo da migliorare se Utente sbaglia
+        while (utente == null) {
+            System.out.println("Username o password sbagliati");    // todo soprattutto questo :(
+            List<String> app = consoleView.getCredenziali();
+            utente = logInUtente(app.get(0), app.get(1));
+        }
         return null;
     }
 

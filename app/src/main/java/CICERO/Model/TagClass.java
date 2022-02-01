@@ -11,4 +11,17 @@ public class TagClass {
         this.nome = nome;
         proposta = true;
     }
+
+    @Override // equivale a getNome();
+    public String toString() {
+        return nome;
+    }
+
+    public void setProposta(boolean proposta) {
+        this.proposta = proposta;
+    }
+
+    public boolean isProposta() {
+        return proposta;
+    }
 }

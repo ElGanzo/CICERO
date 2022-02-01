@@ -8,6 +8,12 @@ import java.util.List;
 public interface Itinerario {
 
     /**
+     * Restituisce la durata in ore dell'Itinerario
+     * @return durata in ore (es: 1.5 == 90 minuti --> 1 ora e mezza)
+     */
+    double getDurata();
+
+    /**
      * Restituisce il nome dell'Itinerario
      * @return nome dell'Itinerario
      */
@@ -54,6 +60,12 @@ public interface Itinerario {
      * @throws NullPointerException se nome <code>null</code>
      */
     void setNome(String nome);
+
+    /**
+     * Imposta la durata in ore di un Itinerario
+     * @param durata durata in ore
+     */
+    void setDurata(double durata);
 
     /**
      * Associa numero massimo di partecipanti all'Itinerario

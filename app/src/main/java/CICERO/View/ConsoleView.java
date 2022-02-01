@@ -169,32 +169,50 @@ public class ConsoleView {
         // nome
         System.out.print("\nNome itinerario: ");
         itinerario.setNome(scanner.nextLine());
+
         // nmax & nmin
         System.out.print("\nNumero massimo di partecipanti: ");
         itinerario.setMaxPartecipanti(Integer.parseInt(scanner.nextLine()));    // prendiamo l'input per buono
         System.out.print("\nNumero minimo di partecipanti: ");
         itinerario.setMinPartecipanti(Integer.parseInt(scanner.nextLine()));    // prendiamo l'input per buono
+
         // descrizione
         System.out.print("\nDescrizione dell'itinerario: ");
         itinerario.setInfo(scanner.nextLine());
+
         // tag
         System.out.println("\nAggiungi dei tag disponibili o proposta di nuovi tag");
         System.out.println("Tag disponibili:");
         int i = 1;
         for (TagClass tag: tags) {
             System.out.println("["+i+"]"+" -> "+ tag);
+            i++;
         }
-        System.out.println(" [ 0 ] -> Proponi nuovo tag ");
         System.out.println(" [ * ] -> Nessun tag da inserire");
-        String s = scanner.nextLine();
-        if(!s.equals("*")){
-            if(s.equals("0"))
-                proponiNuovoTag();  //todo finire implmementazione
-            else
-                itinerario.inserisciTag(tags.get(Integer.parseInt(s)));
+        String tagSelezionato = scanner.nextLine();
+        if(!tagSelezionato.equals("*")){
+            if(tagSelezionato.equals("0"))   // in futuro potra' aggiungere altri tags dopo che l'itinerario e' stato approvato
+                itinerario.inserisciTag(tags.get(Integer.parseInt(tagSelezionato)));
         }
 
         // luoghi
+        System.out.println("Aggiungi dei luoghi contrassegnati con dei toponimi: ");
+        int j = 1;
+        for (Luogo luogo: luoghi){
+            System.out.println("["+j+"] -> "+luogo.getToponimo());
+            j++;
+        }
+        System.out.println("[ * ] -> toponimo non disponibile tra quelli mostrati --- ATTENZIONE: annulla l'aggiunta" +
+                " di proposta di nuovo itinerario: l'itinerario necessita di un luogo di svolgimento (altrimenti " +
+                "Aggiungi proposta di area geografica da menu' iniziale)"); // consiglia a Cicerone la proposta di Luogo
+            // se non trova il luogo interessato
+        String luogoSelezionato = scanner.nextLine();
+        if(luogoSelezionato.equals("*"))
+            return null;
+        itinerario.inserisciToponimo(luoghi.get(Integer.parseInt(luogoSelezionato)));
+
+        System.out.println("Itinerario aggiunto alle proposte di itinerario, riepilogo: ");
+        System.out.println(itinerario.toString());
 
         return itinerario;
     }

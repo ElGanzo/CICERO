@@ -6,7 +6,7 @@ public class PiattaformaClass implements Piattaforma {
 
     private final Amministrazione amministrazione;
     public ArrayList<Itinerario> itinerari;
-    public ArrayList<String> tags;
+    public ArrayList<TagClass> tags;
     public ArrayList<Luogo> luoghi;
     private ArrayList<Persona> utenti;
     private ArrayList<Cicerone> ciceroni;
@@ -34,8 +34,8 @@ public class PiattaformaClass implements Piattaforma {
         if(!contiene(proposta))
             throw new IllegalArgumentException("proposta da inserire presente nella Piattaforma");
         if(amministrazione.approvaProposta(proposta, cicerone)){
-            if(proposta instanceof String)
-                tags.add((String) proposta);
+            if(proposta instanceof TagClass)
+                tags.add((TagClass) proposta);
             if(proposta instanceof Luogo)
                 luoghi.add((Luogo) proposta);
             if(proposta instanceof Itinerario)
@@ -52,7 +52,7 @@ public class PiattaformaClass implements Piattaforma {
      * @return <code>true</code> se proposta gi&agrave; presente, <code>false</code> altrimenti
      */
     private <T> boolean contiene(T proposta) {
-        if(proposta instanceof String)
+        if(proposta instanceof TagClass)
             return tags.contains(proposta);
         if(proposta instanceof Luogo)
             return luoghi.contains(proposta);
@@ -102,7 +102,7 @@ public class PiattaformaClass implements Piattaforma {
         return itinerari;
     }
 
-    public ArrayList<String> getTags() {
+    public ArrayList<TagClass> getTags() {
         return tags;
     }
 

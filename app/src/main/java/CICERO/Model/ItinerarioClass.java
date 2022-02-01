@@ -13,6 +13,7 @@ public class ItinerarioClass implements Itinerario{
     private int numMaxPartecipanti;
     private int numMinPartecipanti;
     private final long idItinerario;          // todo da rivedere, potrebbe essere estratto da DB
+    private double durata;
     private boolean proposta;
 
     public ItinerarioClass(Cicerone cicerone){
@@ -22,12 +23,16 @@ public class ItinerarioClass implements Itinerario{
         this.tags = new ArrayList<>();
         this.toponimi = new ArrayList<>();
         this.proposta=true;
+        this.durata = 0;
     }
 
     @Override
     public Cicerone getCicerone() {
         return cicerone;
     }
+
+    @Override
+    public double getDurata(){ return durata;}
 
     @Override
     public long getIdItinerario() {
@@ -63,6 +68,9 @@ public class ItinerarioClass implements Itinerario{
     public int getMinPartecipanti() {
         return this.numMinPartecipanti;
     }
+
+    @Override
+    public void setDurata(double durata){ this.durata = durata;}
 
     @Override
     public void setInfo(String info){

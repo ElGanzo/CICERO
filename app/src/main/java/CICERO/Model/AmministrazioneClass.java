@@ -16,4 +16,6 @@ public class AmministrazioneClass implements Amministrazione {
         // poi le approva mano mano... todo UC non sviluppato, troppo avanzato?
         return true;
     }
+
+
 }

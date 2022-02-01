@@ -85,19 +85,19 @@ public class DBManager {
     }
 
     public ArrayList<Itinerario> estraiItinerari() throws SQLException {
-        String query = "SELECT * FROM Itinerari i;";
+        String query = "SELECT * FROM Itinerari i WHERE accettato = 1;";
         ResultSet resultSet = connectionStatement.executeQuery(query);
         ArrayList<Itinerario> result = new ArrayList<>();
         int i = 0;
         while (resultSet.next()) {
-            result.add(resultSet.getObject(i, Itinerario.class));
+            result.add(resultSet.getObject(i, ItinerarioClass.class));
             i++;
         }
         return result;
     }
 
     public ArrayList<TagClass> estraiTag() throws SQLException {
-        String query = "SELECT * FROM Tag t;";
+        String query = "SELECT * FROM Tag t WHERE accettato = 1;";
         ResultSet resultSet = connectionStatement.executeQuery(query);
         ArrayList<TagClass> result = new ArrayList<>();
         int i = 0;
@@ -109,12 +109,12 @@ public class DBManager {
     }
 
     public ArrayList<Luogo> estraiLuoghi() throws SQLException {
-        String query = "SELECT * FROM Luoghi l;";
+        String query = "SELECT * FROM Luoghi l WHERE accettato = 1;";
         ResultSet resultSet = connectionStatement.executeQuery(query);
         ArrayList<Luogo> result = new ArrayList<>();
         int i = 0;
         while (resultSet.next()) {
-            result.add(resultSet.getObject(i, Luogo.class));
+            result.add(resultSet.getObject(i, LuogoClass.class));
             i++;
         }
         return result;

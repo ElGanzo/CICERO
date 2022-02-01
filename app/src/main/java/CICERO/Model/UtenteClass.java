@@ -4,20 +4,10 @@ import java.util.Date;
 
 public class UtenteClass extends CICERO.Model.PersonaClass {
 
-    private long id;
-//    private int servizioAutenticazione;
-    private String numTel;
-    private String via;
-    private String citta;
-    private String provincia;
-    private int cap;
-    private String stato;
+    String password;
 
-    public UtenteClass(String nome, String cognome, String email, int servizioAutenticazione, Date dataNascita) {
-        super(nome, cognome, email, dataNascita);
-//        if (servizioAutenticazione == 0)
-//            throw new NullPointerException();
-////        this.servizioAutenticazione = servizioAutenticazione;
+    public UtenteClass(String nome, String cognome, String email, Date dataNascita) {
+        super(nome, cognome, dataNascita, email);
     }
 
     /**

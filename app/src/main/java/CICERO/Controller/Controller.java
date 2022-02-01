@@ -40,7 +40,7 @@ public class Controller {
                 // autentico l'Utente
                 UtenteClass utente = logInUtente(credenziali.get(0), credenziali.get(1));
 
-                // UC3 - Prenotazione
+                // UC3 - Prenotazione todo da testare
                 int j = consoleView.stampaItinerari(piattaforma.getItinerari());
                 if (j != -1)   // j == -1 --> Utente non vuole prenotare ma semplicemente visualizza l'itinerario
                     piattaforma.prenota(utente, j); // j -> numero itinerario
@@ -58,14 +58,14 @@ public class Controller {
                 piattaforma.aggiungiProposta(itinerario, cicerone);
             }
 
-            // UC1 - Creazione profilo utente
+            // UC1 - Creazione profilo utente todo da testare
             case 3 : {
-                ArrayList<String> datiUtente;
+                UtenteClass utente;
                 do {
-                    datiUtente = consoleView.creazioneProfiloUtente();
+                    utente = consoleView.creazioneProfiloUtente();
                 }
-                while (datiUtente == null || dbManager.utenteEsiste(datiUtente.get(0))) ;
-                dbManager.inserisciNuovoUtente(datiUtente);
+                while (utente == null || dbManager.utenteEsiste(utente)) ;
+                dbManager.inserisciNuovoUtente(utente);
                 System.exit(0);
                 // utente appena creato dovra' fare il login
             }

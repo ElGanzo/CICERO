@@ -9,7 +9,7 @@ public class LuogoClass implements Luogo {
     private final String citta;
     private final String provincia;
     private final String regione;
-    private final long IDAreaGeografica;
+    private final long IDLuogo;
 
     // todo da separare quando estraggo dal DB;
     public LuogoClass(String l, String c, String p, String r){
@@ -22,7 +22,7 @@ public class LuogoClass implements Luogo {
         citta = c;
         provincia = p;
         regione = r;
-        IDAreaGeografica = PiattaformaClass.IDAreaGeografica++;
+        IDLuogo = PiattaformaClass.IDLuogo++;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class LuogoClass implements Luogo {
         return luogo+" - "+citta+" - ("+provincia+") - "+regione;
     }
 
-    public long getIDAreaGeografica() {
-        return IDAreaGeografica;
+    public long getIDLuogo() {
+        return IDLuogo;
     }
 }

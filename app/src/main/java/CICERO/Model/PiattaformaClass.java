@@ -7,7 +7,7 @@ public class PiattaformaClass implements Piattaforma {
     private final Amministrazione amministrazione;
     public ArrayList<Itinerario> itinerari;
     public ArrayList<String> tags;
-    public ArrayList<Luogo> areeGeografiche;
+    public ArrayList<Luogo> luoghi;
     private ArrayList<Persona> utenti;
     private ArrayList<Cicerone> ciceroni;
 
@@ -15,12 +15,12 @@ public class PiattaformaClass implements Piattaforma {
     public static long IDInvitato = 0;
     public static long IDCiceroni = 0;
     public static int IDItinerario = 0;
-    public static int IDAreaGeografica = 0;
+    public static int IDLuogo = 0;
 
     public PiattaformaClass() {
         this.itinerari = new ArrayList<>();
         this.tags = new ArrayList<>();
-        this.areeGeografiche = new ArrayList<>();
+        this.luoghi = new ArrayList<>();
         this.utenti = new ArrayList<>();
         this.ciceroni = new ArrayList<>();
         this.amministrazione = new AmministrazioneClass();
@@ -37,7 +37,7 @@ public class PiattaformaClass implements Piattaforma {
             if(proposta instanceof String)
                 tags.add((String) proposta);
             if(proposta instanceof Luogo)
-                areeGeografiche.add((Luogo) proposta);
+                luoghi.add((Luogo) proposta);
             if(proposta instanceof Itinerario)
                 itinerari.add((Itinerario) proposta);
             return true;
@@ -55,7 +55,7 @@ public class PiattaformaClass implements Piattaforma {
         if(proposta instanceof String)
             return tags.contains(proposta);
         if(proposta instanceof Luogo)
-            return areeGeografiche.contains(proposta);
+            return luoghi.contains(proposta);
         if(proposta instanceof Itinerario)
             return itinerari.contains(proposta);
         return false;
@@ -89,7 +89,7 @@ public class PiattaformaClass implements Piattaforma {
     }
 
     @Override
-    public boolean accessoUtente(Persona utente, ServizioEsterno servizio) {
+    public boolean accessoUtente(Persona utente) {
         return false;
     }
 
@@ -106,8 +106,8 @@ public class PiattaformaClass implements Piattaforma {
         return tags;
     }
 
-    public ArrayList<Luogo> getAreeGeografiche() {
-        return areeGeografiche;
+    public ArrayList<Luogo> getLuoghi() {
+        return luoghi;
     }
 
     public ArrayList<Persona> getUtenti() {

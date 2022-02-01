@@ -1,9 +1,6 @@
 package CICERO.View;
 
-import CICERO.Model.Cicerone;
-import CICERO.Model.CiceroneClass;
-import CICERO.Model.Itinerario;
-import CICERO.Model.ItinerarioClass;
+import CICERO.Model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +88,7 @@ public class ConsoleView {
         return credenziali;
     }
 
-    public ArrayList<String> creazioneProfiloUtente() {
+    public UtenteClass creazioneProfiloUtente() {
         ArrayList<String> datiUtente = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Creazione nuovo profilo utente");
@@ -111,8 +108,9 @@ public class ConsoleView {
         System.out.println("Confermare questi dati? [Y] per confermare, qualsiasi altro tasto per annullare...");
         String s = scanner.nextLine();
         s = checkSingleCharacter(s, "Y", "N", "0", "y", "n");
-        if(s.equals("Y") || s.equals("y"))
-            return datiUtente;
+        if(s.equals("Y") || s.equals("y")){
+            return new UtenteClass(datiUtente.get(0),datiUtente.get(1),datiUtente.get(2),datiUtente.get(3),datiUtente.get(4) )
+        }
         return null;
     }
 
@@ -160,18 +158,29 @@ public class ConsoleView {
      * Chiede tutte le info riguardanti un itinerario al Cicerone
      * @return <code>ItinerarioClass</code> da proporre
      */
-    public Itinerario getItinerario(CiceroneClass cicerone) {
+    public Itinerario getItinerario(CiceroneClass cicerone, ArrayList<String> tags, ArrayList<Luogo> luoghi) {
         pulisciConsole();
         Scanner scanner = new Scanner(System.in);
 
         Itinerario itinerario = new ItinerarioClass(cicerone);
 
         // nome
-        System.out.println("Nome itinerario: ");
+        System.out.print("\nNome itinerario: ");
         itinerario.setNome(scanner.nextLine());
         // nmax & nmin
+        System.out.print("\nNumero massimo di partecipanti: ");
+        itinerario.setMaxPartecipanti(Integer.parseInt(scanner.nextLine()));    // prendiamo l'input per buono
+        System.out.print("\nNumero minimo di partecipanti: ");
+        itinerario.setMinPartecipanti(Integer.parseInt(scanner.nextLine()));    // prendiamo l'input per buono
         // descrizione
+        System.out.println("Descrizione dell'itinerario: ");
+        itinerario.setInfo(scanner.nextLine());
         // tag
+        System.out.println("Aggiungi dei tag disponibili o proponi dei nuovi tag:");
+        int i = 1;
+        for (String tag: tags) {
+            System.out.println();
+        }
         // luoghi
 
         return itinerario;

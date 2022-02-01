@@ -7,8 +7,8 @@ public class InvitatoClass extends PersonaClass {
     private boolean haAccettato;
     private long idItinerario;
 
-    public InvitatoClass(String nome, String cognome, String email, Date dataNascita) {
-        super(nome, cognome, email, dataNascita);
+    public InvitatoClass(String nome, String cognome, String email, Date dataNascita, String password) {
+        super(nome, cognome, dataNascita, email, password);
         idInvitato = PiattaformaClass.IDInvitato++;
     }
 
@@ -23,6 +23,8 @@ public class InvitatoClass extends PersonaClass {
 //        }
         return haAccettato;
     }
+
+    public void setIdItinerario(int idItinerario){ this.idItinerario=idItinerario;}
 
     public long getIdItinerario() {
         return idItinerario;

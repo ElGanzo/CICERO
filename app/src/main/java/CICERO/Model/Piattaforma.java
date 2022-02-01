@@ -51,7 +51,7 @@ public interface Piattaforma {
      * @return <code>true</code> se l'accesso &egrave; approvato, <code>false</code> altrimenti
      * @throws NullPointerException se Utente &egrave; <code>null</code>
      */
-    boolean accessoUtente(Persona utente, ServizioEsterno servizio);
+    boolean accessoUtente(Persona utente);
 
     /**
      * Processa la richiesta di accesso da parte di un Cicerone

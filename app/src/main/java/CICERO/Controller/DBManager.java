@@ -25,41 +25,6 @@ public class DBManager {
 
     }
 
-
-    // todo ragionare
-//    public <T> T estraiDa(T tabella, String query){return null;}
-//    public <T> void inserisciIn(T tabella, String query, T... valori) throws SQLException {
-//        long id = 0;
-//        try (PreparedStatement pstmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-//
-//            pstmt.setString(1, actor.getFirstName());
-//            pstmt.setString(2, actor.getLastName());
-//
-//            int affectedRows = pstmt.executeUpdate();
-//            // check the affected rows
-//            if (affectedRows > 0) {
-//                // get the ID back
-//                try (ResultSet rs = pstmt.getGeneratedKeys()) {
-//                    if (rs.next()) {
-//                        id = rs.getLong(1);
-//                    }
-//                } catch (SQLException ex) {
-//                    System.out.println(ex.getMessage());
-//                }
-//            }
-//        } catch (SQLException ex) {
-//            System.out.println(ex.getMessage());
-//        }
-//    }
-
-//    public List<Cicerone> estraiCiceroni() throws SQLException {
-//        String query = "SELECT * FROM Ciceroni;";
-//        ResultSet resultSet = connectionStatement.executeQuery(query);
-//        //todo separare e analizzare i dati
-//        // infine restituirli come List<Ciceroni>
-//        return null;
-//    }
-
     /**
      *
      * @param username username dell'Utente
@@ -84,10 +49,10 @@ public class DBManager {
         else return null;
     }
 
-    public ArrayList<Itinerario> estraiItinerari() throws SQLException {
+    public ArrayList<ItinerarioClass> estraiItinerari() throws SQLException {
         String query = "SELECT * FROM Itinerari i WHERE accettato = 1;";
         ResultSet resultSet = connectionStatement.executeQuery(query);
-        ArrayList<Itinerario> result = new ArrayList<>();
+        ArrayList<ItinerarioClass> result = new ArrayList<>();
         int i = 0;
         while (resultSet.next()) {
             result.add(resultSet.getObject(i, ItinerarioClass.class));
@@ -108,10 +73,10 @@ public class DBManager {
         return result;
     }
 
-    public ArrayList<Luogo> estraiLuoghi() throws SQLException {
+    public ArrayList<LuogoClass> estraiLuoghi() throws SQLException {
         String query = "SELECT * FROM Luoghi l WHERE accettato = 1;";
         ResultSet resultSet = connectionStatement.executeQuery(query);
-        ArrayList<Luogo> result = new ArrayList<>();
+        ArrayList<LuogoClass> result = new ArrayList<>();
         int i = 0;
         while (resultSet.next()) {
             result.add(resultSet.getObject(i, LuogoClass.class));

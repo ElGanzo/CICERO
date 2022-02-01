@@ -6,9 +6,9 @@ public class PersonaClass implements Persona {
     private final String nome;
     private final String cognome;
     private final String email;
-    private final Date dataNascita;
+    private final String dataNascita;
 
-    public PersonaClass(String nome, String cognome, Date dataNascita, String email) {
+    public PersonaClass(String nome, String cognome, String dataNascita, String email) {
         this.nome = nome;
         this.cognome = cognome;
         this.email = email;
@@ -34,7 +34,7 @@ public class PersonaClass implements Persona {
     }
 
     @Override
-    public Date getDataNascita() {
+    public String getDataNascita() {
         return dataNascita;
     }
 }

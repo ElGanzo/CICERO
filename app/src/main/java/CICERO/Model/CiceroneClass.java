@@ -12,7 +12,10 @@ public class CiceroneClass implements Cicerone {
     private long idCicerone;
 
     public CiceroneClass(String ragioneSociale, String partitaIVA, String emailAzienda, String passwordAzienda) {
-        
+        PiattaformaClass.controlloNull(ragioneSociale, "Ragione sociale non valida");
+        PiattaformaClass.controlloNull(ragioneSociale, "Partita IVA non valida");
+        PiattaformaClass.controlloNull(ragioneSociale, "Email aziendale non valida");
+        PiattaformaClass.controlloNull(ragioneSociale, "Password aziendale non valida");
         this.idCicerone = PiattaformaClass.IDCiceroni++;
         this.partitaIVA = partitaIVA;
         this.ragioneSociale = ragioneSociale;

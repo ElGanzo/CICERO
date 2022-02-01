@@ -3,6 +3,7 @@ package CICERO.View;
 import CICERO.Model.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -91,12 +92,12 @@ public class ConsoleView {
     public UtenteClass creazioneProfiloUtente() {
         ArrayList<String> datiUtente = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Creazione nuovo profilo utente");
+        System.out.println("Creazione nuovo profilo utente: ");
         System.out.println("Nome: ");
         datiUtente.add(0, scanner.nextLine());
         System.out.println("Cognome: ");
         datiUtente.add(1, scanner.nextLine());
-        System.out.println("Data di nascita (AAAA/MM/GG): ");
+        System.out.println("Data di nascita (AAAA-MM-GG): ");
         datiUtente.add(2, scanner.nextLine());
         System.out.println("Email: ");
         datiUtente.add(3, scanner.nextLine());
@@ -109,7 +110,7 @@ public class ConsoleView {
         String s = scanner.nextLine();
         s = checkSingleCharacter(s, "Y", "N", "0", "y", "n");
         if(s.equals("Y") || s.equals("y")){
-            return new UtenteClass(datiUtente.get(0),datiUtente.get(1),datiUtente.get(2),datiUtente.get(3),datiUtente.get(4) )
+            return new UtenteClass(datiUtente.get(0),datiUtente.get(1), datiUtente.get(2), datiUtente.get(3), datiUtente.get(4));
         }
         return null;
     }
@@ -160,6 +161,7 @@ public class ConsoleView {
      */
     public Itinerario getItinerario(CiceroneClass cicerone, ArrayList<String> tags, ArrayList<Luogo> luoghi) {
         pulisciConsole();
+        System.out.println("    ---     Aggiunta di proposta di un nuovo itinerario     ---");
         Scanner scanner = new Scanner(System.in);
 
         Itinerario itinerario = new ItinerarioClass(cicerone);
@@ -173,14 +175,25 @@ public class ConsoleView {
         System.out.print("\nNumero minimo di partecipanti: ");
         itinerario.setMinPartecipanti(Integer.parseInt(scanner.nextLine()));    // prendiamo l'input per buono
         // descrizione
-        System.out.println("Descrizione dell'itinerario: ");
+        System.out.print("\nDescrizione dell'itinerario: ");
         itinerario.setInfo(scanner.nextLine());
         // tag
-        System.out.println("Aggiungi dei tag disponibili o proponi dei nuovi tag:");
+        System.out.println("\nAggiungi dei tag disponibili o proposta di nuovi tag");
+        System.out.println("Tag disponibili:");
         int i = 1;
         for (String tag: tags) {
-            System.out.println();
+            System.out.println("["+i+"]"+" -> "+ tag);
         }
+        System.out.println(" [ 0 ] -> Proponi nuovo tag ");
+        System.out.println(" [ * ] -> Nessun tag da inserire");
+        String s = scanner.nextLine();
+        if(!s.equals("*")){
+            if(s.equals("0"))
+                proponiNuovoTag();
+            else
+                itinerario.inserisciTag(tags.get(Integer.parseInt(s)));
+        }
+
         // luoghi
 
         return itinerario;

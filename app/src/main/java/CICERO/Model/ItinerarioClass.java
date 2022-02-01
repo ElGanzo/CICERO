@@ -13,6 +13,7 @@ public class ItinerarioClass implements Itinerario{
     private int numMaxPartecipanti;
     private int numMinPartecipanti;
     private final long idItinerario;          // todo da rivedere, potrebbe essere estratto da DB
+    private boolean proposta;
 
     public ItinerarioClass(Cicerone cicerone){
         PiattaformaClass.controlloNull(cicerone, "Cicerone inserito per l'itinerario non valido");
@@ -20,14 +21,17 @@ public class ItinerarioClass implements Itinerario{
         this.cicerone = cicerone;
         this.tags = new ArrayList<>();
         this.toponimi = new ArrayList<>();
+        this.proposta=true;
     }
 
-    public String getNome() {
-        return nome;
+    @Override
+    public Cicerone getCicerone() {
+        return cicerone;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    @Override
+    public long getIdItinerario() {
+        return idItinerario;
     }
 
     @Override
@@ -36,9 +40,8 @@ public class ItinerarioClass implements Itinerario{
     }
 
     @Override
-    public void setInfo(String info){
-        PiattaformaClass.controlloNull(info, "le info da inserire non valide");
-        this.info=info;
+    public String getNome() {
+        return nome;
     }
 
     @Override
@@ -59,6 +62,18 @@ public class ItinerarioClass implements Itinerario{
     @Override
     public int getMinPartecipanti() {
         return this.numMinPartecipanti;
+    }
+
+    @Override
+    public void setInfo(String info){
+        PiattaformaClass.controlloNull(info, "le info da inserire non valide");
+        this.info=info;
+    }
+
+    @Override
+    public void setNome(String nome) {
+        PiattaformaClass.controlloNull(nome, "Nome non valido");
+        this.nome = nome;
     }
 
     @Override
@@ -84,12 +99,5 @@ public class ItinerarioClass implements Itinerario{
     }
 
     @Override
-    public Cicerone getCicerone() {
-        return cicerone;
-    }
-
-    @Override
-    public long getIdItinerario() {
-        return idItinerario;
-    }
+    public boolean proposta(){ return this.proposta;}
 }

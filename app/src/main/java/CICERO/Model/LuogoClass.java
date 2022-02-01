@@ -10,6 +10,7 @@ public class LuogoClass implements Luogo {
     private final String provincia;
     private final String regione;
     private final long IDLuogo;
+    private boolean proposta;
 
     // todo da separare quando estraggo dal DB;
     public LuogoClass(String l, String c, String p, String r){
@@ -23,11 +24,17 @@ public class LuogoClass implements Luogo {
         provincia = p;
         regione = r;
         IDLuogo = PiattaformaClass.IDLuogo++;
+        this.proposta = true;
     }
 
     @Override
     public String getToponimo() {
         return luogo+" - "+citta+" - ("+provincia+") - "+regione;
+    }
+
+    @Override
+    public boolean proposta() {
+        return this.proposta;
     }
 
     public long getIDLuogo() {

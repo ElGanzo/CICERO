@@ -1,8 +1,11 @@
 package CICERO.Controller;
 
+import CICERO.Model.Itinerario;
+import CICERO.Model.Prenotazione;
 import CICERO.Model.UtenteClass;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -12,6 +15,9 @@ public class DBManager {
 
     Connection connection;
     Statement connectionStatement;
+
+    private String pattern = "yyyy-mm-dd";
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 
     public DBManager(String url, String user, String password) throws Exception {
 
@@ -69,22 +75,44 @@ public class DBManager {
         return resultSet.getObject(0, UtenteClass.class);
     }
 
-    public boolean utenteEsiste(String username) throws SQLException {
-        String query = "SELECT COUNT(u_id) FROM Utenti WHERE nome = '" + username + "' GROUP BY u_id;";
+    public boolean utenteEsiste(UtenteClass utente) throws SQLException {
+        String query = "SELECT COUNT(u_id) FROM Utenti WHERE nome = '" + utente.getEmail() + "' GROUP BY u_id;";
         ResultSet resultSet = connectionStatement.executeQuery(query);
         return resultSet.getObject(0, int.class) > 0;
     }
 
-    public void inserisciNuovoUtente(ArrayList<String> datiUtente) throws SQLException {
+    public void inserisciNuovoUtente(UtenteClass utente) throws SQLException {
+        //TODO inserire flag verificato/accettato (email verificata confermata)
+
+        String date = simpleDateFormat.format(utente.getDataNascita());
+
         String query = "INSERT INTO Utenti u (nome, cognome, d_nascita, email, password) " +
-                "VALUES ('" + datiUtente.get(0) + "', '" +      //nome
-                datiUtente.get(1) + "', '" +                    //cognome
-                datiUtente.get(2) + "', '" +                    //d_nascita
-                datiUtente.get(3) + "', '" +                    //email
-                datiUtente.get(4) + "');";                      //password
-        System.out.println(query + "\nEseguendo Query...");
+                "VALUES ('" + utente.getNome() + "', '" +
+                utente.getCognome() + "', '" +
+                date + "', '" +
+                utente.getEmail() + "', '" +
+                utente.getPassword() + "');";
+        connectionStatement.executeQuery(query);
+    }
+
+    public void inserisciPropostaItinerario(Itinerario itinerario) throws SQLException {
+        //TODO inserire flag verificato/accettato
+
+        String query = "INSERT INTO Itinerari_proposti ip (nome, id_cicerone, num_min_utenti, num_max_utenti, info) " +
+                "VALUES ('" + itinerario.getNome() + "', " +    //titolo itinerario
+                itinerario.getCicerone() + ", " +               //id cicerone (autore itinerario)
+                itinerario.getMinPartecipanti() + ", " +
+                itinerario.getMaxPartecipanti() + ", '" +
+                itinerario.getInfo() + "');";                   //descrizione itinerario
+        connectionStatement.executeQuery(query);
+    }
+
+    public void inserisciPrenotazione(Prenotazione prenotazione) throws SQLException {
+        //TODO implementare
+
+        String query = "";
 
         connectionStatement.executeQuery(query);
-        System.out.println("Query eseguita con successo.");
     }
+
 }

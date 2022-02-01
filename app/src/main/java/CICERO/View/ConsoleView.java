@@ -159,7 +159,7 @@ public class ConsoleView {
      * Chiede tutte le info riguardanti un itinerario al Cicerone
      * @return <code>ItinerarioClass</code> da proporre
      */
-    public Itinerario getItinerario(CiceroneClass cicerone, ArrayList<String> tags, ArrayList<Luogo> luoghi) {
+    public Itinerario getItinerario(CiceroneClass cicerone, ArrayList<TagClass> tags, ArrayList<Luogo> luoghi) {
         pulisciConsole();
         System.out.println("    ---     Aggiunta di proposta di un nuovo itinerario     ---");
         Scanner scanner = new Scanner(System.in);
@@ -181,7 +181,7 @@ public class ConsoleView {
         System.out.println("\nAggiungi dei tag disponibili o proposta di nuovi tag");
         System.out.println("Tag disponibili:");
         int i = 1;
-        for (String tag: tags) {
+        for (TagClass tag: tags) {
             System.out.println("["+i+"]"+" -> "+ tag);
         }
         System.out.println(" [ 0 ] -> Proponi nuovo tag ");
@@ -189,7 +189,7 @@ public class ConsoleView {
         String s = scanner.nextLine();
         if(!s.equals("*")){
             if(s.equals("0"))
-                proponiNuovoTag();
+                proponiNuovoTag();  //todo finire implmementazione
             else
                 itinerario.inserisciTag(tags.get(Integer.parseInt(s)));
         }

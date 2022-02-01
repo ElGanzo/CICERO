@@ -8,7 +8,7 @@ public class ItinerarioClass implements Itinerario{
     private final Cicerone cicerone;
     private String info;
     private String nome;
-    private List<String> tags;
+    private List<TagClass> tags;
     private List<Luogo> toponimi;
     private int numMaxPartecipanti;
     private int numMinPartecipanti;
@@ -45,7 +45,7 @@ public class ItinerarioClass implements Itinerario{
     }
 
     @Override
-    public List<String> getTags() {
+    public List<TagClass> getTags() {
         return this.tags;
     }
 
@@ -93,7 +93,7 @@ public class ItinerarioClass implements Itinerario{
     }
 
     @Override
-    public void inserisciTag(String tag) {
+    public void inserisciTag(TagClass tag) {
         PiattaformaClass.controlloNull(tag, "tag da inserire non valido");
         tags.add(tag);
     }

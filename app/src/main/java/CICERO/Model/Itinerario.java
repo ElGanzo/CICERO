@@ -25,7 +25,7 @@ public interface Itinerario {
      *
      * @return lista dei tag associato a questo itinerario
      */
-    List<String> getTags();
+    List<TagClass> getTags();
 
     /**
      * Restituisce i toponimi delle aree geografiche assegnate a questo itinerario
@@ -92,7 +92,7 @@ public interface Itinerario {
      * @throws NullPointerException     se tag &egrave; <code>null</code>
      * @throws IllegalArgumentException se tag &egrave; gi&agrave; associato all'itinerario
      */
-    void inserisciTag(String tag);
+    void inserisciTag(TagClass tag);
 
     /**
      * Restituisce il cicerone che fara&agrave; da guida per l'itinerario

@@ -8,6 +8,12 @@ import java.util.List;
 public interface Itinerario {
 
     /**
+     * Restituisce il nome dell'Itinerario
+     * @return nome dell'Itinerario
+     */
+    String getNome();
+
+    /**
      * Restituisce la descrizione dell'Itinerario
      *
      * @return Stringa con tutte le info riguardanti l'Itinerario
@@ -26,7 +32,7 @@ public interface Itinerario {
      *
      * @return Toponimi associati a questo itinerario
      */
-    List<AreaGeografica> getToponimi();
+    List<Luogo> getToponimi();
 
     /**
      * Resituisce il numero massimo di utenti che possono partecipare a questo itinerario
@@ -41,6 +47,13 @@ public interface Itinerario {
      * @return numero minimo di utenti che possono partecipare a questo itinerario
      */
     int getMinPartecipanti();
+
+    /**
+     * Assegna un nome all'Itinerario
+     * @param nome nome dell'Itinerario
+     * @throws NullPointerException se nome <code>null</code>
+     */
+    void setNome(String nome);
 
     /**
      * Associa numero massimo di partecipanti all'Itinerario
@@ -70,7 +83,7 @@ public interface Itinerario {
      * @param toponimo il toponimo da associare all'itinerario
      * @throws NullPointerException se toponimo &egrave; <code>null</code>
      */
-    void inserisciToponimo(AreaGeografica toponimo);
+    void inserisciToponimo(Luogo toponimo);
 
     /**
      * Associa tag all'itinerario

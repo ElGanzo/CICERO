@@ -5,15 +5,16 @@ import java.util.List;
 
 public class ItinerarioClass implements Itinerario{
 
-    private Cicerone cicerone;
+    private final Cicerone cicerone;
+    private String info;
+    private String nome;
+    private List<String> tags;
+    private List<Luogo> toponimi;
     private int numMaxPartecipanti;
     private int numMinPartecipanti;
-    private String info;
-    private List<String> tags;
-    private List<AreaGeografica> toponimi;
     private final long idItinerario;          // todo da rivedere, potrebbe essere estratto da DB
 
-    public ItinerarioClass(CiceroneClass cicerone){
+    public ItinerarioClass(Cicerone cicerone){
         PiattaformaClass.controlloNull(cicerone, "Cicerone inserito per l'itinerario non valido");
         idItinerario = PiattaformaClass.IDItinerario++;
         this.cicerone = cicerone;
@@ -21,7 +22,13 @@ public class ItinerarioClass implements Itinerario{
         this.toponimi = new ArrayList<>();
     }
 
+    public String getNome() {
+        return nome;
+    }
 
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
     @Override
     public String getInfo() {
@@ -40,7 +47,7 @@ public class ItinerarioClass implements Itinerario{
     }
 
     @Override
-    public List<AreaGeografica> getToponimi() {
+    public List<Luogo> getToponimi() {
         return toponimi;
     }
 
@@ -65,7 +72,7 @@ public class ItinerarioClass implements Itinerario{
     }
 
     @Override
-    public void inserisciToponimo(AreaGeografica toponimo) {
+    public void inserisciToponimo(Luogo toponimo) {
         PiattaformaClass.controlloNull(toponimo, "Toponimo inserito non valido");
         toponimi.add(toponimo);
     }

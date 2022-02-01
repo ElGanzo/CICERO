@@ -1,6 +1,7 @@
 package CICERO.Controller;
 
 import CICERO.Model.CiceroneClass;
+import CICERO.Model.Itinerario;
 import CICERO.Model.PiattaformaClass;
 import CICERO.Model.UtenteClass;
 import CICERO.View.ConsoleView;
@@ -39,6 +40,7 @@ public class Controller {
                 // autentico l'Utente
                 UtenteClass utente = logInUtente(credenziali.get(0), credenziali.get(1));
 
+                // UC3 - Prenotazione
                 int j = consoleView.stampaItinerari(piattaforma.getItinerari());
                 if (j != -1)   // j == -1 --> Utente non vuole prenotare ma semplicemente visualizza l'itinerario
                     piattaforma.prenota(utente, j); // j -> numero itinerario
@@ -51,11 +53,12 @@ public class Controller {
                 String password = consoleView.getCredenziali().get(1);
                 // autentico il Cicerone (profilo aziendale)
                 CiceroneClass cicerone = logInCicerone(username, password);
-                //piattaforma.logInAziendale();   // idem, dovrei stampare la SUA home ma ...
-                effettuaProposta(cicerone);
+                // UC2 - Aggiungi proposta di itinerario
+                Itinerario itinerario = consoleView.getItinerario(cicerone);
+                piattaforma.aggiungiProposta(itinerario, cicerone);
             }
 
-            //creazione profilo utente
+            // UC1 - Creazione profilo utente
             case 3 : {
                 ArrayList<String> datiUtente;
                 do {
@@ -64,30 +67,17 @@ public class Controller {
                 while (datiUtente == null || dbManager.utenteEsiste(datiUtente.get(0))) ;
                 dbManager.inserisciNuovoUtente(datiUtente);
                 System.exit(0);
-                //utente appena creato dovra' fare il login
+                // utente appena creato dovra' fare il login
             }
 
             // termina programma Cicero
-            case 0 : {
+            case 0 :
                 System.exit(0);
-            }
+
 
             default : throw new IllegalStateException("Carattere inserito non valido: " + i + "\n\n");
         }
 
-    }
-
-    /**
-     * Richiesta di approvazione proposta ad <code>AmministrazioneClass</code>,
-     * se viene approvata, verr&agrave; inserita nella lista delle proposte su <code>PiattaformaClass</code>
-     *
-     * @param cicerone cicerone che effettua la proposta
-     * @param <T>      tipo della proposta da proporre e, in caso, inserire
-     */
-    private <T> void effettuaProposta(CiceroneClass cicerone) {
-        T proposta = consoleView.richiediProposta(cicerone);
-        if (piattaforma.getAmministrazione().approvaProposta(proposta, cicerone))
-            piattaforma.aggiungiProposta(proposta, cicerone);
     }
 
     private CiceroneClass logInCicerone(String username, String password) {

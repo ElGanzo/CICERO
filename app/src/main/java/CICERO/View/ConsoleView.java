@@ -1,7 +1,9 @@
 package CICERO.View;
 
+import CICERO.Model.Cicerone;
 import CICERO.Model.CiceroneClass;
 import CICERO.Model.Itinerario;
+import CICERO.Model.ItinerarioClass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -152,5 +154,26 @@ public class ConsoleView {
         s = checkSingleCharacter(s, "1", "0");
 
         return null;
+    }
+
+    /**
+     * Chiede tutte le info riguardanti un itinerario al Cicerone
+     * @return <code>ItinerarioClass</code> da proporre
+     */
+    public Itinerario getItinerario(CiceroneClass cicerone) {
+        pulisciConsole();
+        Scanner scanner = new Scanner(System.in);
+
+        Itinerario itinerario = new ItinerarioClass(cicerone);
+
+        // nome
+        System.out.println("Nome itinerario: ");
+        itinerario.setNome(scanner.nextLine());
+        // nmax & nmin
+        // descrizione
+        // tag
+        // luoghi
+
+        return itinerario;
     }
 }

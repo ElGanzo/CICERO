@@ -7,7 +7,7 @@ public class PiattaformaClass implements Piattaforma {
     private final Amministrazione amministrazione;
     public ArrayList<Itinerario> itinerari;
     public ArrayList<String> tags;
-    public ArrayList<AreaGeografica> areeGeografiche;
+    public ArrayList<Luogo> areeGeografiche;
     private ArrayList<Persona> utenti;
     private ArrayList<Cicerone> ciceroni;
 
@@ -36,8 +36,8 @@ public class PiattaformaClass implements Piattaforma {
         if(amministrazione.approvaProposta(proposta, cicerone)){
             if(proposta instanceof String)
                 tags.add((String) proposta);
-            if(proposta instanceof AreaGeografica)
-                areeGeografiche.add((AreaGeografica) proposta);
+            if(proposta instanceof Luogo)
+                areeGeografiche.add((Luogo) proposta);
             if(proposta instanceof Itinerario)
                 itinerari.add((Itinerario) proposta);
             return true;
@@ -54,7 +54,7 @@ public class PiattaformaClass implements Piattaforma {
     private <T> boolean contiene(T proposta) {
         if(proposta instanceof String)
             return tags.contains(proposta);
-        if(proposta instanceof AreaGeografica)
+        if(proposta instanceof Luogo)
             return areeGeografiche.contains(proposta);
         if(proposta instanceof Itinerario)
             return itinerari.contains(proposta);
@@ -106,7 +106,7 @@ public class PiattaformaClass implements Piattaforma {
         return tags;
     }
 
-    public ArrayList<AreaGeografica> getAreeGeografiche() {
+    public ArrayList<Luogo> getAreeGeografiche() {
         return areeGeografiche;
     }
 

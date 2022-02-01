@@ -3,7 +3,7 @@ package CICERO.Model;
 /**
  * rappresenta un Area geografica: il toponimo che ne deriva &egrave; composto dal luogo,
  */
-public class AreaGeograficaClass implements AreaGeografica{
+public class LuogoClass implements Luogo {
 
     private final String luogo;
     private final String citta;
@@ -12,7 +12,7 @@ public class AreaGeograficaClass implements AreaGeografica{
     private final long IDAreaGeografica;
 
     // todo da separare quando estraggo dal DB;
-    public AreaGeograficaClass(String l, String c, String p, String r){
+    public LuogoClass(String l, String c, String p, String r){
         //  PROBABILMENTE CONTROLLO NULL INUTILE PERCHE' VIENE APPROVATO DALL'AMMINISTRAZIONE
         PiattaformaClass.controlloNull(l, "Il luogo deve essere specificato");
         PiattaformaClass.controlloNull(c, "La citta' deve essere specificata");
@@ -28,5 +28,9 @@ public class AreaGeograficaClass implements AreaGeografica{
     @Override
     public String getToponimo() {
         return luogo+" - "+citta+" - ("+provincia+") - "+regione;
+    }
+
+    public long getIDAreaGeografica() {
+        return IDAreaGeografica;
     }
 }

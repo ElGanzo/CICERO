@@ -1,6 +1,6 @@
 package CICERO.Model;
 
-public interface AreaGeografica {
+public interface Luogo {
 
     /**
      * Restituisce il toponimo

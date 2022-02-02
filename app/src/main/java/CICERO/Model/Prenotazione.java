@@ -1,22 +1,22 @@
 package CICERO.Model;
 
-import java.util.Date;
+import java.util.ArrayList;
 
+/**
+ * Rappresenta una prenotazione da parte di un Utente ad un itinerario, guidato da un cicerone
+ */
 public class Prenotazione {
-    //TODO rivedere, decidere funzionamento perche' potremmo comunque
+    //TODO rivedere
 
     public Itinerario itinerario;
-    public Cicerone cicerone;
     public Persona utente;
-    public InvitatoClass[] invitato;
-    public String emailInvitato; //(in alternativa a fare InvitatoClass)
-    public Date data;
+    public ArrayList<InvitatoClass> invitati;     //todo sviluppare in futuro
+    public String data;
 
-    public Prenotazione(Itinerario itinerario, Cicerone cicerone, Persona utente) {
-        if (itinerario == null || utente == null || cicerone == null)
-            throw new NullPointerException();
+    public Prenotazione(Itinerario itinerario, Persona utente) {
+        PiattaformaClass.controlloNull(itinerario, "Prenotazione senza itinerario non valida");
+        PiattaformaClass.controlloNull(utente, "Prenotazione senza utente non valida");
         this.itinerario = itinerario;
-        this.cicerone = cicerone;
         this.utente = utente;
     }
 
@@ -24,22 +24,22 @@ public class Prenotazione {
         return this.itinerario;
     }
 
-    public Cicerone getCicerone() {
-        return this.cicerone;
-    }
-
     public Persona getUtente() {
         return this.utente;
     }
 
-    public String getEmailInvitato() {
-        return this.emailInvitato;
-    }
+//    public ArrayList<String> getEmailInvitati() {
+//        ArrayList<String> emails = new ArrayList<>();
+//        for (InvitatoClass invitato: invitati){
+//            emails.add(invitato.getEmail());
+//        }
+//        return emails;
+//    } todo sviluppare in futuro
 
-    public Date getData() {
+    public String getData() {
         return this.data;
     }
 
-    //aggiungere eventuali metodi setter
+    // todo aggiungere eventuali metodi setter
 
 }

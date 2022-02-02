@@ -124,13 +124,14 @@ public class PiattaformaClass implements Piattaforma {
     /**
      * Inserisce una prenotazione per l'Utente all'itinerario specificato
      * @param utente utente che effettua la prenotazione
-     * @param j itinerario
+     * @param itinerario numero itinerario selezionato
      * @throws NullPointerException se itinerario specificato non presente
      */
-    public void prenota(UtenteClass utente, int j) {
+    public void prenota(UtenteClass utente, int itinerario, int numeroInvitati) {   //todo controllare nMinPartecipanti raggiunto
         controlloNull(utente, "utente mancante");
-        if(prenotabilita(itinerari.get(j))) //troppo low risk
-            prenotazioni.add(new Prenotazione(itinerari.get(j), itinerari.get(j).getCicerone(),  utente));
+        Itinerario itinerarioObject = itinerari.get(itinerario);
+        if(prenotabilita(itinerarioObject)) //troppo low risk
+            prenotazioni.add(new Prenotazione(itinerarioObject,  utente));
     }
 
     public void inserisciItinerario(Itinerario itinerario) {

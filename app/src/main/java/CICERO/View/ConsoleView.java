@@ -157,7 +157,7 @@ public class ConsoleView {
         int j = Integer.parseInt(s);
 
         // visualizza itinerario
-        if(j <= itinerari.size() && j > 0 )
+        if( j<=itinerari.size() && j==0 )
             System.out.println(itinerari.get(j-1).toString());
         else
             return -1;

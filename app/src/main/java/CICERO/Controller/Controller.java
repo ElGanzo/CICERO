@@ -4,6 +4,7 @@ import CICERO.Model.*;
 import CICERO.View.ConsoleView;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Controller {
@@ -37,15 +38,15 @@ public class Controller {
 
                     // acquisisco le credenziali
                     List<String> credenziali = consoleView.getCredenziali();
-
                     // autentico l'Utente
                     UtenteClass utente = logInUtente(credenziali.get(0), credenziali.get(1));
                     consoleView.stampaItinerari(piattaforma.getItinerari());
 
-                    // UC3 - Prenotazione todo da testare
-                    int j = consoleView.prenotaItinerario(piattaforma.getItinerari());
-                    if (j != -1)   // j == -1 --> Utente non vuole prenotare ma semplicemente visualizza l'itinerario
-                        piattaforma.prenota(utente, j); // j -> numero itinerario
+                    // UC3 - Prenotazione todo da controllare nMin/nMax partecipanti
+                    int itinerarioSelezionato = consoleView.prenotaItinerario(piattaforma.getItinerari());
+                    // j == -1 --> Utente non vuole prenotare ma semplicemente visualizza l'itinerario
+                    if (itinerarioSelezionato != -1)
+                        prenotazione(utente, itinerarioSelezionato);
                     break;
                 }
 
@@ -58,19 +59,22 @@ public class Controller {
                     // autentico il Cicerone (profilo aziendale)
                     CiceroneClass cicerone = logInCicerone(credenziali.get(0), credenziali.get(1));
 
-                    // UC2 - Aggiungi proposta di itinerario todo da testare
+                    // UC2 - Aggiungi proposta di itinerario todo da testare sembra OK
                     Itinerario itinerario = consoleView.getItinerario(cicerone, piattaforma.getTag(), piattaforma.getLuoghi());
                     if(itinerario == null)
                         break;
                     piattaforma.inserisciItinerario(itinerario);
+                    dbManager.inserisciItinerario(itinerario);
                 }
 
                 // UC1 - Creazione profilo utente todo da testare, sembra OK
                 case 3: {
                     UtenteClass utente;
                     utente = consoleView.creazioneProfiloUtente();
-                    if (utente != null)
+                    if (utente != null) {
+                        piattaforma.aggiungiProfiloUtente(utente);
                         dbManager.inserisciNuovoUtente(utente); // utente appena creato potra' fare il login
+                    }
                     break;
                 }
 
@@ -83,6 +87,15 @@ public class Controller {
             }
         }
         consoleView.chiudiScanner();
+    }
+
+    private void prenotazione(UtenteClass utente, int itinerarioSelezionato) {
+        Itinerario itinerario = piattaforma.getItinerari().get(itinerarioSelezionato);
+        // todo in futuro UC8 - Interazione con invito --> low risk UC
+        ArrayList<InvitatoClass> invitati = new ArrayList<>();
+        invitati = consoleView.richiediInvitati(itinerario.getMinPartecipanti(), itinerario.getMaxPartecipanti());
+        piattaforma.prenota(utente, itinerario, invitati); // j -> numero itinerario
+        dbManager.inserisciPrenotazione();  // todo rivedere
     }
 
     /**

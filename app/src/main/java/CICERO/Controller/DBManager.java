@@ -24,7 +24,6 @@ public class DBManager {
     }
 
     /**
-     *
      * @param username username dell'Utente
      * @param password password dell'Utente
      * @return utente nel DB, <code>null</code> se Utente non &egrave; presente nel DB o i dati Utente non sono giusti
@@ -48,17 +47,61 @@ public class DBManager {
     }
 
     public ArrayList<ItinerarioClass> estraiItinerari() throws SQLException {
-        String query = "SELECT * FROM Itinerari i WHERE accettato = 1;";
+        String query = "SELECT i.nome, i.num_min_utenti, i.num_max_utenti, a.nome, a.p_iva, a.email, a.password, " +
+                "t.nome, l.nome, l.citta, l.provincia, l.regione " +
+                "FROM Itinerari i, Ciceroni c, Aziende a, Luoghi l, Tag t, Itinerari_Tag it, Itinerari_Luoghi il " +
+                "WHERE i.id_cicerone = c.id AND c.id_azienda = a.id AND it.id_itinerario = i.id AND it.nome_tag = t.nome " +
+                "AND il.id_itinerario = i.id AND il.id_luogo = l.id AND i.accettato = 1 " +
+                "ORDER BY i.nome;";
         ResultSet resultSet = connectionStatement.executeQuery(query);
         ArrayList<ItinerarioClass> result = new ArrayList<>();
         ItinerarioClass itinerario;
         CiceroneClass cicerone;
-        while (resultSet.next()) {
-            cicerone new CiceroneClass(
-                    resultSet.getObject(11, String.class);
-            );
+        TagClass tag;
+        ArrayList<TagClass> tagArray = new ArrayList<>();
+        LuogoClass luogo;
+        ArrayList<Luogo> luogoArray = new ArrayList<>();
+        int numIterazioni = 0;
 
+        String nomeItinerarioRigaPrecedente = resultSet.getObject(1, String.class);
+        String nomeItinerarioRigaCorrente;
+        while (resultSet.next()) {
+            nomeItinerarioRigaCorrente = resultSet.getObject(1, String.class);
+            tag = new TagClass(resultSet.getObject(8, String.class));   //nome tag
+            if ((numIterazioni != 0) &&
+                    nomeItinerarioRigaPrecedente.contentEquals(nomeItinerarioRigaCorrente) &&
+                    !tagArray.contains(tag)) {
+                tagArray.add(tag);
+                continue;
+            }
+            luogo = new LuogoClass(
+                    resultSet.getObject(9, String.class),   //toponimo
+                    resultSet.getObject(10, String.class),  //citta
+                    resultSet.getObject(11, String.class),  //provincia
+                    resultSet.getObject(12, String.class)   //regione
+            );
+            if ((numIterazioni != 0) &&
+                    nomeItinerarioRigaPrecedente.contentEquals(nomeItinerarioRigaCorrente) &&
+                    !luogoArray.contains(luogo)) {
+                luogoArray.add(luogo);
+                continue;
+            }
+            cicerone = new CiceroneClass(
+                    resultSet.getObject(4, String.class),   //nome azienda
+                    resultSet.getObject(5, String.class),   //partita IVA
+                    resultSet.getObject(6, String.class),   //email
+                    resultSet.getObject(7, String.class)    //password
+            );
+            itinerario = new ItinerarioClass(cicerone,
+                    resultSet.getObject(1, String.class),   //titolo itinerario
+                    resultSet.getObject(2, int.class),      //min partecipanti
+                    resultSet.getObject(3, int.class),      //max partecipanti
+                    tagArray, luogoArray);
             result.add(itinerario);
+            tagArray = new ArrayList<>();
+            luogoArray = new ArrayList<>();
+            nomeItinerarioRigaPrecedente = resultSet.getObject(1, String.class);
+            numIterazioni++;
         }
         return result;
     }

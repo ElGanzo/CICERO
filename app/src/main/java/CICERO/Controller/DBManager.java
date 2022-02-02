@@ -141,14 +141,13 @@ public class DBManager {
     }
 
     public void inserisciNuovoUtente(UtenteClass utente) throws SQLException {
-        //TODO inserire flag verificato/accettato (email verificata confermata)
-        String query = "INSERT INTO Utenti u (nome, cognome, d_nascita, email, password) " +
+        String update = "INSERT INTO Utenti u (nome, cognome, d_nascita, email, password) " +
                 "VALUES ('" + utente.getNome() + "', '" +
                 utente.getCognome() + "', '" +
                 utente.getDataNascita() + "', '" +
                 utente.getEmail() + "', '" +
                 utente.getPassword() + "');";
-        connectionStatement.executeQuery(query);
+        connectionStatement.executeUpdate(update);
     }
 
     public void inserisciItinerario(Itinerario itinerario) throws SQLException {
@@ -167,11 +166,10 @@ public class DBManager {
     }
 
     public void inserisciPrenotazione(Prenotazione prenotazione) throws SQLException {
+        String update = "INSERT INTO Prenotazioni VALUES (id_itinerario, id_utente, n_partecipanti," +
+                "data_inizio, orario_inizio, data_scadenza_prenotazione, data_scadenza_pagamento ";
 
-        String query = "INSERT INTO Prenotazioni VALUES (id_itinerario, id_utente, n_partecipanti," +
-                "data_inizio, orario_inizio, data_scadenza_prenotazione, data_scadenza_pagamento";
-
-//        connectionStatement.executeQuery(query);
+        connectionStatement.executeUpdate(update);
     }
 
 }

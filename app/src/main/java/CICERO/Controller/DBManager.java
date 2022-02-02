@@ -88,19 +88,17 @@ public class DBManager {
 
         while (resultSet.next()) {
             luogo = new LuogoClass(resultSet.getObject(2, String.class),        //luogo
-                    resultSet.getObject(3, String.class),                       //città
+                    resultSet.getObject(3, String.class),                       //citta'
                     resultSet.getObject(4, String.class),                       //provincia
                     resultSet.getObject(5, String.class));                      //regione
             result.add(luogo);
         }
 
         //TODO rimuovere
-        Scanner scanner = new Scanner(System.in);
         System.out.println(query);
-        System.out.println(result);
-        System.out.println("Premere un tasto qualsiasi per continuare...");
-        String inutile = scanner.nextLine();
-        scanner.close();
+        for (LuogoClass l: result){
+            System.out.println(l.getToponimo());
+        }
 
         return result;
     }

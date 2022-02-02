@@ -3,9 +3,7 @@ package CICERO.Controller;
 import CICERO.Model.*;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * Classe per interfacciarsi con il DB
@@ -15,8 +13,8 @@ public class DBManager {
     Connection connection;
     Statement connectionStatement;
 
-    private String pattern = "yyyy-mm-dd";
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+//    private String pattern = "yyyy-mm-dd";
+//    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 
     public DBManager(String url, String user, String password) throws Exception {
 
@@ -55,11 +53,13 @@ public class DBManager {
         ArrayList<ItinerarioClass> result = new ArrayList<>();
         ItinerarioClass itinerario;
         CiceroneClass cicerone;
-//        while (resultSet.next()) {
-//            idCicerone
-//            itinerario = new ItinerarioClass(resultSet.getObject(3, CiceroneClass.class));
-//            result.add(itinerario);
-//        }
+        while (resultSet.next()) {
+            cicerone new CiceroneClass(
+                    resultSet.getObject(11, String.class);
+            );
+
+            result.add(itinerario);
+        }
         return result;
     }
 
@@ -99,13 +99,10 @@ public class DBManager {
 
     public void inserisciNuovoUtente(UtenteClass utente) throws SQLException {
         //TODO inserire flag verificato/accettato (email verificata confermata)
-
-        String date = simpleDateFormat.format(utente.getDataNascita());
-
         String query = "INSERT INTO Utenti u (nome, cognome, d_nascita, email, password) " +
                 "VALUES ('" + utente.getNome() + "', '" +
                 utente.getCognome() + "', '" +
-                date + "', '" +
+                utente.getDataNascita() + "', '" +
                 utente.getEmail() + "', '" +
                 utente.getPassword() + "');";
         connectionStatement.executeQuery(query);

@@ -63,6 +63,7 @@ public class DBManager {
         ArrayList<Luogo> luogoArray = new ArrayList<>();
         int numIterazioni = 0;
 
+        resultSet.next();
         String nomeItinerarioRigaPrecedente = resultSet.getObject(1, String.class);
         String nomeItinerarioRigaCorrente;
         while (resultSet.next()) {

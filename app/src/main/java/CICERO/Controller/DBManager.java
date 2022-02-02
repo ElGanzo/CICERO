@@ -92,6 +92,15 @@ public class DBManager {
                     resultSet.getObject(5, String.class));
             result.add(luogo);
         }
+
+        //TODO rimuovere
+        Scanner scanner = new Scanner(System.in);
+        System.out.println(query);
+        System.out.println(result);
+        System.out.println("Premere un tasto qualsiasi per continuare...");
+        scanner.nextLine();
+        scanner.close();
+
         return result;
     }
 

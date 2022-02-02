@@ -2,10 +2,10 @@ package CICERO.Controller;
 
 import CICERO.Model.*;
 
-import javax.swing.text.html.HTML;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Classe per interfacciarsi con il DB
@@ -68,6 +68,15 @@ public class DBManager {
             TagClass tag = new TagClass(resultSet.getObject(1, String.class));
             result.add(tag);
         }
+
+        //TODO rimuovere
+        Scanner scanner = new Scanner(System.in);
+        System.out.println(query);
+        System.out.println(result);
+        System.out.println("Premere un tasto qualsiasi per continuare...");
+        scanner.nextLine();
+        scanner.close();
+
         return result;
     }
 

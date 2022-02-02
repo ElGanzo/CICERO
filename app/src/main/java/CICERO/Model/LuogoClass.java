@@ -9,20 +9,17 @@ public class LuogoClass implements Luogo {
     private final String citta;
     private final String provincia;
     private final String regione;
-    private final long IDLuogo;
     private boolean proposta;
 
-    public LuogoClass(String l, String c, String p, String r){
-        //  PROBABILMENTE CONTROLLO NULL INUTILE PERCHE' VIENE APPROVATO DALL'AMMINISTRAZIONE
-        PiattaformaClass.controlloNull(l, "Il luogo deve essere specificato");
-        PiattaformaClass.controlloNull(c, "La citta' deve essere specificata");
-        PiattaformaClass.controlloNull(p, "La provincia deve essere specificata");
-        PiattaformaClass.controlloNull(r, "La regione deve essere specificata");
-        luogo = l;
-        citta = c;
-        provincia = p;
-        regione = r;
-        IDLuogo = PiattaformaClass.IDLuogo++;
+    public LuogoClass(String luogo, String citta, String provincia, String regione){
+        PiattaformaClass.controlloNull(luogo, "Il luogo deve essere specificato");
+        PiattaformaClass.controlloNull(citta, "La citta' deve essere specificata");
+        PiattaformaClass.controlloNull(provincia, "La provincia deve essere specificata");
+        PiattaformaClass.controlloNull(regione, "La regione deve essere specificata");
+        this.luogo = luogo;
+        this.citta = citta;
+        this.provincia = provincia;
+        this.regione = regione;
         this.proposta = true;
     }
 
@@ -34,9 +31,5 @@ public class LuogoClass implements Luogo {
     @Override
     public boolean proposta() {
         return this.proposta;
-    }
-
-    public long getIDLuogo() {
-        return IDLuogo;
     }
 }

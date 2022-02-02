@@ -80,6 +80,7 @@ public class Controller {
 
                 // termina programma Cicero
                 case 0:
+                    consoleView.chiudiScanner();
                     System.exit(0);
 
                 default:
@@ -89,20 +90,29 @@ public class Controller {
         consoleView.chiudiScanner();
     }
 
-    private void prenotazione(UtenteClass utente, int itinerarioSelezionato) {
+    /**
+     * Utente prenota un itinerario dopo aver raggiunto il numMinPartecipanti
+     * @param utente Utente che vuole prenotare un itinerario
+     * @param itinerarioSelezionato numero stampato a video e selezionato dall'Utente che indica un Itinerario
+     * @throws NullPointerException se utente &egrave; <code>null</code>
+     */
+    private void prenotazione(UtenteClass utente, int itinerarioSelezionato) throws SQLException {
+        PiattaformaClass.controlloNull(utente, "Un utente inesistente non puo' prenotare...");
         Itinerario itinerario = piattaforma.getItinerari().get(itinerarioSelezionato);
-        // todo in futuro UC8 - Interazione con invito --> low risk UC
-        ArrayList<InvitatoClass> invitati = new ArrayList<>();
+        ArrayList<InvitatoClass> invitati;
+
+        // richiesta invitati all'Itinerario ( obbligo di inserire nvitati se numMinPartecipanti > 1 )
         invitati = consoleView.richiediInvitati(itinerario.getMinPartecipanti(), itinerario.getMaxPartecipanti());
-        piattaforma.prenota(utente, itinerario, invitati); // j -> numero itinerario
-        dbManager.inserisciPrenotazione();  // todo rivedere
+        Prenotazione prenotazione = new Prenotazione(itinerario, utente, invitati);
+        piattaforma.aggiungiPrenotazione(prenotazione);
+        dbManager.inserisciPrenotazione(prenotazione);
     }
 
     /**
      * Estrae dal DB tutti gli itinerari, tutti i tags e tutti i luoghi per inserirli in Piattaforma
      */
     private void inizializzaPiattaforma() throws SQLException {
-        for (TagClass tag: dbManager.estraiTag()){
+        for (TagClass tag: dbManager.estraiTag()) {
             piattaforma.inserisciTag(tag);
         }
         for (Luogo luogo: dbManager.estraiLuoghi()){

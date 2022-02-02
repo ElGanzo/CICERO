@@ -1,14 +1,14 @@
 package CICERO.Model;
 
 /**
- * Rappresenta una persona invitata ad un certo itinerario:<br> <b>QUEST'OGGETTO VERR&Agrave; DISTRUTTO UNA VOLTA
+ * Rappresenta una persona invitata a un certo itinerario:<br> <b>QUEST'OGGETTO VERR&Agrave; DISTRUTTO UNA VOLTA
  * CONCLUSO L'ITINERARIO</b>
  */
 public class InvitatoClass extends PersonaClass {
     //todo classe da rimuovere? "UC8 - Interazione con invito" forse troppo low risk use case?
     private final long idInvitato;
     private boolean haAccettato;
-    private long idItinerario;
+    private long idItinerario; // todo sostituire con idPrenotazione (regolarsi con il DB)
 
     public InvitatoClass(String nome, String cognome, String email, String dataNascita) {
         super(nome, cognome, dataNascita, email);

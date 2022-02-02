@@ -1,12 +1,13 @@
 package CICERO.View;
 import CICERO.Model.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleView {
 
-    private static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
 
     /**
      * Elimina le precedenti scritte sulla console, cos&igrave; da renderla pi&ugrave; leggibile
@@ -99,7 +100,7 @@ public class ConsoleView {
      */
     public UtenteClass creazioneProfiloUtente() {
         ArrayList<String> datiUtente = new ArrayList<>();
-        String s = null;
+        String s;
         System.out.println("--- Creazione nuovo profilo utente --- ");
         System.out.println("Nome: ");
         s = scanner.nextLine();
@@ -119,7 +120,7 @@ public class ConsoleView {
         datiUtente.add(4, scanner.nextLine());
 
 
-        System.out.println(datiUtente.toString());
+        System.out.println(datiUtente);
         System.out.println("Confermare questi dati? [Y] per confermare, qualsiasi altro tasto per annullare...");
         s = scanner.nextLine();
         s = checkSingleCharacter(s, "Y", "N", "0", "y", "n");
@@ -146,7 +147,7 @@ public class ConsoleView {
     /**
      * offre all'Utente la possibilit&agrave; di prenotare un itinerari tra quelli presenti nella Piattaforma
      * @param itinerari presenti nella Piattaforma
-     * @return numero dell'itinerario selezionato
+     * @return numero dell'itinerario selezionato, 0 se non si vuole effettuare una prenotazione
      */
     public int prenotaItinerario(ArrayList<Itinerario> itinerari){
 
@@ -245,5 +246,47 @@ public class ConsoleView {
      * scanner, essendo privato, deve essere chiuso da <code>ConsoleView</code>
      */
     public void chiudiScanner() {scanner.close();
+    }
+
+    public ArrayList<InvitatoClass> richiediInvitati(int minPartecipanti, int maxPartecipanti) {
+        // info itinerario
+        System.out.println("Numero minimo di partecipanti previsto per l'itinerario: " +minPartecipanti);
+        System.out.println("Numero massimo di partecipanti previsto per l'itinerario: " +maxPartecipanti);
+        System.out.println("Puoi invitare massimo altre " +(maxPartecipanti-1) + " persone e minimo altre "+(minPartecipanti-1));
+
+        // se non si vuole invitare nessuno
+        if(minPartecipanti==1){
+            System.out.println("Premi [0] per non invitare nessuno, qualsiasi altro tasto per invitare altre persone");
+            if(scanner.nextLine().contains("0"))
+                return null;
+        }
+
+        // richiedi invitati
+        ArrayList<InvitatoClass> invitati = new ArrayList<>();
+        int i = 0;
+        while(i<minPartecipanti || i<maxPartecipanti) {
+            System.out.println("invitato numero: " + i);
+            // proponi stop inviti
+            if (i >= minPartecipanti){
+                System.out.println("Premi [0] se non vuoi invitare nessun altro, qualsiasi altro tasto per continuare");
+                if (scanner.nextLine().contains("0"))
+                    break;
+            }
+            // acquisisci dati invitato
+            ArrayList<String> datiInvitato = new ArrayList<>();
+            System.out.print("Nome: ");
+            datiInvitato.add(0,scanner.nextLine());
+            System.out.print("Cognome: ");
+            datiInvitato.add(1,scanner.nextLine());
+            System.out.print("Email: ");
+            datiInvitato.add(2,scanner.nextLine());
+            System.out.print("Data di nascita (AAAA-MM-GG): ");
+            datiInvitato.add(3,scanner.nextLine());
+            InvitatoClass invitato = new InvitatoClass(datiInvitato.get(0),
+                    datiInvitato.get(1), datiInvitato.get(2), datiInvitato.get(3));
+            invitati.add(invitato);
+            i++;
+        }
+        return invitati;
     }
 }

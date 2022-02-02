@@ -2,13 +2,18 @@ package CICERO.Model;
 
 import java.util.ArrayList;
 
+/**
+ *  Rappresenta il <b>PROFILO AZIENDALE</b> di un'associazione/singolo Ciceroni,
+ *  rappresentati qui con un'<code>ArrayList<code> di PersonaClass  <br>
+ *  Ogni Cicerone appartenente a questa classe posserr&agrave; le credenziali del profilo
+ */
 public class CiceroneClass implements Cicerone {
 
     private String ragioneSociale;
     private String partitaIVA;
     private String emailAzienda;
     private String passwordAzienda;
-    private ArrayList<Persona> Cicerone;
+    private ArrayList<Persona> ciceroni;
     private long idCicerone;
 
     public CiceroneClass(String ragioneSociale, String partitaIVA, String emailAzienda, String passwordAzienda) {

@@ -127,11 +127,10 @@ public class PiattaformaClass implements Piattaforma {
      * @param itinerario numero itinerario selezionato
      * @throws NullPointerException se itinerario specificato non presente
      */
-    public void prenota(UtenteClass utente, int itinerario, int numeroInvitati) {   //todo controllare nMinPartecipanti raggiunto
-        controlloNull(utente, "utente mancante");
-        Itinerario itinerarioObject = itinerari.get(itinerario);
-        if(prenotabilita(itinerarioObject)) //troppo low risk
-            prenotazioni.add(new Prenotazione(itinerarioObject,  utente));
+    public void aggiungiPrenotazione(Prenotazione prenotazione) {   //todo controllare nMinPartecipanti raggiunto
+        controlloNull(prenotazione, "prenotazione mancante");
+        if(prenotabilita(prenotazione.getItinerario())) //troppo low risk
+            prenotazioni.add(prenotazione);
     }
 
     public void inserisciItinerario(Itinerario itinerario) {

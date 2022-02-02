@@ -17,11 +17,18 @@ public class ConsoleView {
     }
 
     /**
-     * Stampa la Home iniziale di benvenuto, con la possibilit&agrave; di effettuare
-     * [1] -> Log in Utente
-     * [2] -> Log in Aziendale
-     * [3] -> Crea profilo Utente
-     * [0] -> Termina programma Cicero
+     * Stampa la <i>Home</i>, con la possibilit&agrave; di effettuare<br>
+     *
+     * [1] -> Log in Utente<br>
+     * [2] -> Log in Aziendale<br>
+     * [3] -> Crea profilo Utente<br>
+     * [0] -> Termina programma Cicero<br>
+     *<br>
+     * Implementazione dei casi d'uso pi&ugrave; rischiosi:<br>
+     * - Creazione profilo Utente<br>
+     * - Aggiunta di proposta di itinerario<br>
+     * - Prenotazione<br>
+     * Inoltre, vengonono implementati alcuni UC low risk (UC16 & UC17) per far funzionare il sistema
      * @return scelta effettuata dall'Utente
      */
     public int stampaHome() {
@@ -70,7 +77,7 @@ public class ConsoleView {
 
     /**
      * Estrae le credenziali (nome, password) dalle stringhe inserite dall'Utente o dal Cicerone
-     * @return Lista di <code>String</code>> inserite dall'Utente o dal Cicerone (0 -> email, 1 -> password)
+     * @return Lista di <code>String</code> inserite dall'Utente o dal Cicerone (email, password)
      */
     public List<String> getCredenziali() {
         pulisciConsole();
@@ -124,19 +131,27 @@ public class ConsoleView {
     }
 
     /**
-     * Visualizza gli itinerari presenti sulla Piattaforma offrendo la possibilit&agrave; di prenotarne uno
+     * Visualizza gli itinerari presenti sulla Piattaforma
      * @param itinerari itinerari presenti sulla Piattaforma
-     * @return idItinerario (numero) dell'Itinerario da prenotare
      */
-    public int stampaItinerari(ArrayList<Itinerario> itinerari) {
+    public void stampaItinerari(ArrayList<Itinerario> itinerari) {
         pulisciConsole();
         System.out.println("Itinerari: \n");
         int i = 1;
         for (Itinerario itinerario: itinerari){
             System.out.println("["+i +"] -> " +itinerario.toString());
         }
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Seleziona un itinerario: ");
+    }
+
+    /**
+     * offre all'Utente la possibilit&agrave; di prenotare un itinerari tra quelli presenti nella Piattaforma
+     * @param itinerari presenti nella Piattaforma
+     * @return numero dell'itinerario selezionato
+     */
+    public int prenotaItinerario(ArrayList<Itinerario> itinerari){
+
+        // proponi prenotazione
+        System.out.println("Seleziona un itinerario se vuoi prenotarlo, altrimenti premi [0] per tornare alla Home");
 
         String s = scanner.nextLine();
         int j = Integer.parseInt(s);
@@ -144,29 +159,16 @@ public class ConsoleView {
         // visualizza itinerario
         if(j <= itinerari.size() && j > 0 )
             System.out.println(itinerari.get(j-1).toString());
+        else
+            return -1;
 
         // prenotazione itinerario
         System.out.println("Prenotare l'itinerario? [Y]es / [N]o");
-        s= scanner.nextLine();
+        s = scanner.nextLine();
         s = checkSingleCharacter(s, "Y", "N", "0", "y", "n");
-        if(s.equals("Y") || s.equals("y")){
-            scanner.close();
+        if(s.equals("Y") || s.equals("y"))
             return j;
-        }
-        scanner.close();
         return -1;
-    }
-
-    //todo ha senso?
-    public <T> T richiediProposta(CiceroneClass cicerone) {
-        pulisciConsole();
-        System.out.println("[1] -> aggiungi una proposta di itinerario");
-        Scanner scanner = new Scanner(System.in);
-        String s = scanner.nextLine();
-
-        s = checkSingleCharacter(s, "1", "0");
-        scanner.close();
-        return null;
     }
 
     /**
@@ -226,12 +228,17 @@ public class ConsoleView {
         ArrayList<Luogo> luogo = new ArrayList<>();
         luogo.add(luoghi.get(Integer.parseInt(luogoSelezionato)));
 
+        // durata
+        System.out.println("Durata in ore dell'itinerario: ");
+        double durata = scanner.nextDouble();
+
         System.out.println("Itinerario aggiunto alle proposte di itinerario, riepilogo: ");
-        System.out.println(datiItinerario.toString() + tagSelezionato.get(0).toString() + luogo.get(0).getToponimo());
+        System.out.println(datiItinerario + tagSelezionato.get(0).toString() + luogo.get(0).getToponimo() +
+                " durata in ore: "+durata);
 
         return new ItinerarioClass(cicerone, datiItinerario.get(0),
                 Integer.parseInt(datiItinerario.get(1)), Integer.parseInt(datiItinerario.get(2)), datiItinerario.get(3),
-                tagSelezionato, luogo);
+                tagSelezionato, luogo, durata);
     }
 
     /**

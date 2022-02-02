@@ -43,22 +43,4 @@ public interface Piattaforma {
      * @throws NullPointerException se Itinerario &egrave; <code>null</code>
      */
     boolean prenotabilita(Itinerario itinerario);
-
-    /**
-     * Processa la richiesta di accesso da parte di un Utente
-     *
-     * @param utente l'Utente che vuole effettuare l'accesso
-     * @return <code>true</code> se l'accesso &egrave; approvato, <code>false</code> altrimenti
-     * @throws NullPointerException se Utente &egrave; <code>null</code>
-     */
-    boolean accessoUtente(Persona utente);
-
-    /**
-     * Processa la richiesta di accesso da parte di un Cicerone
-     *
-     * @param cicerone il Cicerone che vuole effettuare l'accesso
-     * @return <code>true</code> se l'accesso &egrave; approvato, <code>false</code> altrimenti
-     * @throws NullPointerException se Cicerone &egrave; <code>null</code>
-     */
-    boolean accessoCicerone(Cicerone cicerone);
 }

@@ -13,7 +13,6 @@ public class PiattaformaClass implements Piattaforma {
     private ArrayList<Prenotazione> prenotazioni;
     public static long IDInvitato = 0;
     public static long IDCiceroni = 0;
-    public static int IDItinerario = 0;
     public static int IDLuogo = 0;
 
     public PiattaformaClass() {
@@ -65,8 +64,8 @@ public class PiattaformaClass implements Piattaforma {
         controlloNull(cicerone, "cicerone da inserire non valido");
         if(this.ciceroni.contains(cicerone))
            throw new IllegalArgumentException("profilo cicerone attualmente presente nella Piattaforma");
-        // se cicerone OK allora inserisci --> Come lo valutiamo????
-        return false;
+        ciceroni.add(cicerone);
+        return true;
     }
 
     @Override
@@ -78,23 +77,10 @@ public class PiattaformaClass implements Piattaforma {
         return true;
     }
 
-    @Override //todo forse troppo low risk, facciamo che lo prenota e basta?
+    @Override //troppo low risk -> non implementato
     public boolean prenotabilita(Itinerario itinerario) {
         controlloNull(itinerario, "itinerario nullo non valido per cercare la disponibilita'");
-        if(!itinerari.contains(itinerario))
-            return false;
-        //TODO: fornisco l'orario e l'utente scegliera' quello --> forse troppo low risk UC
-        return true;
-    }
-
-    @Override
-    public boolean accessoUtente(Persona utente) {
-        return false;
-    }
-
-    @Override
-    public boolean accessoCicerone(Cicerone cicerone) {
-        return false;
+        return itinerari.contains(itinerario);
     }
 
     public ArrayList<Itinerario> getItinerari() {
@@ -123,16 +109,28 @@ public class PiattaformaClass implements Piattaforma {
 
     public Amministrazione getAmministrazione(){return amministrazione;}
 
+    /**
+     * Metodo per controllare che un oggetto non sia <code>null</code>
+     * Se lo &egrave;, lancia una <code>NullPointerException</code>
+     * @param o oggetto da controllare
+     * @param errorMessage messaggio di errore contenuto nell'eccezione
+     * @throws NullPointerException se l'oggetto passato &egrave; <code>null</code>
+     */
     public static void controlloNull(Object o, String errorMessage) {
         if (o == null)
             throw new NullPointerException(errorMessage);
     }
 
+    /**
+     * Inserisce una prenotazione per l'Utente all'itinerario specificato
+     * @param utente utente che effettua la prenotazione
+     * @param j itinerario
+     * @throws NullPointerException se itinerario specificato non presente
+     */
     public void prenota(UtenteClass utente, int j) {
         controlloNull(utente, "utente mancante");
-        // prenotabilita(itinerari.get(j)); todo forse troppo low risk
-        prenotazioni.add(new Prenotazione(itinerari.get(j), itinerari.get(j).getCicerone(),  utente));
-
+        if(prenotabilita(itinerari.get(j))) //troppo low risk
+            prenotazioni.add(new Prenotazione(itinerari.get(j), itinerari.get(j).getCicerone(),  utente));
     }
 
     public void inserisciItinerario(Itinerario itinerario) {

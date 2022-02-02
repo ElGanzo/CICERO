@@ -25,12 +25,14 @@ public class Controller {
         dbManager = new DBManager("jdbc:mysql://104.248.18.55:3306/TogepiDB", "Mikez", "TogepiMikez");
         inizializzaPiattaforma();
         int i = 1;
-        while(i!=0 ) {
+
+        while(i!=0) {
+
             i = consoleView.stampaHome();
-            // if i==-1 -> errore da gestire
+
             switch (i) {
 
-                // login Utente
+                // login Utente ( UC17 )
                 case 1: {
 
                     // acquisisco le credenziali
@@ -38,15 +40,16 @@ public class Controller {
 
                     // autentico l'Utente
                     UtenteClass utente = logInUtente(credenziali.get(0), credenziali.get(1));
+                    consoleView.stampaItinerari(piattaforma.getItinerari());
 
                     // UC3 - Prenotazione todo da testare
-                    int j = consoleView.stampaItinerari(piattaforma.getItinerari());
+                    int j = consoleView.prenotaItinerario(piattaforma.getItinerari());
                     if (j != -1)   // j == -1 --> Utente non vuole prenotare ma semplicemente visualizza l'itinerario
                         piattaforma.prenota(utente, j); // j -> numero itinerario
                     break;
                 }
 
-                // login aziendale
+                // login aziendale ( UC16 )
                 case 2: {
 
                     // acquisisco le credenziali

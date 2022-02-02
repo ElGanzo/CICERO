@@ -63,27 +63,23 @@ public class DBManager {
         ArrayList<Luogo> luogoArray = new ArrayList<>();
         int numIterazioni = 0;
 
-        resultSet.next();
-        String nomeItinerarioRigaPrecedente = resultSet.getObject(1, String.class);
+        String nomeItinerarioRigaPrecedente = "";
         String nomeItinerarioRigaCorrente;
         while (resultSet.next()) {
             nomeItinerarioRigaCorrente = resultSet.getObject(1, String.class);
             tag = new TagClass(resultSet.getObject(8, String.class));   //nome tag
-            if ((numIterazioni != 0) &&
-                    nomeItinerarioRigaPrecedente.contentEquals(nomeItinerarioRigaCorrente) &&
-                    !tagArray.contains(tag)) {
+            if (!tagArray.contains(tag)) {
                 tagArray.add(tag);
                 continue;
             }
+
             luogo = new LuogoClass(
                     resultSet.getObject(9, String.class),   //toponimo
                     resultSet.getObject(10, String.class),  //citta
                     resultSet.getObject(11, String.class),  //provincia
                     resultSet.getObject(12, String.class)   //regione
             );
-            if ((numIterazioni != 0) &&
-                    nomeItinerarioRigaPrecedente.contentEquals(nomeItinerarioRigaCorrente) &&
-                    !luogoArray.contains(luogo)) {
+            if (!luogoArray.contains(luogo)) {
                 luogoArray.add(luogo);
                 continue;
             }
@@ -98,10 +94,13 @@ public class DBManager {
                     resultSet.getObject(2, int.class),      //min partecipanti
                     resultSet.getObject(3, int.class),      //max partecipanti
                     tagArray, luogoArray);
-            result.add(itinerario);
-            tagArray = new ArrayList<>();
-            luogoArray = new ArrayList<>();
-            nomeItinerarioRigaPrecedente = resultSet.getObject(1, String.class);
+            if (numIterazioni != 0 &&
+                    !nomeItinerarioRigaPrecedente.contentEquals(nomeItinerarioRigaCorrente)) {
+                result.add(itinerario);
+                tagArray = new ArrayList<>();
+                luogoArray = new ArrayList<>();
+                nomeItinerarioRigaPrecedente = nomeItinerarioRigaCorrente;
+            }
             numIterazioni++;
         }
         return result;

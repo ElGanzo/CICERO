@@ -53,10 +53,13 @@ public class DBManager {
         String query = "SELECT * FROM Itinerari i WHERE accettato = 1;";
         ResultSet resultSet = connectionStatement.executeQuery(query);
         ArrayList<ItinerarioClass> result = new ArrayList<>();
-        while (resultSet.next()) {
-            ItinerarioClass itinerario = new ItinerarioClass(resultSet.getObject(3, CiceroneClass.class));
-            result.add(itinerario);
-        }
+        ItinerarioClass itinerario;
+        CiceroneClass cicerone;
+//        while (resultSet.next()) {
+//            idCicerone
+//            itinerario = new ItinerarioClass(resultSet.getObject(3, CiceroneClass.class));
+//            result.add(itinerario);
+//        }
         return result;
     }
 
@@ -68,15 +71,6 @@ public class DBManager {
             TagClass tag = new TagClass(resultSet.getObject(1, String.class));
             result.add(tag);
         }
-
-        //TODO rimuovere
-        Scanner scanner = new Scanner(System.in);
-        System.out.println(query);
-        System.out.println(result);
-        System.out.println("Premere un tasto qualsiasi per continuare...");
-        scanner.nextLine();
-        scanner.close();
-
         return result;
     }
 
@@ -93,13 +87,6 @@ public class DBManager {
                     resultSet.getObject(5, String.class));                      //regione
             result.add(luogo);
         }
-
-        //TODO rimuovere
-        System.out.println(query);
-        for (LuogoClass l: result){
-            System.out.println(l.getToponimo());
-        }
-
         return result;
     }
 

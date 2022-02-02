@@ -6,24 +6,55 @@ import java.util.List;
 public class ItinerarioClass implements Itinerario{
 
     private final Cicerone cicerone;
-    private String info;
     private String nome;
-    private List<TagClass> tags;
-    private List<Luogo> toponimi;
-    private int numMaxPartecipanti;
     private int numMinPartecipanti;
-    private final long idItinerario;          // todo da rivedere, potrebbe essere estratto da DB
+    private int numMaxPartecipanti;
+    private String info;
+    private List<TagClass> tag;
+    private List<Luogo> toponimi;
     private double durata;
     private boolean proposta;
 
-    public ItinerarioClass(Cicerone cicerone){
+    public ItinerarioClass(Cicerone cicerone, String nome, int numMinPartecipanti, int numMaxPartecipanti, String info,
+                           ArrayList<TagClass> tag, ArrayList<Luogo> toponimi, double durata){
         PiattaformaClass.controlloNull(cicerone, "Cicerone inserito per l'itinerario non valido");
-        idItinerario = PiattaformaClass.IDItinerario++;
         this.cicerone = cicerone;
-        this.tags = new ArrayList<>();
-        this.toponimi = new ArrayList<>();
+        this.nome = nome;
+        this.numMinPartecipanti = numMinPartecipanti;
+        this.numMaxPartecipanti = numMaxPartecipanti;
+        this.info = info;
+        this.tag = tag;
+        this.toponimi = toponimi;
+        this.durata = durata;
         this.proposta=true;
-        this.durata = 0;
+    }
+
+    public ItinerarioClass(Cicerone cicerone, String nome, int numMinPartecipanti, int numMaxPartecipanti, String info,
+                           ArrayList<TagClass> tag, ArrayList<Luogo> toponimi){
+        PiattaformaClass.controlloNull(cicerone, "Cicerone inserito per l'itinerario non valido");
+        this.cicerone = cicerone;
+        this.nome = nome;
+        this.numMinPartecipanti = numMinPartecipanti;
+        this.numMaxPartecipanti = numMaxPartecipanti;
+        this.info = info;
+        this.tag = tag;
+        this.toponimi = toponimi;
+        this.durata = 1;
+        this.proposta=true;
+    }
+
+    public ItinerarioClass(Cicerone cicerone, String nome, int numMinPartecipanti, int numMaxPartecipanti,
+                           ArrayList<TagClass> tag, ArrayList<Luogo> toponimi){
+        PiattaformaClass.controlloNull(cicerone, "Cicerone inserito per l'itinerario non valido");
+        this.cicerone = cicerone;
+        this.nome = nome;
+        this.numMinPartecipanti = numMinPartecipanti;
+        this.numMaxPartecipanti = numMaxPartecipanti;
+        this.info = "";
+        this.tag = tag;
+        this.toponimi = toponimi;
+        this.durata = 1;
+        this.proposta=true;
     }
 
     @Override
@@ -33,11 +64,6 @@ public class ItinerarioClass implements Itinerario{
 
     @Override
     public double getDurata(){ return durata;}
-
-    @Override
-    public long getIdItinerario() {
-        return idItinerario;
-    }
 
     @Override
     public String getInfo() {
@@ -51,7 +77,7 @@ public class ItinerarioClass implements Itinerario{
 
     @Override
     public List<TagClass> getTags() {
-        return this.tags;
+        return this.tag;
     }
 
     @Override
@@ -103,7 +129,7 @@ public class ItinerarioClass implements Itinerario{
     @Override
     public void inserisciTag(TagClass tag) {
         PiattaformaClass.controlloNull(tag, "tag da inserire non valido");
-        tags.add(tag);
+        this.tag.add(tag);
     }
 
     @Override

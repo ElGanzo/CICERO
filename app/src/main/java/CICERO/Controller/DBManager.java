@@ -84,12 +84,13 @@ public class DBManager {
         String query = "SELECT * FROM Luoghi l WHERE accettato = 1;";
         ResultSet resultSet = connectionStatement.executeQuery(query);
         ArrayList<LuogoClass> result = new ArrayList<>();
+        LuogoClass luogo;
 
         while (resultSet.next()) {
-            LuogoClass luogo = new LuogoClass(resultSet.getObject(2, String.class),
-                    resultSet.getObject(3, String.class),
-                    resultSet.getObject(4, String.class),
-                    resultSet.getObject(5, String.class));
+            luogo = new LuogoClass(resultSet.getObject(2, String.class),        //luogo
+                    resultSet.getObject(3, String.class),                       //città
+                    resultSet.getObject(4, String.class),                       //provincia
+                    resultSet.getObject(5, String.class));                      //regione
             result.add(luogo);
         }
 
@@ -98,7 +99,7 @@ public class DBManager {
         System.out.println(query);
         System.out.println(result);
         System.out.println("Premere un tasto qualsiasi per continuare...");
-        scanner.nextLine();
+        String inutile = scanner.nextLine();
         scanner.close();
 
         return result;

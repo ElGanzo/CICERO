@@ -1,13 +1,12 @@
 package CICERO.View;
-
 import CICERO.Model.*;
-
 import java.util.ArrayList;
-// import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleView {
+
+    private static Scanner scanner = new Scanner(System.in);
 
     /**
      * Elimina le precedenti scritte sulla console, cos&igrave; da renderla pi&ugrave; leggibile
@@ -33,10 +32,8 @@ public class ConsoleView {
         System.out.println("[3] -> Crea profilo Utente");
         System.out.println("[0] -> Termina programma Cicero");
 
-        Scanner scanner = new Scanner(System.in);
         String s = scanner.nextLine();
         s = checkSingleCharacter(s, "0", "1", "2", "3");
-        scanner.close();
         return Integer.parseInt(s);
     }
 
@@ -47,13 +44,11 @@ public class ConsoleView {
      * @return stringa corretta se inserimento iniziale non andato a buon fine
      */
     private String checkSingleCharacter(String s, String ... values) {
-        Scanner scanner = new Scanner(System.in);
         while(isNotValidCharacter(s, values)) {
             s = null;
             System.out.println("Carattere inserito non valido, ritenta oppure premi '0' per uscire ");
             s = scanner.nextLine();
         }
-        scanner.close();
         return s;
     }
 
@@ -75,30 +70,40 @@ public class ConsoleView {
 
     /**
      * Estrae le credenziali (nome, password) dalle stringhe inserite dall'Utente o dal Cicerone
-     * @return Lista di stringhe inserite dall'Utente o dal Cicerone (0 -> email, 1 -> password)
+     * @return Lista di <code>String</code>> inserite dall'Utente o dal Cicerone (0 -> email, 1 -> password)
      */
     public List<String> getCredenziali() {
         pulisciConsole();
         List<String> credenziali = new ArrayList<>();
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Email Utente: ");
-        String username = scanner.nextLine();
-        credenziali.add(0, username);
+        System.out.print("Email: ");
+        String email = scanner.nextLine();
+        PiattaformaClass.controlloNull(email, "Email non valida");
+        credenziali.add(0, email);
         System.out.print("\nPassword: ");
         String password = scanner.nextLine();
+        PiattaformaClass.controlloNull(password, "Password");
         credenziali.add(1, password);
-        scanner.close();
         return credenziali;
     }
 
+    /**
+     * Richiede all'utente tutti i dati necessari per la creazione di un Profilo Utente
+     * @return <code>Utente</code> se i dati vengono confermati, <code>null</code> altrimenti
+     */
     public UtenteClass creazioneProfiloUtente() {
         ArrayList<String> datiUtente = new ArrayList<>();
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Creazione nuovo profilo utente: ");
+        String s = null;
+        System.out.println("--- Creazione nuovo profilo utente --- ");
         System.out.println("Nome: ");
-        datiUtente.add(0, scanner.nextLine());
+        s = scanner.nextLine();
+        if(s == null)
+            throw new NullPointerException("Nome null non valido");
+        datiUtente.add(0, s);
         System.out.println("Cognome: ");
-        datiUtente.add(1, scanner.nextLine());
+        s = scanner.nextLine();
+        if(s==null)
+            throw new NullPointerException("Cognome null non valido");
+        datiUtente.add(1, s);
         System.out.println("Data di nascita (AAAA-MM-GG): ");
         datiUtente.add(2, scanner.nextLine());
         System.out.println("Email: ");
@@ -109,13 +114,12 @@ public class ConsoleView {
 
         System.out.println(datiUtente.toString());
         System.out.println("Confermare questi dati? [Y] per confermare, qualsiasi altro tasto per annullare...");
-        String s = scanner.nextLine();
+        s = scanner.nextLine();
         s = checkSingleCharacter(s, "Y", "N", "0", "y", "n");
         if(s.equals("Y") || s.equals("y")){
-            scanner.close();
             return new UtenteClass(datiUtente.get(0),datiUtente.get(1), datiUtente.get(2), datiUtente.get(3), datiUtente.get(4));
         }
-        scanner.close();
+        System.out.println("Creazione profilo Utente annullata.");
         return null;
     }
 
@@ -136,10 +140,12 @@ public class ConsoleView {
 
         String s = scanner.nextLine();
         int j = Integer.parseInt(s);
+
+        // visualizza itinerario
         if(j <= itinerari.size() && j > 0 )
-            // visualizza itinerario
             System.out.println(itinerari.get(j-1).toString());
 
+        // prenotazione itinerario
         System.out.println("Prenotare l'itinerario? [Y]es / [N]o");
         s= scanner.nextLine();
         s = checkSingleCharacter(s, "Y", "N", "0", "y", "n");
@@ -151,6 +157,7 @@ public class ConsoleView {
         return -1;
     }
 
+    //todo ha senso?
     public <T> T richiediProposta(CiceroneClass cicerone) {
         pulisciConsole();
         System.out.println("[1] -> aggiungi una proposta di itinerario");
@@ -169,22 +176,22 @@ public class ConsoleView {
     public Itinerario getItinerario(CiceroneClass cicerone, ArrayList<TagClass> tags, ArrayList<Luogo> luoghi) {
         pulisciConsole();
         System.out.println("    ---     Aggiunta di proposta di un nuovo itinerario     ---");
-        Scanner scanner = new Scanner(System.in);
-
         ArrayList<String> datiItinerario = new ArrayList<>();
+
+        // prendiamo gli input per buoni
         // nome
         System.out.print("\nNome itinerario: ");
         datiItinerario.add(0, scanner.nextLine());
 
-        // nmax & nmin
-        System.out.print("\nNumero massimo di partecipanti: ");
-        itinerario.setMaxPartecipanti(Integer.parseInt(scanner.nextLine()));    // prendiamo l'input per buono
+        // nmin & nmax
         System.out.print("\nNumero minimo di partecipanti: ");
-        itinerario.setMinPartecipanti(Integer.parseInt(scanner.nextLine()));    // prendiamo l'input per buono
+        datiItinerario.add(1, scanner.nextLine());
+        System.out.print("\nNumero massimo di partecipanti: ");
+        datiItinerario.add(2, scanner.nextLine());
 
-        // descrizione
+        // descrizione --> info
         System.out.print("\nDescrizione dell'itinerario: ");
-        itinerario.setInfo(scanner.nextLine());
+        datiItinerario.add(3, scanner.nextLine());
 
         // tag
         System.out.println("\nAggiungi dei tag disponibili o proposta di nuovi tag");
@@ -195,11 +202,11 @@ public class ConsoleView {
             i++;
         }
         System.out.println(" [ * ] -> Nessun tag da inserire");
-        String tagSelezionato = scanner.nextLine();
-        if(!tagSelezionato.equals("*")){
-            if(tagSelezionato.equals("0"))   // in futuro potra' aggiungere altri tags dopo che l'itinerario e' stato approvato
-                itinerario.inserisciTag(tags.get(Integer.parseInt(tagSelezionato)));
-        }
+        String s = scanner.nextLine();
+        ArrayList<TagClass> tagSelezionato = new ArrayList<>();
+        if(!s.equals("*"))
+            if(s.equals("0"))   // in futuro potra' aggiungere altri tags dopo che l'itinerario e' stato approvato
+                tagSelezionato.add(tags.get(Integer.parseInt(s)));
 
         // luoghi
         System.out.println("Aggiungi dei luoghi contrassegnati con dei toponimi: ");
@@ -208,20 +215,28 @@ public class ConsoleView {
             System.out.println("["+j+"] -> "+luogo.getToponimo());
             j++;
         }
+        // consiglia a Cicerone la proposta di Luogo
         System.out.println("[ * ] -> toponimo non disponibile tra quelli mostrati --- ATTENZIONE: annulla l'aggiunta" +
-                " di proposta di nuovo itinerario: l'itinerario necessita di un luogo di svolgimento (altrimenti " +
-                "Aggiungi proposta di area geografica da menu' iniziale)"); // consiglia a Cicerone la proposta di Luogo
+                " di proposta di nuovo itinerario: l'itinerario necessita di un luogo di svolgimento (altrimenti prova " +
+                "'Aggiungi proposta di area geografica' da menu' iniziale)");
             // se non trova il luogo interessato
         String luogoSelezionato = scanner.nextLine();
-        if(luogoSelezionato.equals("*")){
-            scanner.close();
+        if(luogoSelezionato.equals("*"))
             return null;
-        }
-        itinerario.inserisciToponimo(luoghi.get(Integer.parseInt(luogoSelezionato)));
+        ArrayList<Luogo> luogo = new ArrayList<>();
+        luogo.add(luoghi.get(Integer.parseInt(luogoSelezionato)));
 
         System.out.println("Itinerario aggiunto alle proposte di itinerario, riepilogo: ");
-        System.out.println(itinerario.toString());
-        scanner.close();
-        return new ItinerarioClass(cicerone, );
+        System.out.println(datiItinerario.toString() + tagSelezionato.get(0).toString() + luogo.get(0).getToponimo());
+
+        return new ItinerarioClass(cicerone, datiItinerario.get(0),
+                Integer.parseInt(datiItinerario.get(1)), Integer.parseInt(datiItinerario.get(2)), datiItinerario.get(3),
+                tagSelezionato, luogo);
+    }
+
+    /**
+     * scanner, essendo privato, deve essere chiuso da <code>ConsoleView</code>
+     */
+    public void chiudiScanner() {scanner.close();
     }
 }

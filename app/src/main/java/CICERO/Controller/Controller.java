@@ -64,7 +64,7 @@ public class Controller {
                     if(itinerario == null)
                         break;
                     piattaforma.inserisciItinerario(itinerario);
-                    dbManager.inserisciItinerario(itinerario);
+                    dbManager.inserisciItinerario(itinerario, cicerone);
                 }
 
                 // UC1 - Creazione profilo utente todo da testare, sembra OK

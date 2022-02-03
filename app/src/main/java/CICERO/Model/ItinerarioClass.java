@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ItinerarioClass implements Itinerario{
 
-    private final Cicerone cicerone;
+    private final CiceroneClass cicerone;
     private String nome;
     private int numMinPartecipanti;
     private int numMaxPartecipanti;
@@ -15,7 +15,7 @@ public class ItinerarioClass implements Itinerario{
     private double durata;
     private boolean proposta;
 
-    public ItinerarioClass(Cicerone cicerone, String nome, int numMinPartecipanti, int numMaxPartecipanti, String info,
+    public ItinerarioClass(CiceroneClass cicerone, String nome, int numMinPartecipanti, int numMaxPartecipanti, String info,
                            ArrayList<TagClass> tag, ArrayList<Luogo> toponimi, double durata){
         PiattaformaClass.controlloNull(cicerone, "Cicerone inserito per l'itinerario non valido");
         this.cicerone = cicerone;
@@ -29,7 +29,7 @@ public class ItinerarioClass implements Itinerario{
         this.proposta=true;
     }
 
-    public ItinerarioClass(Cicerone cicerone, String nome, int numMinPartecipanti, int numMaxPartecipanti, String info,
+    public ItinerarioClass(CiceroneClass cicerone, String nome, int numMinPartecipanti, int numMaxPartecipanti, String info,
                            ArrayList<TagClass> tag, ArrayList<Luogo> toponimi){
         PiattaformaClass.controlloNull(cicerone, "Cicerone inserito per l'itinerario non valido");
         this.cicerone = cicerone;
@@ -43,7 +43,7 @@ public class ItinerarioClass implements Itinerario{
         this.proposta=true;
     }
 
-    public ItinerarioClass(Cicerone cicerone, String nome, int numMinPartecipanti, int numMaxPartecipanti,
+    public ItinerarioClass(CiceroneClass cicerone, String nome, int numMinPartecipanti, int numMaxPartecipanti,
                            ArrayList<TagClass> tag, ArrayList<Luogo> toponimi){
         PiattaformaClass.controlloNull(cicerone, "Cicerone inserito per l'itinerario non valido");
         this.cicerone = cicerone;
@@ -57,9 +57,8 @@ public class ItinerarioClass implements Itinerario{
         this.proposta=true;
     }
 
-    @Override
-    public Cicerone getCicerone() {
-        return cicerone;
+    public int getCiceroneId() {
+        return cicerone.getIdCicerone();
     }
 
     @Override
@@ -130,6 +129,10 @@ public class ItinerarioClass implements Itinerario{
     public void inserisciTag(TagClass tag) {
         PiattaformaClass.controlloNull(tag, "tag da inserire non valido");
         this.tag.add(tag);
+    }
+
+    public Cicerone getCicerone() {
+        return this.cicerone;
     }
 
     @Override

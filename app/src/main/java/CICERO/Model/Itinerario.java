@@ -107,7 +107,7 @@ public interface Itinerario {
     void inserisciTag(TagClass tag);
 
     /**
-     * Restituisce il cicerone che fara&agrave; da guida per l'itinerario
+     * Restituisce il cicerone che far&agrave; da guida per l'itinerario
      * @return {@code Cicerone} associato all'itinerario
      */
     Cicerone getCicerone();

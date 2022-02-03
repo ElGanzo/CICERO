@@ -10,14 +10,6 @@ public class ConsoleView {
     private static final Scanner scanner = new Scanner(System.in);
 
     /**
-     * Elimina le precedenti scritte sulla console, cos&igrave; da renderla pi&ugrave; leggibile
-     */
-    private void pulisciConsole() {
-        for(int i = 0; i < 20; i++)
-            System.out.print("\n");
-    }
-
-    /**
      * Stampa la <i>Home</i>, con la possibilit&agrave; di effettuare<br>
      *
      * [1] -> Log in Utente<br>
@@ -81,7 +73,6 @@ public class ConsoleView {
      * @return Lista di <code>String</code> inserite dall'Utente o dal Cicerone (email, password)
      */
     public List<String> getCredenziali() {
-        pulisciConsole();
         List<String> credenziali = new ArrayList<>();
         System.out.print("Email: ");
         String email = scanner.nextLine();
@@ -136,7 +127,6 @@ public class ConsoleView {
      * @param itinerari itinerari presenti sulla Piattaforma
      */
     public void stampaItinerari(ArrayList<Itinerario> itinerari) {
-        pulisciConsole();
         System.out.println("Itinerari: \n");
         int i = 1;
         for (Itinerario itinerario: itinerari){
@@ -158,7 +148,7 @@ public class ConsoleView {
         int j = Integer.parseInt(s);
 
         // visualizza itinerario
-        if( j<=itinerari.size() && j==0 )
+        if( j<=itinerari.size() && j!=0 )
             System.out.println(itinerari.get(j-1).toString());
         else
             return -1;
@@ -177,7 +167,6 @@ public class ConsoleView {
      * @return <code>ItinerarioClass</code> da proporre
      */
     public Itinerario getItinerario(CiceroneClass cicerone, ArrayList<TagClass> tags, ArrayList<Luogo> luoghi) {
-        pulisciConsole();
         System.out.println("    ---     Aggiunta di proposta di un nuovo itinerario     ---");
         ArrayList<String> datiItinerario = new ArrayList<>();
 
@@ -227,7 +216,7 @@ public class ConsoleView {
         if(luogoSelezionato.equals("*"))
             return null;
         ArrayList<Luogo> luogo = new ArrayList<>();
-        luogo.add(luoghi.get(Integer.parseInt(luogoSelezionato)));
+        luogo.add(luoghi.get(Integer.parseInt(luogoSelezionato)-1));
 
         // durata
         System.out.println("Durata in ore dell'itinerario: ");

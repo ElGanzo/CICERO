@@ -12,7 +12,6 @@ public class PiattaformaClass implements Piattaforma {
     private ArrayList<Cicerone> ciceroni;
     private ArrayList<Prenotazione> prenotazioni;
     public static long IDInvitato = 0;
-    public static long IDCiceroni = 0;
     public static int IDLuogo = 0;
 
     public PiattaformaClass() {

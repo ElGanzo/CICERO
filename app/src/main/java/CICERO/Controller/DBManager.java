@@ -24,26 +24,40 @@ public class DBManager {
     }
 
     /**
-     * @param username username dell'Utente
+     * @param email username dell'Utente
      * @param password password dell'Utente
      * @return utente nel DB, <code>null</code> se Utente non &egrave; presente nel DB o i dati Utente non sono giusti
      */
-    public UtenteClass estraiUtente(String username, String password) throws SQLException {
-        String query = "SELECT email, password FROM Utenti WHERE email = '" + username + "' and password = '" + password + "');";
+    public UtenteClass estraiUtente(String email, String password) throws SQLException {
+        String query = "SELECT * FROM Utenti WHERE email = '" + email + "' AND password = '" + password +
+                "' AND verificato = 1;";
         ResultSet resultSet = connectionStatement.executeQuery(query);
-
-        if (resultSet.next())
-            return resultSet.getObject(0, UtenteClass.class);
-        else return null;
+        UtenteClass utente = null;
+        if (resultSet.next()) {
+            String nome = resultSet.getObject(2, String.class);
+            String cognome = resultSet.getObject(3, String.class);
+            String dataNascita = resultSet.getObject(4, String.class);
+            String emai = resultSet.getObject(5, String.class);
+            String passwor = resultSet.getObject(6, String.class);
+            utente = new UtenteClass(nome, cognome, dataNascita, emai, passwor);
+        }
+        return utente;
     }
 
-    public CiceroneClass estraiCicerone(String username, String password) throws SQLException {
-        String query = "SELECT email, password FROM Aziende a WHERE email = '" + username + "' and password = '" + password + "');";
+    public CiceroneClass estraiCicerone(String email, String password) throws SQLException {
+        String query = "SELECT * FROM Aziende WHERE email = '" + email + "' and password = '" + password +
+                "' AND verificato = 1;";
         ResultSet resultSet = connectionStatement.executeQuery(query);
-
-        if (resultSet.next())
-            return resultSet.getObject(0, CiceroneClass.class);
-        else return null;
+        CiceroneClass cicerone = null;
+        if (resultSet.next()) {
+            String ragioneSociale = resultSet.getObject(3, String.class);
+            String partitaIva = resultSet.getObject(2, String.class);
+            String mail = resultSet.getObject(4, String.class);
+            String pw = resultSet.getObject(5, String.class);
+            int id = resultSet.getObject(1, int.class);
+            cicerone = new CiceroneClass(ragioneSociale, partitaIva, mail, pw, id);
+        }
+        return cicerone;
     }
 
     public ArrayList<ItinerarioClass> estraiItinerari() throws SQLException {
@@ -51,7 +65,7 @@ public class DBManager {
                 "t.nome, l.nome, l.citta, l.provincia, l.regione " +
                 "FROM Itinerari i, Ciceroni c, Aziende a, Luoghi l, Tag t, Itinerari_Tag it, Itinerari_Luoghi il " +
                 "WHERE i.id_cicerone = c.id AND c.id_azienda = a.id AND it.id_itinerario = i.id AND it.nome_tag = t.nome " +
-                "AND il.id_itinerario = i.id AND il.id_luogo = l.id AND i.accettato = 1 " +
+                "AND il.id_itinerario = i.id AND il.id_luogo = l.id AND i.approvato = 1 " +
                 "ORDER BY i.nome;";
         ResultSet resultSet = connectionStatement.executeQuery(query);
         ArrayList<ItinerarioClass> result = new ArrayList<>();
@@ -107,7 +121,7 @@ public class DBManager {
     }
 
     public ArrayList<TagClass> estraiTag() throws SQLException {
-        String query = "SELECT * FROM Tag t WHERE accettato = 1;";
+        String query = "SELECT * FROM Tag t WHERE approvato = 1;";
         ResultSet resultSet = connectionStatement.executeQuery(query);
         ArrayList<TagClass> result = new ArrayList<>();
         while (resultSet.next()) {
@@ -118,7 +132,7 @@ public class DBManager {
     }
 
     public ArrayList<LuogoClass> estraiLuoghi() throws SQLException {
-        String query = "SELECT * FROM Luoghi l WHERE accettato = 1;";
+        String query = "SELECT * FROM Luoghi l WHERE approvato = 1;";
         ResultSet resultSet = connectionStatement.executeQuery(query);
         ArrayList<LuogoClass> result = new ArrayList<>();
         LuogoClass luogo;
@@ -150,14 +164,15 @@ public class DBManager {
         connectionStatement.executeUpdate(update);
     }
 
-    public void inserisciItinerario(Itinerario itinerario) throws SQLException {
-        String query = "INSERT INTO Itinerari_proposti ip (nome, id_cicerone, num_min_utenti, num_max_utenti, info) " +
+    public void inserisciItinerario(Itinerario itinerario, CiceroneClass cicerone) throws SQLException {
+        String update = "INSERT INTO Itinerari i (nome, id_cicerone, num_min_utenti," +
+                " num_max_utenti, info, durata_in_ore) " +
                 "VALUES ('" + itinerario.getNome() + "', " +    //titolo itinerario
-                itinerario.getCicerone() + ", " +               //id cicerone (autore itinerario)
+                cicerone.getIdCicerone() + ", " +               //id cicerone (autore itinerario)
                 itinerario.getMinPartecipanti() + ", " +
                 itinerario.getMaxPartecipanti() + ", '" +
                 itinerario.getInfo() + "');";                   //descrizione itinerario
-        connectionStatement.executeQuery(query);
+        connectionStatement.executeUpdate(update);
     }
 
     public void inserisciTag(TagClass tag) throws SQLException {

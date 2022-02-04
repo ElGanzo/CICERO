@@ -1,10 +1,12 @@
 package CICERO.Model;
 
+import java.util.Date;
+
 public class UtenteClass extends CICERO.Model.PersonaClass {
 
     String password;
 
-    public UtenteClass(String nome, String cognome, String dataNascita, String email, String password) {
+    public UtenteClass(String nome, String cognome, Date dataNascita, String email, String password) {
         super(nome, cognome, dataNascita, email);
         PiattaformaClass.controlloNull(password, "Password non valida");
         this.password = password;
@@ -32,7 +34,7 @@ public class UtenteClass extends CICERO.Model.PersonaClass {
         return super.getEmail();
     }
 
-     public String getDataNascita(){
+     public Date getDataNascita(){
         return super.getDataNascita();
      }
 }

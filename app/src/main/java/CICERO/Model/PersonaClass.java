@@ -1,14 +1,14 @@
 package CICERO.Model;
 
-// import java.util.Date;
+import java.util.Date;
 
 public class PersonaClass implements Persona {
     private final String nome;
     private final String cognome;
     private final String email;
-    private final String dataNascita;
+    private final Date dataNascita;
 
-    public PersonaClass(String nome, String cognome, String dataNascita, String email) {
+    public PersonaClass(String nome, String cognome, Date dataNascita, String email) {
         this.nome = nome;
         this.cognome = cognome;
         this.email = email;
@@ -34,7 +34,7 @@ public class PersonaClass implements Persona {
     }
 
     @Override
-    public String getDataNascita() {
+    public Date getDataNascita() {
         return dataNascita;
     }
 }

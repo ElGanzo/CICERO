@@ -2,6 +2,8 @@ package CICERO.Model;
 
 // import java.util.Date;
 
+import java.util.Date;
+
 public interface Persona {
 
     /**
@@ -30,5 +32,5 @@ public interface Persona {
      *
      * @return la data di nascita della persona
      */
-    String getDataNascita();
+    Date getDataNascita();
 }

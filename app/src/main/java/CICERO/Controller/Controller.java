@@ -4,6 +4,7 @@ import CICERO.Model.*;
 import CICERO.View.ConsoleView;
 
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +26,9 @@ public class Controller {
         // effettua la connessione al DB
         dbManager = new DBManager("jdbc:mysql://104.248.18.55:3306/TogepiDB", "Mikez", "TogepiMikez");
         inizializzaPiattaforma();
-        int i = 1;
+        int i;
 
-        while(i!=0) {
+        do {
 
             i = consoleView.stampaHome();
 
@@ -39,7 +40,11 @@ public class Controller {
                     // acquisisco le credenziali
                     List<String> credenziali = consoleView.getCredenziali();
                     // autentico l'Utente
-                    UtenteClass utente = logInUtente(credenziali.get(0), credenziali.get(1));
+                    UtenteClass utente = dbManager.estraiUtente(credenziali.get(0), credenziali.get(1));
+                    if(utente == null) {
+                        consoleView.stampaErroriCredenziali();
+                        break;
+                    }
                     consoleView.stampaItinerari(piattaforma.getItinerari());
 
                     // UC3 - Prenotazione todo da controllare nMin/nMax partecipanti
@@ -57,7 +62,11 @@ public class Controller {
                     List<String> credenziali = consoleView.getCredenziali();
 
                     // autentico il Cicerone (profilo aziendale)
-                    CiceroneClass cicerone = logInCicerone(credenziali.get(0), credenziali.get(1));
+                    CiceroneClass cicerone = dbManager.estraiCicerone(credenziali.get(0), credenziali.get(1));
+                    if(cicerone == null) {
+                        consoleView.stampaErroriCredenziali();
+                        break;
+                    }
 
                     // UC2 - Aggiungi proposta di itinerario todo da testare sembra OK
                     Itinerario itinerario = consoleView.getItinerario(cicerone, piattaforma.getTag(), piattaforma.getLuoghi());
@@ -80,13 +89,14 @@ public class Controller {
 
                 // termina programma Cicero
                 case 0:
+                    consoleView.stampaArrivederci();
                     consoleView.chiudiScanner();
                     System.exit(0);
 
                 default:
                     throw new IllegalStateException("Carattere inserito non valido: " + i + "\n\n");
             }
-        }
+        }while(i!=0);
         consoleView.chiudiScanner();
     }
 
@@ -96,7 +106,7 @@ public class Controller {
      * @param itinerarioSelezionato numero stampato a video e selezionato dall'Utente che indica un Itinerario
      * @throws NullPointerException se utente &egrave; <code>null</code>
      */
-    private void prenotazione(UtenteClass utente, int itinerarioSelezionato) throws SQLException {
+    private void prenotazione(UtenteClass utente, int itinerarioSelezionato) throws SQLException, ParseException, Exception {
         PiattaformaClass.controlloNull(utente, "Un utente inesistente non puo' prenotare...");
         Itinerario itinerario = piattaforma.getItinerari().get(itinerarioSelezionato);
         ArrayList<InvitatoClass> invitati;
@@ -121,51 +131,5 @@ public class Controller {
         for (ItinerarioClass itinerario: dbManager.estraiItinerari()){
             piattaforma.inserisciItinerario(itinerario);
         }
-    }
-
-    /**
-     * Esegue l'accesso di <code>CiceroneClass</code> nella <code>PiattaformaClass</code>
-     * @param email email del Cicerone
-     * @param password password del Cicerone
-     * @return <code>CiceroneClass</code> se presente nel DB, altrimenti richiede di nuovo le credenziali
-     */
-    private CiceroneClass logInCicerone(String email, String password) throws SQLException {
-
-        // Chiedi al db se email e password utente esistono
-        CiceroneClass cicerone = dbManager.estraiCicerone(email, password);
-
-        // se presenti nel DB allora l'autentico
-        while (cicerone == null) {
-            System.out.println("Username o password sbagliati, profilo aziendale non presente nel DB");
-            List<String> app = consoleView.getCredenziali();
-            cicerone = logInCicerone(app.get(0), app.get(1));
-        }
-
-        // ... e restituisco il cicerone, come conferma che
-        return cicerone;
-    }
-
-    /**
-     * Se l'Utente esiste, ovvero &egrave; presente nel DB, esegui l'accesso
-     * e restituisce l'oggetto UtenteClass
-     *
-     * @param email nome utente di Utente
-     * @param password password di Utente
-     * @return profilo Utente
-     */
-    private UtenteClass logInUtente(String email, String password) throws SQLException {
-
-        // Chiedi al db se email e password utente esistono
-        UtenteClass utente = dbManager.estraiUtente(email, password);
-
-        // se presenti nel DB allora l'autentico todo da migliorare se Utente sbaglia
-        while (utente == null) {
-            System.out.println("Username o password sbagliati");
-            List<String> app = consoleView.getCredenziali();
-            utente = logInUtente(app.get(0), app.get(1));
-        }
-
-        // return UtenteClass se esiste, errore se non esiste
-        return utente;
     }
 }

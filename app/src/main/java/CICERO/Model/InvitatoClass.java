@@ -1,5 +1,7 @@
 package CICERO.Model;
 
+import java.util.Date;
+
 /**
  * Rappresenta una persona invitata a un certo itinerario:<br> <b>QUEST'OGGETTO VERR&Agrave; DISTRUTTO UNA VOLTA
  * CONCLUSO L'ITINERARIO</b>
@@ -10,7 +12,7 @@ public class InvitatoClass extends PersonaClass {
     private boolean haAccettato;
     private long idItinerario; // todo sostituire con idPrenotazione (regolarsi con il DB)
 
-    public InvitatoClass(String nome, String cognome, String email, String dataNascita) {
+    public InvitatoClass(String nome, String cognome, String email, Date dataNascita) {
         super(nome, cognome, dataNascita, email);
         idInvitato = PiattaformaClass.IDInvitato++;
     }

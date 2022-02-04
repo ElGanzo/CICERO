@@ -1,13 +1,20 @@
 package CICERO.View;
 import CICERO.Model.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleView {
 
-    private static final Scanner scanner = new Scanner(System.in);
+    private static Scanner scanner;
+
+    public ConsoleView(){
+        scanner = new Scanner(System.in);
+    }
 
     /**
      * Stampa la <i>Home</i>, con la possibilit&agrave; di effettuare<br>
@@ -34,7 +41,8 @@ public class ConsoleView {
 
         String s = scanner.nextLine();
         s = checkSingleCharacter(s, "0", "1", "2", "3");
-        return Integer.parseInt(s);
+        int i = Integer.parseInt(s);
+        return i;
     }
 
     /**
@@ -80,7 +88,7 @@ public class ConsoleView {
         credenziali.add(0, email);
         System.out.print("\nPassword: ");
         String password = scanner.nextLine();
-        PiattaformaClass.controlloNull(password, "Password");
+        PiattaformaClass.controlloNull(password, "Password non valida");
         credenziali.add(1, password);
         return credenziali;
     }
@@ -89,7 +97,7 @@ public class ConsoleView {
      * Richiede all'utente tutti i dati necessari per la creazione di un Profilo Utente
      * @return <code>Utente</code> se i dati vengono confermati, <code>null</code> altrimenti
      */
-    public UtenteClass creazioneProfiloUtente() {
+    public UtenteClass creazioneProfiloUtente() throws ParseException {
         ArrayList<String> datiUtente = new ArrayList<>();
         String s;
         System.out.println("--- Creazione nuovo profilo utente --- ");
@@ -104,11 +112,11 @@ public class ConsoleView {
             throw new NullPointerException("Cognome null non valido");
         datiUtente.add(1, s);
         System.out.println("Data di nascita (AAAA-MM-GG): ");
-        datiUtente.add(2, scanner.nextLine());
+        Date dataNascita= new SimpleDateFormat("yyyy/MM/dd").parse(scanner.nextLine());
         System.out.println("Email: ");
-        datiUtente.add(3, scanner.nextLine());
+        datiUtente.add(2, scanner.nextLine());
         System.out.println("Password: ");
-        datiUtente.add(4, scanner.nextLine());
+        datiUtente.add(3, scanner.nextLine());
 
 
         System.out.println(datiUtente);
@@ -116,7 +124,7 @@ public class ConsoleView {
         s = scanner.nextLine();
         s = checkSingleCharacter(s, "Y", "N", "0", "y", "n");
         if(s.equals("Y") || s.equals("y")){
-            return new UtenteClass(datiUtente.get(0),datiUtente.get(1), datiUtente.get(2), datiUtente.get(3), datiUtente.get(4));
+            return new UtenteClass(datiUtente.get(0),datiUtente.get(1), dataNascita, datiUtente.get(2), datiUtente.get(3));
         }
         System.out.println("Creazione profilo Utente annullata.");
         return null;
@@ -237,7 +245,13 @@ public class ConsoleView {
     public void chiudiScanner() {scanner.close();
     }
 
-    public ArrayList<InvitatoClass> richiediInvitati(int minPartecipanti, int maxPartecipanti) {
+    /**
+     * Chiede a <code>Utente</code>, che prenota un itinerario, la lista degli invitati
+     * @param minPartecipanti minimo numero di <code>PersonaClass</code> che devono partecipare all'Itinerario
+     * @param maxPartecipanti massimo numero di <code>PersonaClass</code> che possono partecipare all'Itinerario
+     * @return lista delle <code>PersonaClass</code> invitati
+     */
+    public ArrayList<InvitatoClass> richiediInvitati(int minPartecipanti, int maxPartecipanti) throws ParseException {
         // info itinerario
         System.out.println("Numero minimo di partecipanti previsto per l'itinerario: " +minPartecipanti);
         System.out.println("Numero massimo di partecipanti previsto per l'itinerario: " +maxPartecipanti);
@@ -270,12 +284,23 @@ public class ConsoleView {
             System.out.print("Email: ");
             datiInvitato.add(2,scanner.nextLine());
             System.out.print("Data di nascita (AAAA-MM-GG): ");
-            datiInvitato.add(3,scanner.nextLine());
+            Date dataNascita= new SimpleDateFormat("yyyy/MM/dd").parse(scanner.nextLine());
             InvitatoClass invitato = new InvitatoClass(datiInvitato.get(0),
-                    datiInvitato.get(1), datiInvitato.get(2), datiInvitato.get(3));
+                    datiInvitato.get(1), datiInvitato.get(2), dataNascita);
             invitati.add(invitato);
             i++;
         }
         return invitati;
+    }
+
+    /**
+     * Messaggio di errore quando l'<code>Utente</code> fornisce credenziali non valide
+     */
+    public void stampaErroriCredenziali() {
+        System.out.println("Email o password sbagliati...");
+    }
+
+    public void stampaArrivederci() {
+        System.out.println("\nAlla prossima!");
     }
 }

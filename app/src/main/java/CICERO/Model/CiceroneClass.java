@@ -27,6 +27,10 @@ public class CiceroneClass implements Cicerone {
         this.passwordAzienda = passwordAzienda;
     }
 
+    /**
+     * Costruttore per eseguire query con DB
+     *      @param idCicerone    id corrispondente nel DB
+     */
     public CiceroneClass(String ragioneSociale, String partitaIVA, String emailAzienda,
                          String passwordAzienda, int idCicerone) {
         PiattaformaClass.controlloNull(ragioneSociale, "Ragione sociale non valida");
@@ -50,6 +54,10 @@ public class CiceroneClass implements Cicerone {
             return this.idCicerone;
         }
         return -1;
+    }
+
+    public String getEmail() {
+        return this.emailAzienda;
     }
 
     @Override

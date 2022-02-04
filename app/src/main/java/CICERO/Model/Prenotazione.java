@@ -1,6 +1,8 @@
 package CICERO.Model;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Rappresenta una prenotazione da parte di un Utente ad un itinerario, con tanto di eventuali Invitati
@@ -10,7 +12,11 @@ public class Prenotazione {
     public Itinerario itinerario;
     public Persona utente;
     public ArrayList<InvitatoClass> invitati;
-    public String data;//todo sviluppare in futuro (?) anche scadenza ecc...
+    //i seguenti servono solamente in formato String, non serve veramente l'oggetto Date o Time
+    public Date dataInizio;
+    public Time orarioInizio;
+    public Date dataScadenzaPrenotazione;
+    public Date dataScadenzaPagamento;
 
     public Prenotazione(Itinerario itinerario, Persona utente, ArrayList<InvitatoClass> invitati) {
         PiattaformaClass.controlloNull(itinerario, "Prenotazione senza itinerario non valida");
@@ -21,8 +27,32 @@ public class Prenotazione {
         this.invitati = invitati;
     }
 
+    public Time getOrarioInizio() {
+        return this.orarioInizio;
+    }
+
+    public String getData() {
+        return this.dataInizio.toString();
+    }
+
+    public Date getDataScadenzaPrenotazione() {
+        return this.dataScadenzaPrenotazione;
+    }
+
+    public Date getDataScadenzaPagamento() {
+        return this.dataScadenzaPagamento;
+    }
+
+    public int getNumPartecipanti() {
+        return this.invitati.size() + 1;
+    }
+
     public Itinerario getItinerario() {
         return this.itinerario;
+    }
+
+    public Cicerone getCicerone() {
+        return this.itinerario.getCicerone();
     }
 
     public Persona getUtente() {
@@ -37,9 +67,6 @@ public class Prenotazione {
 //        return emails;
 //    } todo sviluppare in futuro
 
-    public String getData() {
-        return this.data;
-    }
 
     // todo aggiungere eventuali metodi setter
 

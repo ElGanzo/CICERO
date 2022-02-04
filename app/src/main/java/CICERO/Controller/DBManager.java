@@ -3,6 +3,8 @@ package CICERO.Controller;
 import CICERO.Model.*;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 /**
@@ -24,7 +26,7 @@ public class DBManager {
     }
 
     /**
-     * @param email username dell'Utente
+     * @param email    username dell'Utente
      * @param password password dell'Utente
      * @return utente nel DB, <code>null</code> se Utente non &egrave; presente nel DB o i dati Utente non sono giusti
      */
@@ -176,14 +178,43 @@ public class DBManager {
     }
 
     public void inserisciTag(TagClass tag) throws SQLException {
-        String query = "INSERT INTO Tag t (nome) VALUES ('" + tag.toString() + "');";
-        connectionStatement.executeQuery(query);
+        String update = "INSERT INTO Tag t (nome) VALUES ('" + tag.toString() + "');";
+        connectionStatement.executeUpdate(update);
     }
 
-    public void inserisciPrenotazione(Prenotazione prenotazione) throws SQLException {
-        String update = "INSERT INTO Prenotazioni VALUES (id_itinerario, id_utente, n_partecipanti," +
-                "data_inizio, orario_inizio, data_scadenza_prenotazione, data_scadenza_pagamento ";
+    public void inserisciPrenotazione(Prenotazione prenotazione) throws SQLException, Exception {
 
+        int idItinerario;
+        int idUtente;
+        String iQuery = "SELECT i.id " +
+                "FROM Itinerari i " +
+                "WHERE i.nome = '" +
+                prenotazione.itinerario.getNome() + "';";
+        ResultSet itinerarioQuery = connectionStatement.executeQuery(iQuery);
+        if (itinerarioQuery.next()) {
+            idItinerario = itinerarioQuery.getObject(1, int.class);
+        } else throw new Exception("Itinerario non trovato");
+        String uQuery = "SELECT u.id " +
+                "FROM Utenti u " +
+                "WHERE u.email = '" +
+                prenotazione.utente.getEmail() + "';";
+        ResultSet utenteQuery = connectionStatement.executeQuery(uQuery);
+        if (utenteQuery.next()) {
+            idUtente = itinerarioQuery.getObject(1, int.class);
+        } else throw new Exception("Utente non trovato");
+
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm:ss");
+        String update;
+        update = "INSERT INTO Prenotazioni VALUES (id_itinerario, id_utente, n_partecipanti, " +
+                "data_inizio, orario_inizio, data_scadenza_prenotazione, data_scadenza_pagamento) " +
+                "VALUES (" + idItinerario + ", " +
+                idUtente + ", " +
+                prenotazione.getNumPartecipanti() + ", '" +
+                dateFormatter.format(prenotazione.getData()) + "', '" +
+                timeFormatter.format(prenotazione.getOrarioInizio()) + "', '" +
+                dateFormatter.format(prenotazione.getDataScadenzaPrenotazione()) + "', '" +
+                dateFormatter.format(prenotazione.getDataScadenzaPagamento()) + "');";
         connectionStatement.executeUpdate(update);
     }
 

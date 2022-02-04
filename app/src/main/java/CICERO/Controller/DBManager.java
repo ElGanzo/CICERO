@@ -3,9 +3,10 @@ package CICERO.Controller;
 import CICERO.Model.*;
 
 import java.sql.*;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Classe per interfacciarsi con il DB
@@ -15,8 +16,7 @@ public class DBManager {
     Connection connection;
     Statement connectionStatement;
 
-//    private String pattern = "yyyy-mm-dd";
-//    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+    private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public DBManager(String url, String user, String password) throws Exception {
 
@@ -30,7 +30,8 @@ public class DBManager {
      * @param password password dell'Utente
      * @return utente nel DB, <code>null</code> se Utente non &egrave; presente nel DB o i dati Utente non sono giusti
      */
-    public UtenteClass estraiUtente(String email, String password) throws SQLException {
+    public UtenteClass estraiUtente(String email, String password) throws SQLException, ParseException {
+
         String query = "SELECT * FROM Utenti WHERE email = '" + email + "' AND password = '" + password +
                 "' AND verificato = 1;";
         ResultSet resultSet = connectionStatement.executeQuery(query);
@@ -38,10 +39,10 @@ public class DBManager {
         if (resultSet.next()) {
             String nome = resultSet.getObject(2, String.class);
             String cognome = resultSet.getObject(3, String.class);
-            String dataNascita = resultSet.getObject(4, String.class);
-            String emai = resultSet.getObject(5, String.class);
-            String passwor = resultSet.getObject(6, String.class);
-            utente = new UtenteClass(nome, cognome, dataNascita, emai, passwor);
+            Date dataNascita = simpleDateFormat.parse(resultSet.getObject(4, String.class));
+            String mail = resultSet.getObject(5, String.class);
+            String pw = resultSet.getObject(6, String.class);
+            utente = new UtenteClass(nome, cognome, dataNascita, mail, pw);
         }
         return utente;
     }
@@ -149,13 +150,6 @@ public class DBManager {
         return result;
     }
 
-    //TODO eliminare
-    public boolean utenteEsiste(UtenteClass utente) throws SQLException {
-        String query = "SELECT COUNT(u_id) FROM Utenti WHERE nome = '" + utente.getEmail() + "' GROUP BY u_id;";
-        ResultSet resultSet = connectionStatement.executeQuery(query);
-        return resultSet.getObject(0, int.class) > 0;
-    }
-
     public void inserisciNuovoUtente(UtenteClass utente) throws SQLException {
         String update = "INSERT INTO Utenti u (nome, cognome, d_nascita, email, password) " +
                 "VALUES ('" + utente.getNome() + "', '" +
@@ -182,7 +176,7 @@ public class DBManager {
         connectionStatement.executeUpdate(update);
     }
 
-    public void inserisciPrenotazione(Prenotazione prenotazione) throws SQLException, Exception {
+    public void inserisciPrenotazione(Prenotazione prenotazione) throws Exception {
 
         int idItinerario;
         int idUtente;
@@ -193,7 +187,7 @@ public class DBManager {
         ResultSet itinerarioQuery = connectionStatement.executeQuery(iQuery);
         if (itinerarioQuery.next()) {
             idItinerario = itinerarioQuery.getObject(1, int.class);
-        } else throw new Exception("Itinerario non trovato");
+        } else throw new Exception("Itinerario non trovato nel Database");
         String uQuery = "SELECT u.id " +
                 "FROM Utenti u " +
                 "WHERE u.email = '" +

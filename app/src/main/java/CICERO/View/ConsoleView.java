@@ -111,7 +111,7 @@ public class ConsoleView {
         if(s==null)
             throw new NullPointerException("Cognome null non valido");
         datiUtente.add(1, s);
-        System.out.println("Data di nascita (AAAA-MM-GG): ");
+        System.out.println("Data di nascita (AAAA/MM/GG): ");
         Date dataNascita= new SimpleDateFormat("yyyy/MM/dd").parse(scanner.nextLine());
         System.out.println("Email: ");
         datiUtente.add(2, scanner.nextLine());
@@ -119,7 +119,7 @@ public class ConsoleView {
         datiUtente.add(3, scanner.nextLine());
 
 
-        System.out.println(datiUtente);
+        System.out.println(datiUtente +", " +dataNascita);
         System.out.println("Confermare questi dati? [Y] per confermare, qualsiasi altro tasto per annullare...");
         s = scanner.nextLine();
         s = checkSingleCharacter(s, "Y", "N", "0", "y", "n");
@@ -283,7 +283,7 @@ public class ConsoleView {
             datiInvitato.add(1,scanner.nextLine());
             System.out.print("Email: ");
             datiInvitato.add(2,scanner.nextLine());
-            System.out.print("Data di nascita (AAAA-MM-GG): ");
+            System.out.print("Data di nascita (AAAA/MM/GG): ");
             Date dataNascita= new SimpleDateFormat("yyyy/MM/dd").parse(scanner.nextLine());
             InvitatoClass invitato = new InvitatoClass(datiInvitato.get(0),
                     datiInvitato.get(1), datiInvitato.get(2), dataNascita);

@@ -135,7 +135,7 @@ public class DBManager {
     }
 
     public ArrayList<LuogoClass> estraiLuoghi() throws SQLException {
-        String query = "SELECT * FROM Luoghi l WHERE approvato = 1;";
+        String query = "SELECT * FROM Luoghi WHERE approvato = 1;";
         ResultSet resultSet = connectionStatement.executeQuery(query);
         ArrayList<LuogoClass> result = new ArrayList<>();
         LuogoClass luogo;
@@ -151,17 +151,17 @@ public class DBManager {
     }
 
     public void inserisciNuovoUtente(UtenteClass utente) throws SQLException {
-        String update = "INSERT INTO Utenti u (nome, cognome, d_nascita, email, password) " +
+        String update = "INSERT INTO Utenti (nome, cognome, d_nascita, email, password) " +
                 "VALUES ('" + utente.getNome() + "', '" +
                 utente.getCognome() + "', '" +
-                utente.getDataNascita() + "', '" +
+                simpleDateFormat.format(utente.getDataNascita()) + "', '" +
                 utente.getEmail() + "', '" +
                 utente.getPassword() + "');";
         connectionStatement.executeUpdate(update);
     }
 
     public void inserisciItinerario(Itinerario itinerario, CiceroneClass cicerone) throws SQLException {
-        String update = "INSERT INTO Itinerari i (nome, id_cicerone, num_min_utenti," +
+        String update = "INSERT INTO Itinerari (nome, id_cicerone, num_min_utenti," +
                 " num_max_utenti, info, durata_in_ore) " +
                 "VALUES ('" + itinerario.getNome() + "', " +    //titolo itinerario
                 cicerone.getIdCicerone() + ", " +               //id cicerone (autore itinerario)
@@ -172,7 +172,7 @@ public class DBManager {
     }
 
     public void inserisciTag(TagClass tag) throws SQLException {
-        String update = "INSERT INTO Tag t (nome) VALUES ('" + tag.toString() + "');";
+        String update = "INSERT INTO Tag (nome) VALUES ('" + tag.toString() + "');";
         connectionStatement.executeUpdate(update);
     }
 

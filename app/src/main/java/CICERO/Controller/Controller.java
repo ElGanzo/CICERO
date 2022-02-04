@@ -106,7 +106,7 @@ public class Controller {
      * @param itinerarioSelezionato numero stampato a video e selezionato dall'Utente che indica un Itinerario
      * @throws NullPointerException se utente &egrave; <code>null</code>
      */
-    private void prenotazione(UtenteClass utente, int itinerarioSelezionato) throws SQLException, ParseException, Exception {
+    private void prenotazione(UtenteClass utente, int itinerarioSelezionato) throws Exception {
         PiattaformaClass.controlloNull(utente, "Un utente inesistente non puo' prenotare...");
         Itinerario itinerario = piattaforma.getItinerari().get(itinerarioSelezionato);
         ArrayList<InvitatoClass> invitati;

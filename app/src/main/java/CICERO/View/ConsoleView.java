@@ -171,14 +171,17 @@ public class ConsoleView {
     }
 
     /**
-     * Chiede tutte le info riguardanti un itinerario al Cicerone
+     * Chiede tutte le info riguardanti un itinerario al Cicerone.<br>
+     *
+     * Inizialmente si pu&ograve; assegnare all'itinerario proposto solo un luogo e un tag,
+     * in una seconda fase verranno aggiunti ulteriori luoghi e/o tag se necessario
+     *
      * @return <code>ItinerarioClass</code> da proporre
      */
-    public Itinerario getItinerario(CiceroneClass cicerone, ArrayList<TagClass> tags, ArrayList<Luogo> luoghi) {
+    public Itinerario getItinerario(CiceroneClass cicerone, ArrayList<TagClass> listaTag, ArrayList<Luogo> luoghi) {
         System.out.println("    ---     Aggiunta di proposta di un nuovo itinerario     ---");
         ArrayList<String> datiItinerario = new ArrayList<>();
 
-        // prendiamo gli input per buoni
         // nome
         System.out.print("\nNome itinerario: ");
         datiItinerario.add(0, scanner.nextLine());
@@ -194,44 +197,33 @@ public class ConsoleView {
         datiItinerario.add(3, scanner.nextLine());
 
         // tag
-        System.out.println("\nAggiungi dei tag disponibili o proposta di nuovi tag");
-        System.out.println("Tag disponibili:");
-        int i = 1;
-        for (TagClass tag: tags) {
-            System.out.println("["+i+"]"+" -> "+ tag);
-            i++;
-        }
-        System.out.println(" [ * ] -> Nessun tag da inserire");
+        System.out.println("\nAggiungi un tag all'itinerario, inserisci il nome del tag che vuoi aggiungere oppure" +
+                "[ * ] per nessun tag");
         String s = scanner.nextLine();
-        ArrayList<TagClass> tagSelezionato = new ArrayList<>();
-        if(!s.equals("*"))
-            if(s.equals("0"))   // in futuro potra' aggiungere altri tags dopo che l'itinerario e' stato approvato
-                tagSelezionato.add(tags.get(Integer.parseInt(s)));
+        TagClass tagSelezionato = null;
+        if(!s.equals("*")) {    // se Cicerone vuole aggiungere un tag
+            TagClass app = new TagClass(s);
+            app.setProposta(false); // se sta nella lista dei tag non e' una proposta ma e' valido
+            // cerca il tag inserito dall'Utente all'interno dei tag disponibili
+            tagSelezionato = (listaTag.get(listaTag.indexOf(app)));
+            if(tagSelezionato == null)
+                System.out.println("Tag inserito non presente, non verra' aggiunto nessun tag all'itinerario proposto");
+        }
 
         // luoghi
-        System.out.println("Aggiungi dei luoghi contrassegnati con dei toponimi: ");
-        int j = 1;
-        for (Luogo luogo: luoghi){
-            System.out.println("["+j+"] -> "+luogo.getToponimo());
-            j++;
-        }
-        // consiglia a Cicerone la proposta di Luogo
-        System.out.println("[ * ] -> toponimo non disponibile tra quelli mostrati --- ATTENZIONE: annulla l'aggiunta" +
-                " di proposta di nuovo itinerario: l'itinerario necessita di un luogo di svolgimento (altrimenti prova " +
-                "'Aggiungi proposta di area geografica' da menu' iniziale)");
-            // se non trova il luogo interessato
-        String luogoSelezionato = scanner.nextLine();
-        if(luogoSelezionato.equals("*"))
-            return null;
-        ArrayList<Luogo> luogo = new ArrayList<>();
-        luogo.add(luoghi.get(Integer.parseInt(luogoSelezionato)-1));
+        LuogoClass luogo = richiediLuogo();
+        do{
+            if(!luoghi.contains(luogo))
+                System.out.println("Luogo inserito non trovato... Riprovare oppure premere 0");
+            s = scanner.nextLine();
+        }while(!luoghi.contains(luogo) || s.equals("0") || luogo == null);
 
         // durata
         System.out.println("Durata in ore dell'itinerario: ");
         double durata = scanner.nextDouble();
 
         System.out.println("Itinerario aggiunto alle proposte di itinerario, riepilogo: ");
-        System.out.println(datiItinerario + tagSelezionato.get(0).toString() + luogo.get(0).getToponimo() +
+        System.out.println(datiItinerario + tagSelezionato.toString() + luogo.getToponimo() +
                 " durata in ore: "+durata);
 
         return new ItinerarioClass(cicerone, datiItinerario.get(0),
@@ -239,17 +231,49 @@ public class ConsoleView {
                 tagSelezionato, luogo, durata);
     }
 
+    private LuogoClass richiediLuogo() {
+        LuogoClass luogo;
+
+            String regione;
+            System.out.println("Regione in cui si svolgera' l'itinerario (ATTENZIONE: regione obbligatoria): ");
+            regione = scanner.nextLine();
+            if(regione == null) {
+                System.out.println("Itinerario invalido senza luogo di svolgimento... Proposta di itinerario annullata ");
+                return null;    // todo testare
+            }
+            System.out.println("\n[invio] -> ignora le provincia, citta' e luogo \n)");
+            String provincia;
+            System.out.println("Sigla della provincia in cui si svolgera' l'itinerario: ");
+            provincia = scanner.nextLine();
+            if(provincia != null){
+                String citta;
+                System.out.println("Citta in cui si svolgera' l'itinerario (invio per terminare) : ");
+                citta = scanner.nextLine();
+                if( citta != null){
+                    String luogoString;
+                    System.out.println("Luogo in cui si svolgera' l'itinerario (invio per terminare) : ");
+                    luogoString = scanner.nextLine();
+                    luogo = new LuogoClass(luogoString, citta, provincia, regione);  // luogo ok anche se null
+                }
+                luogo = new LuogoClass(null, null, provincia, regione);
+            }
+            luogo = new LuogoClass(null, null, null, regione);
+            // ricercare il luogo nella lista dei luoghi
+        luogo.luogoAccettato();
+        return luogo;
+    }
+
     /**
-     * scanner, essendo privato, deve essere chiuso da <code>ConsoleView</code>
+     * scanner deve essere chiuso da <code>ConsoleView</code> perch&egrave; questa &egrave; la classe che si occupa delle stampe
      */
     public void chiudiScanner() {scanner.close();
     }
 
     /**
-     * Chiede a <code>Utente</code>, che prenota un itinerario, la lista degli invitati
-     * @param minPartecipanti minimo numero di <code>PersonaClass</code> che devono partecipare all'Itinerario
-     * @param maxPartecipanti massimo numero di <code>PersonaClass</code> che possono partecipare all'Itinerario
-     * @return lista delle <code>PersonaClass</code> invitati
+     * Chiede a Utente, che prenota un itinerario, la lista degli invitati
+     * @param minPartecipanti minimo numero di persone che devono partecipare all'Itinerario
+     * @param maxPartecipanti massimo numero di PersonaClass che possono partecipare all'Itinerario
+     * @return lista degli invitati
      */
     public ArrayList<InvitatoClass> richiediInvitati(int minPartecipanti, int maxPartecipanti) throws ParseException {
         // info itinerario
@@ -294,7 +318,7 @@ public class ConsoleView {
     }
 
     /**
-     * Messaggio di errore quando l'<code>Utente</code> fornisce credenziali non valide
+     * Messaggio di errore quando <code>Utente</code> o <code>Cicerone</code> fornisce credenziali non valide
      */
     public void stampaErroriCredenziali() {
         System.out.println("Email o password sbagliati...");

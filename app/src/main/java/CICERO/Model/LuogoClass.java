@@ -12,10 +12,7 @@ public class LuogoClass implements Luogo {
     private boolean proposta;
 
     public LuogoClass(String luogo, String citta, String provincia, String regione){
-        PiattaformaClass.controlloNull(luogo, "Il luogo deve essere specificato");
-        PiattaformaClass.controlloNull(citta, "La citta' deve essere specificata");
-        PiattaformaClass.controlloNull(provincia, "La provincia deve essere specificata");
-        PiattaformaClass.controlloNull(regione, "La regione deve essere specificata");
+        PiattaformaClass.controlloNull(regione, "Almeno la regione deve essere specificata");
         this.luogo = luogo;
         this.citta = citta;
         this.provincia = provincia;
@@ -31,5 +28,12 @@ public class LuogoClass implements Luogo {
     @Override
     public boolean proposta() {
         return this.proposta;
+    }
+
+    /**
+     * Un luogo passa da essere proposta ad essere disponibile, quindi proposta==false, ovvero il luogo &egrave; stato accettato
+     */
+    public void luogoAccettato(){
+        this.proposta = false;
     }
 }

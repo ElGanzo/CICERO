@@ -15,7 +15,7 @@ public class ItinerarioClass implements Itinerario {
     private List<Luogo> luoghi;
     private Luogo luogo;
     private double durata;
-    private boolean proposta;
+    private final boolean proposta;
 
     /**
      * Rappresenta un itinerario.
@@ -70,18 +70,6 @@ public class ItinerarioClass implements Itinerario {
         this.proposta = true;
     }
 
-    // qui era stato fatto overloading: una versione di ItinerarioClass senza durata
-    // e un'altra senza info
-
-    /**
-     * Restituisce l'ID del Cicerone che si occupa dell'itinerario.
-     * 
-     * @return l'ID del Cicerone che si occupa dell'itinerario.
-     */
-    public int getCiceroneId() {
-        return cicerone.getIdCicerone();
-    }
-
     @Override
     public double getDurata() {
         return durata;
@@ -99,12 +87,12 @@ public class ItinerarioClass implements Itinerario {
 
     @Override
     public List<TagClass> getTags() {
-        return this.tag;
+        return this.listaTag;
     }
 
     @Override
     public List<Luogo> getToponimi() {
-        return toponimi;
+        return this.luoghi;
     }
 
     @Override
@@ -147,13 +135,13 @@ public class ItinerarioClass implements Itinerario {
     @Override
     public void inserisciToponimo(Luogo toponimo) {
         PiattaformaClass.controlloNull(toponimo, "Toponimo inserito non valido");
-        toponimi.add(toponimo);
+        this.luoghi.add(toponimo);
     }
 
     @Override
     public void inserisciTag(TagClass tag) {
         PiattaformaClass.controlloNull(tag, "tag da inserire non valido");
-        this.tag.add(tag);
+        this.listaTag.add(tag);
     }
 
     public Cicerone getCicerone() {

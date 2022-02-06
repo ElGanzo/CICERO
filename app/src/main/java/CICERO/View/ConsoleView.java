@@ -40,9 +40,8 @@ public class ConsoleView {
         System.out.println("[0] -> Termina programma Cicero");
 
         String s = scanner.nextLine();
-        s = checkSingleCharacter(s, "0", "1", "2", "3");
-        int i = Integer.parseInt(s);
-        return i;
+        s = checkCharacters(s, "0", "1", "2", "3");
+        return Integer.parseInt(s);
     }
 
     /**
@@ -51,10 +50,10 @@ public class ConsoleView {
      * @param values valori da controllare all'interno di s
      * @return stringa corretta se inserimento iniziale non andato a buon fine
      */
-    private String checkSingleCharacter(String s, String ... values) {
-        while(isNotValidCharacter(s, values)) {
+    private String checkCharacters(String s, String ... values) {
+        while(invalidString(s, values)) {
             s = null;
-            System.out.println("Carattere inserito non valido, ritenta oppure premi '0' per uscire ");
+            System.out.println("Carattere inserito non valido, ritenta");
             s = scanner.nextLine();
         }
         return s;
@@ -66,7 +65,7 @@ public class ConsoleView {
      * @param s stringa su cui effettuare il controllo
      * @return <code>false</code> se il carattere inserito &egrave; corretto, <code>true</code> se il carattere &egrave; presente
      */
-    private boolean isNotValidCharacter(String s, String ... values) {
+    private boolean invalidString(String s, String ... values) {
         if(s.length()<1)
             return true;
         for (String x: values){
@@ -122,7 +121,7 @@ public class ConsoleView {
         System.out.println(datiUtente +", " +dataNascita);
         System.out.println("Confermare questi dati? [Y] per confermare, qualsiasi altro tasto per annullare...");
         s = scanner.nextLine();
-        s = checkSingleCharacter(s, "Y", "N", "0", "y", "n");
+        s = checkCharacters(s, "Y", "N", "0", "y", "n");
         if(s.equals("Y") || s.equals("y")){
             return new UtenteClass(datiUtente.get(0),datiUtente.get(1), dataNascita, datiUtente.get(2), datiUtente.get(3));
         }
@@ -164,7 +163,7 @@ public class ConsoleView {
         // prenotazione itinerario
         System.out.println("Prenotare l'itinerario? [Y]es / [N]o");
         s = scanner.nextLine();
-        s = checkSingleCharacter(s, "Y", "N", "0", "y", "n");
+        s = checkCharacters(s, "Y", "N", "0", "y", "n");
         if(s.equals("Y") || s.equals("y"))
             return j;
         return -1;
@@ -180,21 +179,27 @@ public class ConsoleView {
      */
     public Itinerario getItinerario(CiceroneClass cicerone, ArrayList<TagClass> listaTag, ArrayList<Luogo> luoghi) {
         System.out.println("    ---     Aggiunta di proposta di un nuovo itinerario     ---");
-        ArrayList<String> datiItinerario = new ArrayList<>();
 
         // nome
         System.out.print("\nNome itinerario: ");
-        datiItinerario.add(0, scanner.nextLine());
+        String nomeItinerario = scanner.nextLine();
 
-        // nmin & nmax
+        // numero minimo di partecipanti
         System.out.print("\nNumero minimo di partecipanti: ");
-        datiItinerario.add(1, scanner.nextLine());
+        int numMinPartecipanti = scanner.nextInt();
+        while(numMinPartecipanti <= 0){
+            System.out.println("Itinerario con 0 partecipanti, o meno, non valido.");
+            System.out.print("Numero minimo di partecipanti: ");
+            numMinPartecipanti = scanner.nextInt();
+        }
+
+        // numero massimo di partecipanti
         System.out.print("\nNumero massimo di partecipanti: ");
-        datiItinerario.add(2, scanner.nextLine());
+        int numMaxPartecipanti = scanner.nextInt();
 
         // descrizione --> info
         System.out.print("\nDescrizione dell'itinerario: ");
-        datiItinerario.add(3, scanner.nextLine());
+        String descrizioneItinerario = scanner.nextLine();
 
         // tag
         System.out.println("\nAggiungi un tag all'itinerario, inserisci il nome del tag che vuoi aggiungere oppure" +
@@ -221,16 +226,37 @@ public class ConsoleView {
         // durata
         System.out.println("Durata in ore dell'itinerario: ");
         double durata = scanner.nextDouble();
+        while(durata <= 0){
+            System.out.println("L'itinerario non puo' durare "+durata+" ore... Riprovare");
+            System.out.print("Durata in ore dell'itinerario: ");
+            durata = scanner.nextDouble();
+        }
 
-        System.out.println("Itinerario aggiunto alle proposte di itinerario, riepilogo: ");
-        System.out.println(datiItinerario + tagSelezionato.toString() + luogo.getToponimo() +
-                " durata in ore: "+durata);
+        // riepilogo
+        System.out.println("    --- Riepilogo itinerario ---");
+        System.out.println("Cicerone: " +cicerone.toString());
+        System.out.println("Nome : " +nomeItinerario);
+        System.out.println("Numero minimo di partecipanti: " +numMinPartecipanti);
+        System.out.println("Numero massimo di partecipanti: " +numMaxPartecipanti);
+        System.out.println("Descrizione: " +descrizioneItinerario);
+        if(tagSelezionato != null)
+            System.out.println("Tag: " +tagSelezionato.toString());
+        System.out.println("Luogo: " +luogo);
+        System.out.println("Durata in ore: "+durata);
 
-        return new ItinerarioClass(cicerone, datiItinerario.get(0),
-                Integer.parseInt(datiItinerario.get(1)), Integer.parseInt(datiItinerario.get(2)), datiItinerario.get(3),
-                tagSelezionato, luogo, durata);
+        System.out.print("\n Confermare l'aggiunta di proposta di questo itinerario? [Y]es / [N]o: ");
+        s = scanner.nextLine();
+        s = checkCharacters(s, "Y", "y", "N", "n");
+        if(s.equals("Y") || s.equals("y"))
+            return new ItinerarioClass(cicerone, nomeItinerario, numMinPartecipanti,
+                numMaxPartecipanti, descrizioneItinerario, tagSelezionato, luogo, durata);
+        return null;
     }
 
+    /**
+     * <b>AGGIUNTA DI ITINERARIO</b> - metodo per chiedere al Cicerone il luogo dove si svolger&agrave; l'itinerario;
+     * @return luogo dove si svolger&agrave; l'itinerario;
+     */
     private LuogoClass richiediLuogo() {
         LuogoClass luogo;
 

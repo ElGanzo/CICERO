@@ -3,66 +3,58 @@ package CICERO.Model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItinerarioClass implements Itinerario{
+public class ItinerarioClass implements Itinerario {
 
-    private final CiceroneClass cicerone;
+    private final Cicerone cicerone;
     private String nome;
     private int numMinPartecipanti;
     private int numMaxPartecipanti;
     private String info;
-    private List<TagClass> tag;
-    private List<Luogo> toponimi;
+    private List<TagClass> listaTag;
+    private TagClass singoloTag;
+    private List<Luogo> luoghi;
+    private Luogo luogo;
     private double durata;
     private boolean proposta;
 
-    public ItinerarioClass(CiceroneClass cicerone, String nome, int numMinPartecipanti, int numMaxPartecipanti, String info,
-                           ArrayList<TagClass> tag, ArrayList<Luogo> toponimi, double durata){
-        PiattaformaClass.controlloNull(cicerone, "Cicerone inserito per l'itinerario non valido");
+    public ItinerarioClass(Cicerone cicerone, String nome, int numMinPartecipanti, int numMaxPartecipanti, String info,
+            TagClass tag, Luogo luogo, double durata) {
         this.cicerone = cicerone;
         this.nome = nome;
         this.numMinPartecipanti = numMinPartecipanti;
         this.numMaxPartecipanti = numMaxPartecipanti;
         this.info = info;
-        this.tag = tag;
-        this.toponimi = toponimi;
+        this.singoloTag = tag;
+        this.luogo = luogo;
         this.durata = durata;
-        this.proposta=true;
+        this.proposta = true;
     }
 
-    public ItinerarioClass(CiceroneClass cicerone, String nome, int numMinPartecipanti, int numMaxPartecipanti, String info,
-                           ArrayList<TagClass> tag, ArrayList<Luogo> toponimi){
+    public ItinerarioClass(Cicerone cicerone, String nome, int numMinPartecipanti, int numMaxPartecipanti, String info,
+            ArrayList<TagClass> tag, ArrayList<Luogo> luoghi, double durata) {
         PiattaformaClass.controlloNull(cicerone, "Cicerone inserito per l'itinerario non valido");
         this.cicerone = cicerone;
         this.nome = nome;
         this.numMinPartecipanti = numMinPartecipanti;
         this.numMaxPartecipanti = numMaxPartecipanti;
         this.info = info;
-        this.tag = tag;
-        this.toponimi = toponimi;
-        this.durata = 1;
-        this.proposta=true;
+        this.listaTag = tag;
+        this.luoghi = luoghi;
+        this.durata = durata;
+        this.proposta = true;
     }
 
-    public ItinerarioClass(CiceroneClass cicerone, String nome, int numMinPartecipanti, int numMaxPartecipanti,
-                           ArrayList<TagClass> tag, ArrayList<Luogo> toponimi){
-        PiattaformaClass.controlloNull(cicerone, "Cicerone inserito per l'itinerario non valido");
-        this.cicerone = cicerone;
-        this.nome = nome;
-        this.numMinPartecipanti = numMinPartecipanti;
-        this.numMaxPartecipanti = numMaxPartecipanti;
-        this.info = "";
-        this.tag = tag;
-        this.toponimi = toponimi;
-        this.durata = 1;
-        this.proposta=true;
-    }
+    // qui era stato fatto overloading: una versione di ItinerarioClass senza durata
+    // e un'altra senza info
 
     public int getCiceroneId() {
         return cicerone.getIdCicerone();
     }
 
     @Override
-    public double getDurata(){ return durata;}
+    public double getDurata() {
+        return durata;
+    }
 
     @Override
     public String getInfo() {
@@ -95,12 +87,14 @@ public class ItinerarioClass implements Itinerario{
     }
 
     @Override
-    public void setDurata(double durata){ this.durata = durata;}
+    public void setDurata(double durata) {
+        this.durata = durata;
+    }
 
     @Override
-    public void setInfo(String info){
+    public void setInfo(String info) {
         PiattaformaClass.controlloNull(info, "le info da inserire non valide");
-        this.info=info;
+        this.info = info;
     }
 
     @Override
@@ -136,5 +130,7 @@ public class ItinerarioClass implements Itinerario{
     }
 
     @Override
-    public boolean proposta(){ return this.proposta;}
+    public boolean proposta() {
+        return this.proposta;
+    }
 }

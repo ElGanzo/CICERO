@@ -4,8 +4,9 @@ import java.util.ArrayList;
 
 /**
  * Rappresenta il <b>PROFILO AZIENDALE</b> di un'associazione/singolo Ciceroni,
- * rappresentati qui con un'<code>ArrayList<code> di PersonaClass  <br>
- * Ogni Cicerone appartenente a questa classe posserr&agrave; le credenziali del profilo
+ * rappresentati qui con un'<code>ArrayList<code> di PersonaClass <br>
+ * Ogni Cicerone appartenente a questa classe posserr&agrave; le credenziali del
+ * profilo
  */
 public class CiceroneClass implements Cicerone {
 
@@ -16,6 +17,14 @@ public class CiceroneClass implements Cicerone {
     private ArrayList<Persona> ciceroni;
     private int idCicerone = 0;
 
+    /**
+     * Corrisponde al Cicerone che si occupa di un itinerario
+     * 
+     * @param ragioneSociale  la ragione sociale dell'azienda di cui fa parte
+     * @param partitaIVA      la partita IVA dell'azienda di cui fa parte
+     * @param emailAzienda    l'email dell'azienda di cui fa parte
+     * @param passwordAzienda la password per fare il log in aziendale
+     */
     public CiceroneClass(String ragioneSociale, String partitaIVA, String emailAzienda, String passwordAzienda) {
         PiattaformaClass.controlloNull(ragioneSociale, "Ragione sociale non valida");
         PiattaformaClass.controlloNull(ragioneSociale, "Partita IVA non valida");
@@ -27,27 +36,31 @@ public class CiceroneClass implements Cicerone {
         this.passwordAzienda = passwordAzienda;
     }
 
-    /**
-     * Costruttore per eseguire query con DB
-     *      @param idCicerone    id corrispondente nel DB
-     */
-    public CiceroneClass(String ragioneSociale, String partitaIVA, String emailAzienda,
-                         String passwordAzienda, int idCicerone) {
-        PiattaformaClass.controlloNull(ragioneSociale, "Ragione sociale non valida");
-        PiattaformaClass.controlloNull(ragioneSociale, "Partita IVA non valida");
-        PiattaformaClass.controlloNull(ragioneSociale, "Email aziendale non valida");
-        PiattaformaClass.controlloNull(ragioneSociale, "Password aziendale non valida");
-        this.partitaIVA = partitaIVA;
-        this.ragioneSociale = ragioneSociale;
-        this.emailAzienda = emailAzienda;
-        this.passwordAzienda = passwordAzienda;
-        this.idCicerone = idCicerone;
-    }
+    // TODO cancellare se non serve più
+    // /**
+    // * Costruttore per eseguire query con DB
+    // * @param idCicerone id corrispondente nel DB
+    // */
+    // public CiceroneClass(String ragioneSociale, String partitaIVA, String
+    // emailAzienda,
+    // String passwordAzienda, int idCicerone) {
+    // PiattaformaClass.controlloNull(ragioneSociale, "Ragione sociale non valida");
+    // PiattaformaClass.controlloNull(ragioneSociale, "Partita IVA non valida");
+    // PiattaformaClass.controlloNull(ragioneSociale, "Email aziendale non valida");
+    // PiattaformaClass.controlloNull(ragioneSociale, "Password aziendale non
+    // valida");
+    // this.partitaIVA = partitaIVA;
+    // this.ragioneSociale = ragioneSociale;
+    // this.emailAzienda = emailAzienda;
+    // this.passwordAzienda = passwordAzienda;
+    // this.idCicerone = idCicerone;
+    // }
 
     /**
      * Restituisce l'id del Cicerone.
      *
-     * @return L'id del Cicerone, se id &egrave; presente; <code>-1</code> se id non &egrave; presente.
+     * @return L'id del Cicerone se id &egrave; presente; <code>-1</code> se id non
+     *         &egrave; presente.
      */
     public int getIdCicerone() {
         if (idCicerone != 0) {

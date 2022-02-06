@@ -14,27 +14,28 @@ import java.util.Date;
 public class DBManager {
 
     Connection connection;
-    Statement connectionStatement;
+    Statement togepiDB;
 
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public DBManager(String url, String user, String password) throws Exception {
-
         connection = DriverManager.getConnection(url, user, password);
-        connectionStatement = connection.createStatement();
-
+        togepiDB = connection.createStatement();
     }
 
     /**
-     * @param email    username dell'Utente
-     * @param password password dell'Utente
-     * @return utente nel DB, <code>null</code> se Utente non &egrave; presente nel DB o i dati Utente non sono giusti
+     * Recupera l'utente con le credenziali corrispondenti
+     *
+     * @param email    username dell'Utente da recuperare
+     * @param password password dell'Utente da recuperare
+     * @return L'utente trovato, <code>null</code> se l'utente non viene trovato nel database
+     * @throws SQLException se si verifica un errore di accesso al database
      */
     public UtenteClass estraiUtente(String email, String password) throws SQLException, ParseException {
 
         String query = "SELECT * FROM Utenti WHERE email = '" + email + "' AND password = '" + password +
                 "' AND verificato = 1;";
-        ResultSet resultSet = connectionStatement.executeQuery(query);
+        ResultSet resultSet = togepiDB.executeQuery(query);
         UtenteClass utente = null;
         if (resultSet.next()) {
             String nome = resultSet.getObject(2, String.class);
@@ -47,22 +48,33 @@ public class DBManager {
         return utente;
     }
 
+    /**
+     * Recupera il Cicerone con le credenziali corrispondenti
+     *
+     * @param email    username del Cicerone da recuperare
+     * @param password password del Cicerone da recuperare
+     * @return Il Cicerone trovato, <code>null</code> se il cicerone non viene trovato nel database
+     * @throws SQLException se si verifica un errore di accesso al database
+     */
     public CiceroneClass estraiCicerone(String email, String password) throws SQLException {
         String query = "SELECT * FROM Aziende WHERE email = '" + email + "' and password = '" + password +
                 "' AND verificato = 1;";
-        ResultSet resultSet = connectionStatement.executeQuery(query);
+        ResultSet resultSet = togepiDB.executeQuery(query);
         CiceroneClass cicerone = null;
         if (resultSet.next()) {
             String ragioneSociale = resultSet.getObject(3, String.class);
             String partitaIva = resultSet.getObject(2, String.class);
             String mail = resultSet.getObject(4, String.class);
             String pw = resultSet.getObject(5, String.class);
-            int id = resultSet.getObject(1, int.class);
-            cicerone = new CiceroneClass(ragioneSociale, partitaIva, mail, pw, id);
+//            int id = resultSet.getObject(1, int.class);
+            cicerone = new CiceroneClass(ragioneSociale, partitaIva, mail, pw);
         }
+        //TODO rivedi intero metodo
         return cicerone;
     }
 
+    //TODO eliminare il seguente metodo
+    /*
     public ArrayList<ItinerarioClass> estraiItinerari() throws SQLException {
         String query = "SELECT i.nome, i.num_min_utenti, i.num_max_utenti, a.nome, a.p_iva, a.email, a.password, " +
                 "t.nome, l.nome, l.citta, l.provincia, l.regione " +
@@ -70,7 +82,7 @@ public class DBManager {
                 "WHERE i.id_cicerone = c.id AND c.id_azienda = a.id AND it.id_itinerario = i.id AND it.nome_tag = t.nome " +
                 "AND il.id_itinerario = i.id AND il.id_luogo = l.id AND i.approvato = 1 " +
                 "ORDER BY i.nome;";
-        ResultSet resultSet = connectionStatement.executeQuery(query);
+        ResultSet resultSet = togepiDB.executeQuery(query);
         ArrayList<ItinerarioClass> result = new ArrayList<>();
         ItinerarioClass itinerario;
         CiceroneClass cicerone;
@@ -110,7 +122,7 @@ public class DBManager {
                     resultSet.getObject(1, String.class),   //titolo itinerario
                     resultSet.getObject(2, int.class),      //min partecipanti
                     resultSet.getObject(3, int.class),      //max partecipanti
-                    tagArray, luogoArray);
+                    "", tagArray, luogoArray, 1);
             if (numIterazioni != 0 &&
                     !nomeItinerarioRigaPrecedente.contentEquals(nomeItinerarioRigaCorrente)) {
                 result.add(itinerario);
@@ -122,10 +134,107 @@ public class DBManager {
         }
         return result;
     }
+    */
 
+
+    /**
+     * Recupera tutti gli itinerari verificati presenti nel database.
+     *
+     * @return un ArrayList contenente tutti gli itinerari verificati presenti nel database
+     * (Array vuoto se non vengono trovati itinerari)
+     * @throws SQLException se si verifica un errore di accesso al database
+     */
+    public ArrayList<ItinerarioClass> estraiItinerari() throws SQLException {
+        System.out.println("Caricamento...");
+        ArrayList<ItinerarioClass> itinerariArray = new ArrayList<>();
+
+
+        String ciceroniQuery;
+        ResultSet ciceroniResultSet;
+        int idCicerone = 0;
+        String aziendeQuery;
+        ResultSet aziendeResultSet;
+        Cicerone cicerone;
+        String tagQuery;
+        ResultSet tagResultSet;
+        ArrayList<TagClass> tagArray = new ArrayList<>();
+        TagClass tag;
+        String luoghiQuery;
+        ResultSet luoghiResultSet;
+        Luogo luogo;
+        ArrayList<Luogo> luoghiArray = new ArrayList<>();
+
+        String itinerariQuery = "SELECT DISTINCT * FROM Itinerari i;";
+        ResultSet itinerariResultSet = togepiDB.executeQuery(itinerariQuery);
+        ItinerarioClass itinerario;
+        while (itinerariResultSet.next()) {
+            String nomeItinerarioCorrente = itinerariResultSet.getObject(2, String.class);
+
+            ciceroniQuery = "SELECT DISTINCT c.id " +
+                    "FROM Ciceroni c, Itinerari i " +
+                    "WHERE c.id = i.id AND c.verificato = 1 AND i.nome = '" +
+                    nomeItinerarioCorrente + "';";
+            ciceroniResultSet = togepiDB.executeQuery(ciceroniQuery);
+            if (ciceroniResultSet.next()) {
+                idCicerone = ciceroniResultSet.getObject(1, int.class);
+            }
+
+            aziendeQuery = "SELECT DISTINCT  a.nome , a.p_iva , a.email , a.password " +
+                    "FROM Aziende a, Ciceroni c , Itinerari i " +
+                    "WHERE i.id_cicerone = c.id AND c.id_azienda = a.id AND c.id = " + idCicerone + ";";
+            aziendeResultSet = togepiDB.executeQuery(aziendeQuery);
+            cicerone = new CiceroneClass(
+                    aziendeResultSet.getObject(1, String.class),
+                    aziendeResultSet.getObject(2, String.class),
+                    aziendeResultSet.getObject(3, String.class),
+                    aziendeResultSet.getObject(4, String.class)
+            );
+
+            tagQuery = "SELECT DISTINCT t.nome " +
+                    "FROM Tag t, Itinerari_Tag it , Itinerari i " +
+                    "WHERE it.id_itinerario = i.id AND it.nome_tag = t.nome AND i.nome = '" + nomeItinerarioCorrente + "';";
+            tagResultSet = togepiDB.executeQuery(tagQuery);
+            while (tagResultSet.next()) {
+                tag = new TagClass(tagResultSet.getObject(1, String.class));
+                tagArray.add(tag);
+            }
+
+            luoghiQuery = "SELECT l.nome, l.citta , l.provincia , l.regione " +
+                    "FROM Luoghi l , Itinerari i , Itinerari_Luoghi il " +
+                    "WHERE il.id_itinerario = i.id AND il.id_luogo = l.id AND i.nome = '" + nomeItinerarioCorrente + "';";
+            luoghiResultSet = togepiDB.executeQuery(luoghiQuery);
+            while (luoghiResultSet.next()) {
+                luogo = new LuogoClass(
+                        luoghiResultSet.getObject(1, String.class),
+                        luoghiResultSet.getObject(2, String.class),
+                        luoghiResultSet.getObject(3, String.class),
+                        luoghiResultSet.getObject(4, String.class)
+                );
+                luoghiArray.add(luogo);
+            }
+
+            itinerario = new ItinerarioClass(cicerone, nomeItinerarioCorrente,
+                    itinerariResultSet.getObject(4, int.class),
+                    itinerariResultSet.getObject(5, int.class),
+                    itinerariResultSet.getObject(6, String.class), tagArray, luoghiArray,
+                    itinerariResultSet.getObject(7, double.class)
+            );
+            itinerariArray.add(itinerario);
+        }
+
+
+        return itinerariArray;
+    }
+
+    /**
+     * Recupera tutti i tag verificati presenti nel database.
+     *
+     * @return un ArrayList contenente tutti i tag verificati presenti nel database
+     * @throws SQLException se si verifica un errore di accesso al database
+     */
     public ArrayList<TagClass> estraiTag() throws SQLException {
         String query = "SELECT * FROM Tag t WHERE approvato = 1;";
-        ResultSet resultSet = connectionStatement.executeQuery(query);
+        ResultSet resultSet = togepiDB.executeQuery(query);
         ArrayList<TagClass> result = new ArrayList<>();
         while (resultSet.next()) {
             TagClass tag = new TagClass(resultSet.getObject(1, String.class));
@@ -134,9 +243,15 @@ public class DBManager {
         return result;
     }
 
+    /**
+     * Recupera tutti i luoghi verificati presenti nel database.
+     *
+     * @return un ArrayList contenente tutti i luoghi verificati presenti nel database
+     * @throws SQLException se si verifica un errore di accesso al database
+     */
     public ArrayList<LuogoClass> estraiLuoghi() throws SQLException {
         String query = "SELECT * FROM Luoghi WHERE approvato = 1;";
-        ResultSet resultSet = connectionStatement.executeQuery(query);
+        ResultSet resultSet = togepiDB.executeQuery(query);
         ArrayList<LuogoClass> result = new ArrayList<>();
         LuogoClass luogo;
 
@@ -150,6 +265,12 @@ public class DBManager {
         return result;
     }
 
+    /**
+     * Inserisce un nuovo utente nel database
+     *
+     * @param utente Il nuovo utente che verr&agrave; inserito nel database
+     * @throws SQLException se si verifica un errore di accesso al database
+     */
     public void inserisciNuovoUtente(UtenteClass utente) throws SQLException {
         String update = "INSERT INTO Utenti (nome, cognome, d_nascita, email, password) " +
                 "VALUES ('" + utente.getNome() + "', '" +
@@ -157,9 +278,16 @@ public class DBManager {
                 simpleDateFormat.format(utente.getDataNascita()) + "', '" +
                 utente.getEmail() + "', '" +
                 utente.getPassword() + "');";
-        connectionStatement.executeUpdate(update);
+        togepiDB.executeUpdate(update);
     }
 
+    /**
+     * Inserisce un nuovo itinerario nel database in forma di proposta
+     *
+     * @param itinerario Il nuovo itinerario da proporre
+     * @param cicerone   Il cicerone che propone l'itinerario
+     * @throws SQLException se si verifica un errore di accesso al database
+     */
     public void inserisciItinerario(Itinerario itinerario, CiceroneClass cicerone) throws SQLException {
         String update = "INSERT INTO Itinerari (nome, id_cicerone, num_min_utenti," +
                 " num_max_utenti, info, durata_in_ore) " +
@@ -168,14 +296,27 @@ public class DBManager {
                 itinerario.getMinPartecipanti() + ", " +
                 itinerario.getMaxPartecipanti() + ", '" +
                 itinerario.getInfo() + "');";                   //descrizione itinerario
-        connectionStatement.executeUpdate(update);
+        togepiDB.executeUpdate(update);
     }
 
+    /**
+     * Inserisce un nuovo tag nel database in forma di proposta
+     *
+     * @param tag Il nuovo tag da proporre
+     * @throws SQLException se si verifica un errore di accesso al database
+     */
     public void inserisciTag(TagClass tag) throws SQLException {
         String update = "INSERT INTO Tag (nome) VALUES ('" + tag.toString() + "');";
-        connectionStatement.executeUpdate(update);
+        togepiDB.executeUpdate(update);
     }
 
+    /**
+     * Effettua una prenotazione di un itinerario e la inserisce nel database
+     *
+     * @param prenotazione La nuova prenotazione da effettuare e inserire nel database
+     * @throws Exception se si verifica un errore di accesso al database,
+     *                   oppure se non viene trovato l'utente che ha eseguito la prenotazione
+     */
     public void inserisciPrenotazione(Prenotazione prenotazione) throws Exception {
 
         int idItinerario;
@@ -184,7 +325,7 @@ public class DBManager {
                 "FROM Itinerari i " +
                 "WHERE i.nome = '" +
                 prenotazione.itinerario.getNome() + "';";
-        ResultSet itinerarioQuery = connectionStatement.executeQuery(iQuery);
+        ResultSet itinerarioQuery = togepiDB.executeQuery(iQuery);
         if (itinerarioQuery.next()) {
             idItinerario = itinerarioQuery.getObject(1, int.class);
         } else throw new Exception("Itinerario non trovato nel Database");
@@ -192,7 +333,7 @@ public class DBManager {
                 "FROM Utenti u " +
                 "WHERE u.email = '" +
                 prenotazione.utente.getEmail() + "';";
-        ResultSet utenteQuery = connectionStatement.executeQuery(uQuery);
+        ResultSet utenteQuery = togepiDB.executeQuery(uQuery);
         if (utenteQuery.next()) {
             idUtente = itinerarioQuery.getObject(1, int.class);
         } else throw new Exception("Utente non trovato");
@@ -209,7 +350,7 @@ public class DBManager {
                 timeFormatter.format(prenotazione.getOrarioInizio()) + "', '" +
                 dateFormatter.format(prenotazione.getDataScadenzaPrenotazione()) + "', '" +
                 dateFormatter.format(prenotazione.getDataScadenzaPagamento()) + "');";
-        connectionStatement.executeUpdate(update);
+        togepiDB.executeUpdate(update);
     }
 
 }

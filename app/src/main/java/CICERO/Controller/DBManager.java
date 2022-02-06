@@ -74,7 +74,7 @@ public class DBManager {
     }
 
     //TODO eliminare il seguente metodo
-    /*
+/*
     public ArrayList<ItinerarioClass> estraiItinerari() throws SQLException {
         String query = "SELECT i.nome, i.num_min_utenti, i.num_max_utenti, a.nome, a.p_iva, a.email, a.password, " +
                 "t.nome, l.nome, l.citta, l.provincia, l.regione " +
@@ -134,7 +134,7 @@ public class DBManager {
         }
         return result;
     }
-    */
+*/
 
 
     /**
@@ -147,11 +147,9 @@ public class DBManager {
     public ArrayList<ItinerarioClass> estraiItinerari() throws SQLException {
         System.out.println("Caricamento...");
         ArrayList<ItinerarioClass> itinerariArray = new ArrayList<>();
-
-
         String ciceroniQuery;
         ResultSet ciceroniResultSet;
-        int idCicerone = 0;
+        int idCicerone;
         String aziendeQuery;
         ResultSet aziendeResultSet;
         Cicerone cicerone;
@@ -163,32 +161,45 @@ public class DBManager {
         ResultSet luoghiResultSet;
         Luogo luogo;
         ArrayList<Luogo> luoghiArray = new ArrayList<>();
+        int iterazioni = 2;
 
+        int numMinPartecipanti, numMaxPartecipanti;
+        String info;
+        Double durata;
+        ItinerarioClass itinerario;
         String itinerariQuery = "SELECT DISTINCT * FROM Itinerari i;";
         ResultSet itinerariResultSet = togepiDB.executeQuery(itinerariQuery);
-        ItinerarioClass itinerario;
         while (itinerariResultSet.next()) {
             String nomeItinerarioCorrente = itinerariResultSet.getObject(2, String.class);
+            numMinPartecipanti = itinerariResultSet.getObject(4, int.class);
+            numMaxPartecipanti = itinerariResultSet.getObject(5, int.class);
+            info = itinerariResultSet.getObject(6, String.class);
+            durata = itinerariResultSet.getObject(7, double.class);
+//            itinerariResultSet.close();
 
             ciceroniQuery = "SELECT DISTINCT c.id " +
                     "FROM Ciceroni c, Itinerari i " +
-                    "WHERE c.id = i.id AND c.verificato = 1 AND i.nome = '" +
+                    "WHERE c.id = i.id AND i.nome = '" +
                     nomeItinerarioCorrente + "';";
             ciceroniResultSet = togepiDB.executeQuery(ciceroniQuery);
-            if (ciceroniResultSet.next()) {
-                idCicerone = ciceroniResultSet.getObject(1, int.class);
+            if (!ciceroniResultSet.next()) {
+                continue;
             }
+            idCicerone = ciceroniResultSet.getObject(1, int.class);
+            ciceroniResultSet.close();
 
             aziendeQuery = "SELECT DISTINCT  a.nome , a.p_iva , a.email , a.password " +
                     "FROM Aziende a, Ciceroni c , Itinerari i " +
                     "WHERE i.id_cicerone = c.id AND c.id_azienda = a.id AND c.id = " + idCicerone + ";";
             aziendeResultSet = togepiDB.executeQuery(aziendeQuery);
+            aziendeResultSet.next();
             cicerone = new CiceroneClass(
                     aziendeResultSet.getObject(1, String.class),
                     aziendeResultSet.getObject(2, String.class),
                     aziendeResultSet.getObject(3, String.class),
                     aziendeResultSet.getObject(4, String.class)
             );
+            aziendeResultSet.close();
 
             tagQuery = "SELECT DISTINCT t.nome " +
                     "FROM Tag t, Itinerari_Tag it , Itinerari i " +
@@ -198,6 +209,7 @@ public class DBManager {
                 tag = new TagClass(tagResultSet.getObject(1, String.class));
                 tagArray.add(tag);
             }
+            tagResultSet.close();
 
             luoghiQuery = "SELECT l.nome, l.citta , l.provincia , l.regione " +
                     "FROM Luoghi l , Itinerari i , Itinerari_Luoghi il " +
@@ -212,19 +224,22 @@ public class DBManager {
                 );
                 luoghiArray.add(luogo);
             }
+            luoghiResultSet.close();
 
             itinerario = new ItinerarioClass(cicerone, nomeItinerarioCorrente,
-                    itinerariResultSet.getObject(4, int.class),
-                    itinerariResultSet.getObject(5, int.class),
-                    itinerariResultSet.getObject(6, String.class), tagArray, luoghiArray,
-                    itinerariResultSet.getObject(7, double.class)
+                    numMinPartecipanti, numMaxPartecipanti, info,
+                    tagArray, luoghiArray, durata
             );
             itinerariArray.add(itinerario);
+
+            itinerariResultSet = togepiDB.executeQuery(itinerariQuery);
+            for (int i = 0; i < iterazioni; i++) {
+                itinerariResultSet.next();
+            }
         }
-
-
         return itinerariArray;
     }
+
 
     /**
      * Recupera tutti i tag verificati presenti nel database.

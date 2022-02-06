@@ -17,6 +17,19 @@ public class ItinerarioClass implements Itinerario {
     private double durata;
     private boolean proposta;
 
+    /**
+     * Rappresenta un itinerario.
+     * 
+     * @param cicerone           il Cicerone che fa da guida per l'itinerario.
+     * @param nome               il nome dell'itinerario.
+     * @param numMinPartecipanti il numero minimo di partecipanti.
+     * @param numMaxPartecipanti il numero massimo di partecipanti.
+     * @param info               la descrizione dell'itinerario.
+     * @param tag                il tag assegnato all'itinerario.
+     * @param luogo              il luogo dove si svolge l'itinerario.
+     * @param durata             la durata dell'itinerario (se null viene assegnata
+     *                           come di 1h di default).
+     */
     public ItinerarioClass(Cicerone cicerone, String nome, int numMinPartecipanti, int numMaxPartecipanti, String info,
             TagClass tag, Luogo luogo, double durata) {
         this.cicerone = cicerone;
@@ -30,6 +43,19 @@ public class ItinerarioClass implements Itinerario {
         this.proposta = true;
     }
 
+    /**
+     * Rappresenta un itinerario.
+     * 
+     * @param cicerone           il Cicerone che fa da guida per l'itinerario.
+     * @param nome               il nome dell'itinerario.
+     * @param numMinPartecipanti il numero minimo di partecipanti.
+     * @param numMaxPartecipanti il numero massimo di partecipanti.
+     * @param info               la descrizione dell'itinerario.
+     * @param tag                i tag assegnati all'itinerario.
+     * @param luoghi             i luoghi dove si svolge l'itinerario.
+     * @param durata             la durata dell'itinerario (se null viene assegnata
+     *                           come di 1h di default).
+     */
     public ItinerarioClass(Cicerone cicerone, String nome, int numMinPartecipanti, int numMaxPartecipanti, String info,
             ArrayList<TagClass> tag, ArrayList<Luogo> luoghi, double durata) {
         PiattaformaClass.controlloNull(cicerone, "Cicerone inserito per l'itinerario non valido");
@@ -47,6 +73,11 @@ public class ItinerarioClass implements Itinerario {
     // qui era stato fatto overloading: una versione di ItinerarioClass senza durata
     // e un'altra senza info
 
+    /**
+     * Restituisce l'ID del Cicerone che si occupa dell'itinerario.
+     * 
+     * @return l'ID del Cicerone che si occupa dell'itinerario.
+     */
     public int getCiceroneId() {
         return cicerone.getIdCicerone();
     }

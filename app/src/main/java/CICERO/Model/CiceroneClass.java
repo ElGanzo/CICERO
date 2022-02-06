@@ -3,10 +3,10 @@ package CICERO.Model;
 import java.util.ArrayList;
 
 /**
- * Rappresenta il <b>PROFILO AZIENDALE</b> di un'associazione/singolo Ciceroni,
- * rappresentati qui con un'<code>ArrayList<code> di PersonaClass <br>
- * Ogni Cicerone appartenente a questa classe posserr&agrave; le credenziali del
- * profilo
+ * Rappresenta il <b>PROFILO AZIENDALE</b> di un'associazione composta da uno o
+ * pi&ugrave; Ciceroni. Ogni Cicerone &egrave; rappresentato con
+ * un'<code>ArrayList</code> di PersonaClass e avr&agrave; le credenziali del
+ * profilo.
  */
 public class CiceroneClass implements Cicerone {
 
@@ -36,26 +36,6 @@ public class CiceroneClass implements Cicerone {
         this.passwordAzienda = passwordAzienda;
     }
 
-    // TODO cancellare se non serve più
-    // /**
-    // * Costruttore per eseguire query con DB
-    // * @param idCicerone id corrispondente nel DB
-    // */
-    // public CiceroneClass(String ragioneSociale, String partitaIVA, String
-    // emailAzienda,
-    // String passwordAzienda, int idCicerone) {
-    // PiattaformaClass.controlloNull(ragioneSociale, "Ragione sociale non valida");
-    // PiattaformaClass.controlloNull(ragioneSociale, "Partita IVA non valida");
-    // PiattaformaClass.controlloNull(ragioneSociale, "Email aziendale non valida");
-    // PiattaformaClass.controlloNull(ragioneSociale, "Password aziendale non
-    // valida");
-    // this.partitaIVA = partitaIVA;
-    // this.ragioneSociale = ragioneSociale;
-    // this.emailAzienda = emailAzienda;
-    // this.passwordAzienda = passwordAzienda;
-    // this.idCicerone = idCicerone;
-    // }
-
     /**
      * Restituisce l'id del Cicerone.
      *
@@ -69,6 +49,11 @@ public class CiceroneClass implements Cicerone {
         return -1;
     }
 
+    /**
+     * Restituisce l'email dell'azienda di cui fa parte il Cicerone.
+     * 
+     * @return l'email dell'azienda di cui fa parte il Cicerone.
+     */
     public String getEmail() {
         return this.emailAzienda;
     }

@@ -90,7 +90,6 @@ public class DBManager {
      * @throws SQLException se si verifica un errore di accesso al database
      */
     public ArrayList<ItinerarioClass> estraiItinerari() throws SQLException {
-        System.out.println("Estraendo itinerari dal database...");
         ArrayList<ItinerarioClass> itinerariArray = new ArrayList<>();
         int iterazioni = 1;
         ItinerarioClass itinerario;
@@ -120,7 +119,6 @@ public class DBManager {
             itinerariArray.add(itinerario);
             iterazioni++;
         }
-        System.out.println("Itinerari caricati con successo.");
         return itinerariArray;
     }
 

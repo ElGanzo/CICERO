@@ -13,4 +13,10 @@ public interface Cicerone {
      * @throws NullPointerException se proposta &egrave; <code>null</code>
      */
     <T> boolean inviaProposta(T proposta);
+
+    /**
+     * Resituisce la ragione sociale del profilo aziendale
+     * @return ragione sociale del profilo aziendale
+     */
+    String getRagioneSociale();
 }

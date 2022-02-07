@@ -49,6 +49,9 @@ public class CiceroneClass implements Cicerone {
         return -1;
     }
 
+    @Override
+    public String getRagioneSociale(){return this.ragioneSociale;}
+
     /**
      * Restituisce l'email dell'azienda di cui fa parte il Cicerone.
      * 

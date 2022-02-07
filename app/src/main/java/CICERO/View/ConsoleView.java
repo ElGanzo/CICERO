@@ -138,6 +138,7 @@ public class ConsoleView {
         int i = 1;
         for (Itinerario itinerario: itinerari){
             System.out.println("["+i +"] -> " +itinerario.toString());
+            i++;
         }
     }
 

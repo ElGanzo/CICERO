@@ -11,9 +11,7 @@ public class ItinerarioClass implements Itinerario {
     private int numMaxPartecipanti;
     private String info;
     private List<TagClass> listaTag;
-    private TagClass singoloTag;
     private List<Luogo> luoghi;
-    private Luogo luogo;
     private double durata;
     private final boolean proposta;
 
@@ -37,8 +35,10 @@ public class ItinerarioClass implements Itinerario {
         this.numMinPartecipanti = numMinPartecipanti;
         this.numMaxPartecipanti = numMaxPartecipanti;
         this.info = info;
-        this.singoloTag = tag;
-        this.luogo = luogo;
+        this.listaTag = new ArrayList<TagClass>();
+        listaTag.add(tag);
+        this.luoghi = new ArrayList<Luogo>();
+        luoghi.add(luogo);
         this.durata = durata;
         this.proposta = true;
     }
@@ -151,5 +151,30 @@ public class ItinerarioClass implements Itinerario {
     @Override
     public boolean proposta() {
         return this.proposta;
+    }
+
+    /**
+     * Forma la stringa completa di tutti i toponimi
+     * @return stringa di tutti i toponimi
+     */
+    public String toponimi(){
+        String toponimi = "";
+        for (Luogo luogo: luoghi){
+            toponimi = toponimi.concat(luogo.getToponimo());
+            toponimi.concat(" --- ");
+        }
+        return toponimi;
+    }
+
+    @Override
+    public String toString() {
+        return "Itinerario: " + nome +
+                " condotto da " + cicerone.getRagioneSociale() + "\n" +
+                "descrizione: " + info + "\n" +
+                "numero minimo di partecipanti: " + numMinPartecipanti +"\n" +
+                "numero massimo di partecipanti: " + numMaxPartecipanti +"\n" +
+                "presso " + toponimi() + "\n"+
+                "durata: " + durata + "\n"+
+                listaTag.toString();
     }
 }

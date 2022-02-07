@@ -92,22 +92,8 @@ public class DBManager {
     public ArrayList<ItinerarioClass> estraiItinerari() throws SQLException {
         System.out.println("Caricamento...");
         ArrayList<ItinerarioClass> itinerariArray = new ArrayList<>();
-        String ciceroniQuery;
-        ResultSet ciceroniResultSet;
-        int idCicerone;
-        String aziendeQuery;
-        ResultSet aziendeResultSet;
-        Cicerone cicerone;
-        String tagQuery;
-        ResultSet tagResultSet;
-        ArrayList<TagClass> tagArray = new ArrayList<>();
-        TagClass tag;
-        String luoghiQuery;
-        ResultSet luoghiResultSet;
-        Luogo luogo;
-        ArrayList<Luogo> luoghiArray = new ArrayList<>();
-        int iterazioni = 1;
 
+        int iterazioni = 1;
         int numMinPartecipanti, numMaxPartecipanti;
         String info;
         Double durata;
@@ -123,60 +109,12 @@ public class DBManager {
             numMaxPartecipanti = itinerariResultSet.getObject(5, int.class);
             info = itinerariResultSet.getObject(6, String.class);
             durata = itinerariResultSet.getObject(7, double.class);
-//            itinerariResultSet.close();
+            itinerariResultSet.close();
 
-            //recupera id cicerone autore di itinerario corrente
-            ciceroniQuery = "SELECT c.id " +
-                    "FROM Ciceroni c, Itinerari i " +
-                    "WHERE c.id = i.id_cicerone AND i.nome = '" +
-                    nomeItinerarioCorrente + "';";
-            ciceroniResultSet = togepiDB.executeQuery(ciceroniQuery);
-            if (!ciceroniResultSet.next()) {
-                continue;
-            }
-            idCicerone = ciceroniResultSet.getObject(1, int.class);
-            ciceroniResultSet.close();
-
-            //recupera e crea oggetto cicerone (azienda) autore di itinerario
-            aziendeQuery = "SELECT a.nome , a.p_iva , a.email , a.password " +
-                    "FROM Aziende a, Ciceroni c , Itinerari i " +
-                    "WHERE i.id_cicerone = c.id AND c.id_azienda = a.id AND c.id = " + idCicerone + ";";
-            aziendeResultSet = togepiDB.executeQuery(aziendeQuery);
-            aziendeResultSet.next();
-            cicerone = new CiceroneClass(
-                    aziendeResultSet.getObject(1, String.class),
-                    aziendeResultSet.getObject(2, String.class),
-                    aziendeResultSet.getObject(3, String.class),
-                    aziendeResultSet.getObject(4, String.class)
-            );
-            aziendeResultSet.close();
-
-            //recupera e crea array di tag di itinerario corrente
-            tagQuery = "SELECT t.nome " +
-                    "FROM Tag t, Itinerari_Tag it , Itinerari i " +
-                    "WHERE it.id_itinerario = i.id AND it.nome_tag = t.nome AND i.nome = '" + nomeItinerarioCorrente + "';";
-            tagResultSet = togepiDB.executeQuery(tagQuery);
-            while (tagResultSet.next()) {
-                tag = new TagClass(tagResultSet.getObject(1, String.class));
-                tagArray.add(tag);
-            }
-            tagResultSet.close();
-
-            //recupera e crea array di luoghi dove si svolge itinerario corrente
-            luoghiQuery = "SELECT l.nome, l.citta , l.provincia , l.regione " +
-                    "FROM Luoghi l , Itinerari i , Itinerari_Luoghi il " +
-                    "WHERE il.id_itinerario = i.id AND il.id_luogo = l.id AND i.nome = '" + nomeItinerarioCorrente + "';";
-            luoghiResultSet = togepiDB.executeQuery(luoghiQuery);
-            while (luoghiResultSet.next()) {
-                luogo = new LuogoClass(
-                        luoghiResultSet.getObject(1, String.class),
-                        luoghiResultSet.getObject(2, String.class),
-                        luoghiResultSet.getObject(3, String.class),
-                        luoghiResultSet.getObject(4, String.class)
-                );
-                luoghiArray.add(luogo);
-            }
-            luoghiResultSet.close();
+            int idCicerone = getIdCicerone(nomeItinerarioCorrente);
+            CiceroneClass cicerone = getCicerone(idCicerone);
+            ArrayList<TagClass> tagArray = this.getArray(nomeItinerarioCorrente);
+            ArrayList<Luogo> luoghiArray = this.getLuoghi(nomeItinerarioCorrente);
 
             //crea oggetto itinerario usando parametri creati sopra e lo aggiunge ad array risultato
             itinerario = new ItinerarioClass(cicerone, nomeItinerarioCorrente,
@@ -195,6 +133,97 @@ public class DBManager {
             iterazioni++;
         }
         return itinerariArray;
+    }
+
+    /**
+     * Recupera identificativo del singolo cicerone autore dell'itinerario
+     *
+     * @param nomeItinerarioCorrente nome dell'itinerario
+     * @return identificativo del singolo cicerone,
+     * <code>-1</code> se il cicerone non viene trovato nel database
+     * @throws SQLException se si verificano problemi di accesso al database
+     */
+    private int getIdCicerone(String nomeItinerarioCorrente) throws SQLException {
+        String ciceroniQuery = "SELECT c.id " +
+                "FROM Ciceroni c, Itinerari i " +
+                "WHERE c.id = i.id_cicerone AND i.nome = '" +
+                nomeItinerarioCorrente + "';";
+        ResultSet ciceroniResultSet = togepiDB.executeQuery(ciceroniQuery);
+        ciceroniResultSet.next();
+        int idCicerone = ciceroniResultSet.getObject(1, int.class);
+        ciceroniResultSet.close();
+        return idCicerone;
+    }
+
+    /**
+     * Recupera azienda a cui appartiene il cicerone autore dell'itinerario
+     *
+     * @param idCicerone numero identificativo del singolo cicerone autore dell'itinerario
+     * @return oggetto cicerone che rappresenta l'azienda a cui appartiene il cicerone,
+     * <code>null</code> se il cicerone non viene trovato nel database
+     * @throws SQLException se si verificano problemi di accesso al database
+     */
+    private CiceroneClass getCicerone(int idCicerone) throws SQLException {
+        String aziendeQuery = "SELECT a.nome , a.p_iva , a.email , a.password " +
+                "FROM Aziende a, Ciceroni c , Itinerari i " +
+                "WHERE i.id_cicerone = c.id AND c.id_azienda = a.id AND c.id = " + idCicerone + ";";
+        ResultSet aziendeResultSet = togepiDB.executeQuery(aziendeQuery);
+        aziendeResultSet.next();
+        CiceroneClass cicerone = new CiceroneClass(
+                aziendeResultSet.getObject(1, String.class),
+                aziendeResultSet.getObject(2, String.class),
+                aziendeResultSet.getObject(3, String.class),
+                aziendeResultSet.getObject(4, String.class)
+        );
+        aziendeResultSet.close();
+        return cicerone;
+    }
+
+    /**
+     * Recupera i tag di un itinerario
+     *
+     * @param nomeItinerario itinerario i cui tag verranno recuperati
+     * @return arrayList contenente tutti i tag dell'itinerario
+     * @throws SQLException se si verificano problemi di accesso al database
+     */
+    private ArrayList<TagClass> getArray(String nomeItinerario) throws SQLException {
+        ArrayList<TagClass> tagArray = new ArrayList<>();
+        String tagQuery = "SELECT t.nome " +
+                "FROM Tag t, Itinerari_Tag it , Itinerari i " +
+                "WHERE it.id_itinerario = i.id AND it.nome_tag = t.nome AND i.nome = '" + nomeItinerario + "';";
+        ResultSet tagResultSet = togepiDB.executeQuery(tagQuery);
+        while (tagResultSet.next()) {
+            TagClass tag = new TagClass(tagResultSet.getObject(1, String.class));
+            tagArray.add(tag);
+        }
+        tagResultSet.close();
+        return tagArray;
+    }
+
+    /**
+     * Recupera i luoghi dove si svolge l'itinerario
+     *
+     * @param nomeItinerarioCorrente il nome dell'itinerario i cui luoghi verranno recuperati
+     * @return un arrayList contenente i luoghi dove l'itinerario si svolge
+     * @throws SQLException se si verificano problemi di accesso al database
+     */
+    private ArrayList<Luogo> getLuoghi(String nomeItinerarioCorrente) throws SQLException {
+        ArrayList<Luogo> luoghiArray = new ArrayList<>();
+        String luoghiQuery = "SELECT l.nome, l.citta , l.provincia , l.regione " +
+                "FROM Luoghi l , Itinerari i , Itinerari_Luoghi il " +
+                "WHERE il.id_itinerario = i.id AND il.id_luogo = l.id AND i.nome = '" + nomeItinerarioCorrente + "';";
+        ResultSet luoghiResultSet = togepiDB.executeQuery(luoghiQuery);
+        while (luoghiResultSet.next()) {
+            LuogoClass luogo = new LuogoClass(
+                    luoghiResultSet.getObject(1, String.class),
+                    luoghiResultSet.getObject(2, String.class),
+                    luoghiResultSet.getObject(3, String.class),
+                    luoghiResultSet.getObject(4, String.class)
+            );
+            luoghiArray.add(luogo);
+        }
+        luoghiResultSet.close();
+        return luoghiArray;
     }
 
 

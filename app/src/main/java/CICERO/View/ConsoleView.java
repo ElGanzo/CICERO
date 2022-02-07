@@ -3,10 +3,7 @@ import CICERO.Model.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class ConsoleView {
 
@@ -134,10 +131,10 @@ public class ConsoleView {
      * @param itinerari itinerari presenti sulla Piattaforma
      */
     public void stampaItinerari(ArrayList<Itinerario> itinerari) {
-        System.out.println("Itinerari: \n");
+        System.out.println("\n\nItinerari: \n");
         int i = 1;
         for (Itinerario itinerario: itinerari){
-            System.out.println("["+i +"] -> " +itinerario.toString());
+            System.out.println("["+i+"] -> " +itinerario.toString() +"\n\n");
             i++;
         }
     }
@@ -154,10 +151,13 @@ public class ConsoleView {
 
         String s = scanner.nextLine();
         int j = Integer.parseInt(s);
+        if(j==0)
+            return -1;
+        j-=1;
 
         // visualizza itinerario
-        if( j<=itinerari.size() && j!=0 )
-            System.out.println(itinerari.get(j-1).toString());
+        if( j<=itinerari.size())
+            System.out.println(itinerari.get(j).toString());
         else
             return -1;
 
@@ -200,7 +200,7 @@ public class ConsoleView {
 
         // descrizione --> info
         System.out.print("\nDescrizione dell'itinerario: ");
-        String descrizioneItinerario = scanner.nextLine();
+        String descrizioneItinerario = scanner.nextLine();  // todo non aspetta l'input... ????!!!
 
         // tag
         System.out.println("\nAggiungi un tag all'itinerario, inserisci il nome del tag che vuoi aggiungere oppure" +
@@ -218,11 +218,12 @@ public class ConsoleView {
 
         // luoghi
         LuogoClass luogo = richiediLuogo();
-        do{
-            if(!luoghi.contains(luogo))
-                System.out.println("Luogo inserito non trovato... Riprovare oppure premere 0");
-            s = scanner.nextLine();
-        }while(!luoghi.contains(luogo) || s.equals("0") || luogo == null);
+//        do{
+//            if(!luoghi.contains(luogo)) {
+//                System.out.println("Luogo inserito non trovato... Riprovare oppure premere 0");
+//                s = scanner.nextLine();
+//            }
+//        }while( (!luoghi.contains(luogo)) || s.equals("0") || luogo == null);
 
         // durata
         System.out.println("Durata in ore dell'itinerario: ");
@@ -235,14 +236,16 @@ public class ConsoleView {
 
         // riepilogo
         System.out.println("    --- Riepilogo itinerario ---");
-        System.out.println("Cicerone: " +cicerone.toString());
+        System.out.println("Cicerone: " +cicerone.getRagioneSociale());
         System.out.println("Nome : " +nomeItinerario);
         System.out.println("Numero minimo di partecipanti: " +numMinPartecipanti);
         System.out.println("Numero massimo di partecipanti: " +numMaxPartecipanti);
         System.out.println("Descrizione: " +descrizioneItinerario);
         if(tagSelezionato != null)
             System.out.println("Tag: " +tagSelezionato.toString());
-        System.out.println("Luogo: " +luogo);
+
+        assert luogo != null;
+        System.out.println("Luogo: " +luogo.getToponimo());
         System.out.println("Durata in ore: "+durata);
 
         System.out.print("\n Confermare l'aggiunta di proposta di questo itinerario? [Y]es / [N]o: ");
@@ -266,13 +269,13 @@ public class ConsoleView {
             regione = scanner.nextLine();
             if(regione == null) {
                 System.out.println("Itinerario invalido senza luogo di svolgimento... Proposta di itinerario annullata ");
-                return null;    // todo testare
+                return null;    // todo testare e continuare
             }
-            System.out.println("\n[invio] -> ignora le provincia, citta' e luogo \n)");
+            System.out.println("\n[invio] per ignorare le provincia, citta' e luogo \n)");
             String provincia;
             System.out.println("Sigla della provincia in cui si svolgera' l'itinerario: ");
             provincia = scanner.nextLine();
-            if(provincia != null){
+            if(!Objects.equals(provincia, null)){  // se provincia != <carattere invio>
                 String citta;
                 System.out.println("Citta in cui si svolgera' l'itinerario (invio per terminare) : ");
                 citta = scanner.nextLine();
@@ -306,7 +309,7 @@ public class ConsoleView {
         // info itinerario
         System.out.println("Numero minimo di partecipanti previsto per l'itinerario: " +minPartecipanti);
         System.out.println("Numero massimo di partecipanti previsto per l'itinerario: " +maxPartecipanti);
-        System.out.println("Puoi invitare massimo altre " +(maxPartecipanti-1) + " persone e minimo altre "+(minPartecipanti-1));
+        System.out.println("Puoi invitare massimo altre " +(maxPartecipanti-1) + " ma devi invitare minimo altre "+(minPartecipanti-1) +" persone");
 
         // se non si vuole invitare nessuno
         if(minPartecipanti==1){
@@ -317,7 +320,7 @@ public class ConsoleView {
 
         // richiedi invitati
         ArrayList<InvitatoClass> invitati = new ArrayList<>();
-        int i = 0;
+        int i = 1;
         while(i<minPartecipanti || i<maxPartecipanti) {
             System.out.println("invitato numero: " + i);
             // proponi stop inviti

@@ -161,20 +161,20 @@ public class ItinerarioClass implements Itinerario {
         String toponimi = "";
         for (Luogo luogo: luoghi){
             toponimi = toponimi.concat(luogo.getToponimo());
-            toponimi.concat(" --- ");
+            toponimi = toponimi.concat(" --- ");
         }
         return toponimi;
     }
 
     @Override
     public String toString() {
-        return "Itinerario: " + nome +
+        return nome +
                 " condotto da " + cicerone.getRagioneSociale() + "\n" +
                 "descrizione: " + info + "\n" +
                 "numero minimo di partecipanti: " + numMinPartecipanti +"\n" +
                 "numero massimo di partecipanti: " + numMaxPartecipanti +"\n" +
                 "presso " + toponimi() + "\n"+
-                "durata: " + durata + "\n"+
+                "durata: " + durata + " ore\n"+
                 listaTag.toString();
     }
 }

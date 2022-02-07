@@ -90,14 +90,13 @@ public class DBManager {
      * @throws SQLException se si verifica un errore di accesso al database
      */
     public ArrayList<ItinerarioClass> estraiItinerari() throws SQLException {
-        System.out.println("Caricamento...");
+        System.out.println("Estraendo itinerari dal database...");
         ArrayList<ItinerarioClass> itinerariArray = new ArrayList<>();
         int iterazioni = 1;
         ItinerarioClass itinerario;
         String itinerariQuery = "SELECT * FROM Itinerari;";
         ResultSet itinerariResultSet = togepiDB.executeQuery(itinerariQuery);
         while (!itinerariResultSet.isClosed()) {
-
             if (!itinerariResultSet.next())
                 break;
             String nomeItinerarioCorrente = itinerariResultSet.getObject(2, String.class);
@@ -119,9 +118,9 @@ public class DBManager {
                     tagArray, luoghiArray,
                     itinerariResultSet.getObject(7, double.class));
             itinerariArray.add(itinerario);
-            System.out.println("itinerario aggiunto: " + nomeItinerarioCorrente);
             iterazioni++;
         }
+        System.out.println("Itinerari caricati con successo.");
         return itinerariArray;
     }
 
@@ -215,7 +214,6 @@ public class DBManager {
         luoghiResultSet.close();
         return luoghiArray;
     }
-
 
     /**
      * Recupera tutti i tag verificati presenti nel database.

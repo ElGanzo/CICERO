@@ -16,7 +16,8 @@ public class DBManager {
     Connection connection;
     Statement togepiDB;
 
-    private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy/MM/dd");
+    private final SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm:ss");
 
     /**
      * Stabilisce una connessione con il database e crea oggetto DBManager per fornire
@@ -49,7 +50,7 @@ public class DBManager {
         if (resultSet.next()) {
             String nome = resultSet.getObject(2, String.class);
             String cognome = resultSet.getObject(3, String.class);
-            Date dataNascita = simpleDateFormat.parse(resultSet.getObject(4, String.class));
+            Date dataNascita = dateFormatter.parse(resultSet.getObject(4, String.class));
             String mail = resultSet.getObject(5, String.class);
             String pw = resultSet.getObject(6, String.class);
             utente = new UtenteClass(nome, cognome, dataNascita, mail, pw);
@@ -262,7 +263,7 @@ public class DBManager {
         String update = "INSERT INTO Utenti (nome, cognome, d_nascita, email, password) " +
                 "VALUES ('" + utente.getNome() + "', '" +
                 utente.getCognome() + "', '" +
-                simpleDateFormat.format(utente.getDataNascita()) + "', '" +
+                dateFormatter.format(utente.getDataNascita()) + "', '" +
                 utente.getEmail() + "', '" +
                 utente.getPassword() + "');";
         togepiDB.executeUpdate(update);
@@ -301,32 +302,14 @@ public class DBManager {
      * Effettua una prenotazione di un itinerario e la inserisce nel database
      *
      * @param prenotazione La nuova prenotazione da effettuare e inserire nel database
-     * @throws Exception se si verifica un errore di accesso al database,
-     *                   oppure se non viene trovato l'utente che ha eseguito la prenotazione
+     * @throws SQLException se si verifica un errore di accesso al database,
+     *                      oppure se non viene trovato l'utente che ha eseguito la prenotazione
      */
-    public void inserisciPrenotazione(Prenotazione prenotazione) throws Exception {
-
-        int idItinerario;
+    public void inserisciPrenotazione(Prenotazione prenotazione) throws SQLException {
         int idUtente;
-        String iQuery = "SELECT i.id " +
-                "FROM Itinerari i " +
-                "WHERE i.nome = '" +
-                prenotazione.itinerario.getNome() + "';";
-        ResultSet itinerarioQuery = togepiDB.executeQuery(iQuery);
-        if (itinerarioQuery.next()) {
-            idItinerario = itinerarioQuery.getObject(1, int.class);
-        } else throw new Exception("Itinerario non trovato nel Database");
-        String uQuery = "SELECT u.id " +
-                "FROM Utenti u " +
-                "WHERE u.email = '" +
-                prenotazione.utente.getEmail() + "';";
-        ResultSet utenteQuery = togepiDB.executeQuery(uQuery);
-        if (utenteQuery.next()) {
-            idUtente = itinerarioQuery.getObject(1, int.class);
-        } else throw new Exception("Utente non trovato");
-
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm:ss");
+        int idItinerario;
+        idUtente = getIdUtente(prenotazione);
+        idItinerario = getIdItinerario(prenotazione);
         String update;
         update = "INSERT INTO Prenotazioni VALUES (id_itinerario, id_utente, n_partecipanti, " +
                 "data_inizio, orario_inizio, data_scadenza_prenotazione, data_scadenza_pagamento) " +
@@ -338,6 +321,48 @@ public class DBManager {
                 dateFormatter.format(prenotazione.getDataScadenzaPrenotazione()) + "', '" +
                 dateFormatter.format(prenotazione.getDataScadenzaPagamento()) + "');";
         togepiDB.executeUpdate(update);
+    }
+
+    /**
+     * Recupera identificativo dell'utente che sta effettuando la prenotazione
+     *
+     * @param prenotazione la prenotazione da cui recuperare l'id utente
+     * @return l'identificativo univoco dell'utente che sta effettuando la prenotazione
+     * @throws SQLException se si verifica un errore in accesso al database,
+     *                      o se l'utente non viene trovato nel database (anomalia)
+     */
+    private int getIdUtente(Prenotazione prenotazione) throws SQLException {
+        int idUtente;
+        String utentiQuery = "SELECT u.id " +
+                "FROM Utenti u " +
+                "WHERE u.email = '" +
+                prenotazione.utente.getEmail() + "';";
+        ResultSet utentiResultSet = togepiDB.executeQuery(utentiQuery);
+        if (utentiResultSet.next()) {
+            idUtente = utentiResultSet.getObject(1, int.class);
+        } else throw new SQLException("Utente non trovato");
+        return idUtente;
+    }
+
+    /**
+     * Recupera identificativo dell'itinerario che sta venendo prenotato
+     *
+     * @param prenotazione la prenotazione che sta venendo effettuata
+     * @return l'identificativo univoco dell'itinerario che sta venendo prenotato
+     * @throws SQLException se si verifica un errore in accesso al database,
+     *                      o se l'itinerario non viene trovato nel database (anomalia)
+     */
+    private int getIdItinerario(Prenotazione prenotazione) throws SQLException {
+        int idItinerario;
+        String itinerariQuery = "SELECT i.id " +
+                "FROM Itinerari i " +
+                "WHERE i.nome = '" +
+                prenotazione.itinerario.getNome() + "';";
+        ResultSet itinerariResultSet = togepiDB.executeQuery(itinerariQuery);
+        if (itinerariResultSet.next()) {
+            idItinerario = itinerariResultSet.getObject(1, int.class);
+        } else throw new SQLException("Itinerario non trovato nel Database");
+        return idItinerario;
     }
 
 }

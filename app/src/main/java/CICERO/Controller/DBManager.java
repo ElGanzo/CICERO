@@ -92,11 +92,7 @@ public class DBManager {
     public ArrayList<ItinerarioClass> estraiItinerari() throws SQLException {
         System.out.println("Caricamento...");
         ArrayList<ItinerarioClass> itinerariArray = new ArrayList<>();
-
         int iterazioni = 1;
-        int numMinPartecipanti, numMaxPartecipanti;
-        String info;
-        Double durata;
         ItinerarioClass itinerario;
         String itinerariQuery = "SELECT * FROM Itinerari;";
         ResultSet itinerariResultSet = togepiDB.executeQuery(itinerariQuery);
@@ -105,10 +101,6 @@ public class DBManager {
             if (!itinerariResultSet.next())
                 break;
             String nomeItinerarioCorrente = itinerariResultSet.getObject(2, String.class);
-            numMinPartecipanti = itinerariResultSet.getObject(4, int.class);
-            numMaxPartecipanti = itinerariResultSet.getObject(5, int.class);
-            info = itinerariResultSet.getObject(6, String.class);
-            durata = itinerariResultSet.getObject(7, double.class);
             itinerariResultSet.close();
 
             int idCicerone = getIdCicerone(nomeItinerarioCorrente);
@@ -116,20 +108,18 @@ public class DBManager {
             ArrayList<TagClass> tagArray = this.getArray(nomeItinerarioCorrente);
             ArrayList<Luogo> luoghiArray = this.getLuoghi(nomeItinerarioCorrente);
 
-            //crea oggetto itinerario usando parametri creati sopra e lo aggiunge ad array risultato
-            itinerario = new ItinerarioClass(cicerone, nomeItinerarioCorrente,
-                    numMinPartecipanti, numMaxPartecipanti, info,
-                    tagArray, luoghiArray, durata
-            );
-            itinerariArray.add(itinerario);
-
-            System.out.println("itinerario aggiunto: " + nomeItinerarioCorrente);
-
-            //controlli per scorrimento resultSet
             itinerariResultSet = togepiDB.executeQuery(itinerariQuery);
             for (int i = 0; i < iterazioni; i++) {
                 itinerariResultSet.next();
             }
+            itinerario = new ItinerarioClass(cicerone, nomeItinerarioCorrente,
+                    itinerariResultSet.getObject(4, int.class),
+                    itinerariResultSet.getObject(5, int.class),
+                    itinerariResultSet.getObject(6, String.class),
+                    tagArray, luoghiArray,
+                    itinerariResultSet.getObject(7, double.class));
+            itinerariArray.add(itinerario);
+            System.out.println("itinerario aggiunto: " + nomeItinerarioCorrente);
             iterazioni++;
         }
         return itinerariArray;

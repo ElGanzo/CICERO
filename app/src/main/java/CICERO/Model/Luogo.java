@@ -9,10 +9,10 @@ public interface Luogo {
      */
     String getToponimo();
 
-
     /**
-     * Indica se il luogo &egrave; una proposta, oppure &egrave; stato approvato
-     * @return <code>true</code> se &egrave; una proposta, <code>false</code> se &egrave; stato approvato
+     * Indica se il luogo &egrave; una proposta, oppure se &egrave; stato approvato dall'amministrazione.
+     *
+     * @return <code>true</code> se &egrave; una proposta, <code>false</code> altrimenti.
      */
-    boolean proposta();
+    boolean approvato();
 }

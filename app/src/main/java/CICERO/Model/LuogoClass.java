@@ -1,7 +1,7 @@
 package CICERO.Model;
 
 /**
- * rappresenta un Area geografica: il toponimo che ne deriva &egrave; composto dal luogo,
+ * Rappresenta un Area geografica dove si possono svolgere uno o più itinerari.
  */
 public class LuogoClass implements Luogo {
 
@@ -9,31 +9,42 @@ public class LuogoClass implements Luogo {
     private final String citta;
     private final String provincia;
     private final String regione;
-    private boolean proposta;
+    private boolean approvato;
 
-    public LuogoClass(String luogo, String citta, String provincia, String regione){
+    /**
+     * Rappresenta un luogo che pu&ograve; essere assegnato a uno o pi&ugrave;
+     * itinerari. Un luogo pu&ograve; essere una citt&agrave; intera, un luogo
+     * dentro una citt&agrave;, o una frazione di una citt&agrave;.
+     * 
+     * @param luogo     il nome del luogo (pu&ograve; contenere
+     *                  la stessa info del campo citt&agrave;).
+     * @param citta     la citt&agrave; dove &egrave; situato il luogo.
+     * @param provincia la provincia a cui appartiene la citt&agrave;.
+     * @param regione   la regione a cui appartiene la provincia.
+     */
+    public LuogoClass(String luogo, String citta, String provincia, String regione) {
         PiattaformaClass.controlloNull(regione, "Almeno la regione deve essere specificata");
         this.luogo = luogo;
         this.citta = citta;
         this.provincia = provincia;
         this.regione = regione;
-        this.proposta = true;
+        this.approvato = true;
+    }
+
+    /**
+     * Pone un luogo proposto da non approvato ad approvato dall'amministrazione.
+     */
+    public void setLuogoApprovato() {
+        this.approvato = true;
     }
 
     @Override
     public String getToponimo() {
-        return luogo+" - "+citta+" - ("+provincia+") - "+regione;
+        return luogo + " - " + citta + " - (" + provincia + ") - " + regione;
     }
 
     @Override
-    public boolean proposta() {
-        return this.proposta;
-    }
-
-    /**
-     * Un luogo passa da essere proposta ad essere disponibile, quindi proposta==false, ovvero il luogo &egrave; stato accettato
-     */
-    public void luogoAccettato(){
-        this.proposta = false;
+    public boolean approvato() {
+        return this.approvato;
     }
 }

@@ -209,7 +209,7 @@ public class ConsoleView {
         TagClass tagSelezionato = null;
         if(!s.equals("*")) {    // se Cicerone vuole aggiungere un tag
             TagClass app = new TagClass(s);
-            app.setProposta(false); // se sta nella lista dei tag non e' una proposta ma e' valido
+            // app.setProposta(false); // se sta nella lista dei tag non e' una proposta ma e' valido
             // cerca il tag inserito dall'Utente all'interno dei tag disponibili
             tagSelezionato = (listaTag.get(listaTag.indexOf(app)));
             if(tagSelezionato == null)
@@ -289,7 +289,7 @@ public class ConsoleView {
             }
             luogo = new LuogoClass(null, null, null, regione);
             // ricercare il luogo nella lista dei luoghi
-        luogo.luogoAccettato();
+        luogo.setLuogoApprovato();
         return luogo;
     }
 

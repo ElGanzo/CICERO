@@ -16,7 +16,7 @@ public class DBManager {
     Connection connection;
     Statement togepiDB;
 
-    private final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy/MM/dd");
+    private final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
     private final SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm:ss");
 
     /**

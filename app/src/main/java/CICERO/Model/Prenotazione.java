@@ -125,8 +125,8 @@ public class Prenotazione {
     // todo aggiungere eventuali metodi setter
 
     // TODO aggiungi un setDecaduta() che pone la prenotazione come decaduta quando:
-    // (1) la data di scadenza del pagamento è superata 
-    // (2) il numero min di partecipanti non è stato raggiunto 
-    // (3) l'itinerario è già stato fatto
+    // (1) la data di scadenza del pagamento  superata
+    // (2) il numero min di partecipanti non  stato raggiunto
+    // (3) l'itinerario stato fatto
 
 }

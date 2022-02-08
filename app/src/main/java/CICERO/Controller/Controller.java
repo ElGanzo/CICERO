@@ -40,10 +40,6 @@ public class Controller {
         inizializzaPiattaforma();
         int i;
 
-        for (Itinerario itinerario: piattaforma.getItinerari()){
-            System.out.println("\n");
-            itinerario.toString();
-        }
         do {
 
             i = consoleView.stampaHome();

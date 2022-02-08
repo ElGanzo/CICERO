@@ -200,6 +200,7 @@ public class ConsoleView {
 
         // descrizione --> info
         System.out.print("\nDescrizione dell'itinerario: ");
+        scanner.nextLine();
         String descrizioneItinerario = scanner.nextLine();  // todo non aspetta l'input... ????!!!
 
         // tag
@@ -209,21 +210,31 @@ public class ConsoleView {
         TagClass tagSelezionato = null;
         if(!s.equals("*")) {    // se Cicerone vuole aggiungere un tag
             TagClass app = new TagClass(s);
-            // app.setProposta(false); // se sta nella lista dei tag non e' una proposta ma e' valido
+            System.out.println("\n tag inserito"+app.toString() + app.isProposta());
+            System.out.println("Lista tags!!!!!!!!!!!"); // todo rimuovere
+            for (TagClass tag: listaTag){
+                System.out.println(tag.toString() + tag.isProposta());
+            }
+
+            // se sta nella lista dei tag non e' una proposta ma e' valido
             // cerca il tag inserito dall'Utente all'interno dei tag disponibili
-            tagSelezionato = (listaTag.get(listaTag.indexOf(app)));
-            if(tagSelezionato == null)
-                System.out.println("Tag inserito non presente, non verra' aggiunto nessun tag all'itinerario proposto");
+            System.out.println("listaTag.contains(app) : "+listaTag.contains(app));
+            System.out.println("prova app.toString().equals : "+app.toString().equals("natura"));
+            System.out.println("prova app.isProposta(): "+(app.isProposta()));
+
+            if(listaTag.contains(app)){ // todo risulta che non lo contiene ma com'e' possibile?
+                int indexOfTag = listaTag.indexOf(app);
+                tagSelezionato = listaTag.get(indexOfTag);
+            }else{
+                System.out.println("Tag non trovato");
+            }
+
         }
 
         // luoghi
         LuogoClass luogo = richiediLuogo();
-//        do{
-//            if(!luoghi.contains(luogo)) {
-//                System.out.println("Luogo inserito non trovato... Riprovare oppure premere 0");
-//                s = scanner.nextLine();
-//            }
-//        }while( (!luoghi.contains(luogo)) || s.equals("0") || luogo == null);
+        if(luogo == null)
+            return null;
 
         // durata
         System.out.println("Durata in ore dell'itinerario: ");
@@ -244,7 +255,6 @@ public class ConsoleView {
         if(tagSelezionato != null)
             System.out.println("Tag: " +tagSelezionato.toString());
 
-        assert luogo != null;
         System.out.println("Luogo: " +luogo.getToponimo());
         System.out.println("Durata in ore: "+durata);
 
@@ -267,19 +277,19 @@ public class ConsoleView {
             String regione;
             System.out.println("Regione in cui si svolgera' l'itinerario (ATTENZIONE: regione obbligatoria): ");
             regione = scanner.nextLine();
-            if(regione == null) {
+            if(regione.isEmpty()) {
                 System.out.println("Itinerario invalido senza luogo di svolgimento... Proposta di itinerario annullata ");
                 return null;    // todo testare e continuare
             }
-            System.out.println("\n[invio] per ignorare le provincia, citta' e luogo \n)");
+            System.out.println("\n[invio] per ignorare le provincia, citta' e luogo");
             String provincia;
             System.out.println("Sigla della provincia in cui si svolgera' l'itinerario: ");
             provincia = scanner.nextLine();
-            if(!Objects.equals(provincia, null)){  // se provincia != <carattere invio>
+            if(!provincia.isEmpty()){  // se provincia != <carattere invio>
                 String citta;
                 System.out.println("Citta in cui si svolgera' l'itinerario (invio per terminare) : ");
                 citta = scanner.nextLine();
-                if( citta != null){
+                if( !citta.isEmpty()){
                     String luogoString;
                     System.out.println("Luogo in cui si svolgera' l'itinerario (invio per terminare) : ");
                     luogoString = scanner.nextLine();

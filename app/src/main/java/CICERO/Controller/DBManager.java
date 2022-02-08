@@ -15,6 +15,7 @@ public class DBManager {
 
     Connection connection;
     Statement togepiDB;
+    Statement togepiDBPrivate;  //da testare
 
     private final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
     private final SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm:ss");
@@ -31,6 +32,7 @@ public class DBManager {
     public DBManager(String url, String user, String password) throws Exception {
         connection = DriverManager.getConnection(url, user, password);
         togepiDB = connection.createStatement();
+        togepiDBPrivate = connection.createStatement(); //da testare
     }
 
     /**
@@ -102,7 +104,7 @@ public class DBManager {
             String nomeItinerarioCorrente = itinerariResultSet.getObject(2, String.class);
             itinerariResultSet.close();
 
-            int idCicerone = getIdCicerone(nomeItinerarioCorrente);
+            int idCicerone = getIdCiceroneByItinerario(nomeItinerarioCorrente);
             CiceroneClass cicerone = getCicerone(idCicerone);
             ArrayList<TagClass> tagArray = this.getArray(nomeItinerarioCorrente);
             ArrayList<Luogo> luoghiArray = this.getLuoghi(nomeItinerarioCorrente);
@@ -131,7 +133,7 @@ public class DBManager {
      * <code>-1</code> se il cicerone non viene trovato nel database
      * @throws SQLException se si verificano problemi di accesso al database
      */
-    private int getIdCicerone(String nomeItinerarioCorrente) throws SQLException {
+    private int getIdCiceroneByItinerario(String nomeItinerarioCorrente) throws SQLException {
         String ciceroniQuery = "SELECT c.id " +
                 "FROM Ciceroni c, Itinerari i " +
                 "WHERE c.id = i.id_cicerone AND i.nome = '" +
@@ -142,6 +144,27 @@ public class DBManager {
         ciceroniResultSet.close();
         return idCicerone;
     }
+
+    /**
+     * Recupera identificativo del singolo cicerone autore dell'itinerario
+     *
+     * @param email nome dell'itinerario
+     * @return identificativo del singolo cicerone,
+     * <code>-1</code> se il cicerone non viene trovato nel database
+     * @throws SQLException se si verificano problemi di accesso al database
+     */
+    private int getFirstIdCiceroneByAziendaEmail(String email) throws SQLException {
+        //TODO levare perche' fa schifo non si fa cosi
+        String ciceroniQuery = "SELECT c.id " +
+                "FROM Aziende a, Ciceroni c " +
+                "WHERE a.id = c.id_azienda AND a.email = '" + email + "';";
+        ResultSet ciceroniResultSet = togepiDB.executeQuery(ciceroniQuery);
+        ciceroniResultSet.next();
+        int idCicerone = ciceroniResultSet.getObject(1, int.class);
+        ciceroniResultSet.close();
+        return idCicerone;
+    }
+
 
     /**
      * Recupera azienda a cui appartiene il cicerone autore dell'itinerario
@@ -277,13 +300,15 @@ public class DBManager {
      * @throws SQLException se si verifica un errore di accesso al database
      */
     public void inserisciItinerario(Itinerario itinerario, CiceroneClass cicerone) throws SQLException {
+        int idCicerone = this.getFirstIdCiceroneByAziendaEmail(cicerone.getEmail());
         String update = "INSERT INTO Itinerari (nome, id_cicerone, num_min_utenti," +
                 " num_max_utenti, info, durata_in_ore) " +
-                "VALUES ('" + itinerario.getNome() + "', " +    //titolo itinerario
-                cicerone.getIdCicerone() + ", " +               //id cicerone (autore itinerario)
+                "VALUES ('" + itinerario.getNome() + "', " +
+                idCicerone + ", " +
                 itinerario.getMinPartecipanti() + ", " +
                 itinerario.getMaxPartecipanti() + ", '" +
-                itinerario.getInfo() + "');";                   //descrizione itinerario
+                itinerario.getInfo() + "', " +
+                itinerario.getDurata() + ");";
         togepiDB.executeUpdate(update);
     }
 

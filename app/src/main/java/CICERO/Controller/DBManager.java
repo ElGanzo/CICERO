@@ -336,15 +336,15 @@ public class DBManager {
         idUtente = getIdUtente(prenotazione);
         idItinerario = getIdItinerario(prenotazione);
         String update;
-        update = "INSERT INTO Prenotazioni VALUES (id_itinerario, id_utente, n_partecipanti, " +
-                "data_inizio, orario_inizio, data_scadenza_prenotazione, data_scadenza_pagamento) " +
+        update = "INSERT INTO Prenotazioni (id_itinerario, id_utente, n_partecipanti) " +
+                // "data_inizio, orario_inizio, data_scadenza_prenotazione, data_scadenza_pagamento) " +
                 "VALUES (" + idItinerario + ", " +
                 idUtente + ", " +
-                prenotazione.getNumPartecipanti() + ", '" +
-                dateFormatter.format(prenotazione.getData()) + "', '" +
-                timeFormatter.format(prenotazione.getOrarioInizio()) + "', '" +
-                dateFormatter.format(prenotazione.getDataScadenzaPrenotazione()) + "', '" +
-                dateFormatter.format(prenotazione.getDataScadenzaPagamento()) + "');";
+                prenotazione.getNumPartecipanti() + ");";
+                // dateFormatter.format(prenotazione.getData()) + "', '" +
+                // timeFormatter.format(prenotazione.getOrarioInizio()) + "', '" +
+                // dateFormatter.format(prenotazione.getDataScadenzaPrenotazione()) + "', '" +
+                // dateFormatter.format(prenotazione.getDataScadenzaPagamento()) + "');";
         togepiDB.executeUpdate(update);
     }
 

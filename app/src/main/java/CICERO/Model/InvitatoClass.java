@@ -7,8 +7,7 @@ import java.util.Date;
  * verr&agrave; distrutto una volta concluso l'itinerario.</b>
  */
 public class InvitatoClass extends PersonaClass {
-    // TODO: classe da rimuovere? "UC8 - Interazione con invito" forse troppo low
-    // risk use case?
+    // TODO: low risk use case, implementare in futuro
     private final long idInvitato;
     private boolean haAccettato;
     private long idItinerario; // todo sostituire con idPrenotazione (regolarsi con il DB)
@@ -49,12 +48,18 @@ public class InvitatoClass extends PersonaClass {
         return haAccettato;
     }
 
-    // TODO fare il javadoc
+    /**
+     * collega un invitato ad una prenotazione, setta l'itinerario (id) relativo alla prenotazione effettuata
+     * @param idItinerario id dell'itinerario relativo alla prenotazione effettuata da un Utente
+     */
     public void setIdItinerario(int idItinerario) {
         this.idItinerario = idItinerario;
     }
 
-    // TODO fare il javadoc
+    /**
+     * Restituisce l'idItinerario a cui un Invitato &egrave; stato, per l'appunto, invitato
+     * @return idItinerario
+     */
     public long getIdItinerario() {
         return idItinerario;
     }

@@ -145,11 +145,6 @@ public class PiattaformaClass implements Piattaforma {
         return prenotazioni;
     }
 
-    // TODO fare javadoc (non si capisce a che serve questo metodo)
-    public Amministrazione getAmministrazione() {
-        return amministrazione;
-    }
-
     /**
      * Metodo per controllare che un oggetto non sia <code>null</code>.
      * Se lo &egrave;, lancia una <code>NullPointerException</code>
@@ -164,13 +159,12 @@ public class PiattaformaClass implements Piattaforma {
     }
 
     /**
-     * Inserisce una prenotazione per l'Utente all'itinerario specificato.
+     * Inserisce una prenotazione all'interno di <code>Piattaforma</code>
      * 
-     * @param utente     utente che effettua la prenotazione.
-     * @param itinerario numero itinerario selezionato.
-     * @throws NullPointerException se itinerario specificato non presente.
+     * @param prenotazione ricevuta da <code>Utente</code>
+     * @throws NullPointerException se parametro specificato <code>null</code>.
      */
-    public void aggiungiPrenotazione(Prenotazione prenotazione) { // todo controllare nMinPartecipanti raggiunto
+    public void aggiungiPrenotazione(Prenotazione prenotazione) {
         controlloNull(prenotazione, "prenotazione mancante");
         if (prenotabilita(prenotazione.getItinerario())) // troppo low risk
             prenotazioni.add(prenotazione);
@@ -187,9 +181,10 @@ public class PiattaformaClass implements Piattaforma {
     }
 
     /**
-     * Inserisce un nuovo tag nella piattaforma Cicero.
+     * Inserisce un nuovo tag in <code>Piattaforma</code>.
      * 
-     * @param itinerario il tag da aggiungere alla piattaforma.
+     * @param tag nuovo tag.
+     * @throws NullPointerException se tag fornito &egrave; <code>null</code>
      */
     public void inserisciTag(TagClass tag) {
         controlloNull(tag, "Itinerario da inserire nullo non valido");
@@ -197,9 +192,10 @@ public class PiattaformaClass implements Piattaforma {
     }
 
     /**
-     * Inserisce un nuovo luogo nella piattaforma Cicero.
+     * Inserisce un nuovo luogo nella piattaforma.
      * 
-     * @param itinerario il luogo da aggiungere alla piattaforma.
+     * @param luogo luogo da inserire in <code>Piattaforma</code>.
+     * @throws NullPointerException se luogo fornito &egrave; <code>null</code>
      */
     public void inserisciLuogo(Luogo luogo) {
         controlloNull(luogo, "Itinerario da inserire nullo non valido");

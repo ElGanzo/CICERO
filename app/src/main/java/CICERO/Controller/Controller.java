@@ -88,6 +88,7 @@ public class Controller {
                         break;
                     piattaforma.inserisciItinerario(itinerario);
                     dbManager.inserisciItinerario(itinerario, cicerone);
+                    break;
                 }
 
                 // UC1 - Creazione profilo utente todo da testare, sembra OK

@@ -51,6 +51,8 @@ public class Prenotazione {
      * @return la data in cui si tiene l'itinerario prenotato.
      */
     public String getData() {
+        if(dataInizio==null)
+            return null;
         return this.dataInizio.toString();
     }
 
@@ -84,6 +86,8 @@ public class Prenotazione {
      * @return il numero di partecipanti (che essi abbiano accettato o meno).
      */
     public int getNumPartecipanti() {
+        if(invitati == null)
+            return 1;
         return this.invitati.size() + 1;
     }
 

@@ -211,16 +211,6 @@ public class ConsoleView {
         if(!s.equals("*")) {    // se Cicerone vuole aggiungere un tag
             TagClass app = new TagClass(s);
             System.out.println("\n tag inserito"+app.toString() + app.isProposta());
-            System.out.println("Lista tags!!!!!!!!!!!"); // todo rimuovere
-            for (TagClass tag: listaTag){
-                System.out.println(tag.toString() + tag.isProposta());
-            }
-
-            // se sta nella lista dei tag non e' una proposta ma e' valido
-            // cerca il tag inserito dall'Utente all'interno dei tag disponibili
-            System.out.println("listaTag.contains(app) : "+listaTag.contains(app));
-            System.out.println("prova app.toString().equals : "+app.toString().equals("natura"));
-            System.out.println("prova app.isProposta(): "+(app.isProposta()));
 
             if(listaTag.contains(app)){ // todo risulta che non lo contiene ma com'e' possibile?
                 int indexOfTag = listaTag.indexOf(app);
@@ -260,6 +250,7 @@ public class ConsoleView {
 
         System.out.print("\n Confermare l'aggiunta di proposta di questo itinerario? [Y]es / [N]o: ");
         s = scanner.nextLine();
+        s = scanner.nextLine();  //todo: rimuovere
         s = checkCharacters(s, "Y", "y", "N", "n");
         if(s.equals("Y") || s.equals("y"))
             return new ItinerarioClass(cicerone, nomeItinerario, numMinPartecipanti,
